@@ -301,3 +301,123 @@
 2025-11-10 19:29:52 | INFO     | __main__:main:825 - Закрытие SignalHandler...
 2025-11-10 19:29:52 | INFO     | __main__:main:832 - Закрытие TakeProfit...
 2025-11-10 19:29:52 | INFO     | __main__:signal_handler:910 - Отримано сигнал 2, зупинка...
+2025-11-10 21:47:24 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-10 21:47:24 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-10 21:47:24 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-10 21:47:24 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 21:47:25 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-10 21:47:25 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: 366
+2025-11-10 21:47:26 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-10 21:47:26 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: ALGOUSDT, Направление: SHORT, Цена: 0,1992
+2025-11-10 21:47:26 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: TRUMPUSDT, Направление: SHORT, Цена: 8,685
+2025-11-10 21:47:26 | INFO     | trading.signal_handler:start_external_trade_monitor:1149 - External trade monitor started
+2025-11-10 21:47:27 | INFO     | __main__:main:806 - Бот для настроек запущен
+2025-11-10 21:47:27 | DEBUG    | trading.signal_handler:_get_pybit_session:1186 - PyBit session created successfully (recv_window=20000)
+2025-11-10 21:50:27 | INFO     | __main__:signal_handler:910 - Отримано сигнал 2, зупинка...
+2025-11-10 21:50:27 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-10 21:50:27 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-10 21:50:27 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1533 - External trade monitor loop отменен
+2025-11-10 21:50:27 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1536 - External trade monitor loop завершен
+2025-11-10 21:50:27 | INFO     | __main__:main:813 - Клиент Telegram отменен, graceful shutdown...
+2025-11-10 21:50:27 | INFO     | __main__:main:818 - Начинается graceful shutdown...
+2025-11-10 21:50:27 | INFO     | __main__:main:825 - Закрытие SignalHandler...
+2025-11-10 21:50:27 | INFO     | __main__:main:832 - Закрытие TakeProfit...
+2025-11-10 21:50:28 | INFO     | telegram_bot:start_bot:916 - Aiogram polling cancelled
+2025-11-10 21:50:28 | INFO     | telegram_bot:start_bot:928 -  Aiogram bot stopped
+2025-11-10 21:50:33 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-10 21:50:33 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-10 21:50:34 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-10 21:50:34 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 21:50:34 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-10 21:50:35 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: 366
+2025-11-10 21:50:36 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-10 21:50:36 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: ALGOUSDT, Направление: SHORT, Цена: 0,1992
+2025-11-10 21:50:36 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: TRUMPUSDT, Направление: SHORT, Цена: 8,685
+2025-11-10 21:50:36 | INFO     | analysis.signals:show_rsi_for_pairs:168 - 📊 ═══════════ ПОТОЧНИЙ RSI ═══════════
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-10 21:50:36 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-10 21:50:37 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 21:50:38 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 21:50:38 | INFO     | analysis.signals:show_rsi_for_pairs:190 -    BTCUSDT: RSI=79.56 🔴 ПЕРЕКУПЛЕНІСТЬ (>= 60.0)
+2025-11-10 21:50:39 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 21:50:39 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 21:50:39 | INFO     | analysis.signals:show_rsi_for_pairs:190 -    ETHUSDT: RSI=82.17 🔴 ПЕРЕКУПЛЕНІСТЬ (>= 60.0)
+2025-11-10 21:50:40 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 21:50:40 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 21:50:41 | INFO     | analysis.signals:show_rsi_for_pairs:190 -    BNBUSDT: RSI=78.79 🔴 ПЕРЕКУПЛЕНІСТЬ (>= 60.0)
+2025-11-10 21:50:42 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 21:50:42 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 21:50:43 | INFO     | analysis.signals:show_rsi_for_pairs:190 -    SOLUSDT: RSI=74.20 🔴 ПЕРЕКУПЛЕНІСТЬ (>= 60.0)
+2025-11-10 21:50:44 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 21:50:44 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 21:50:44 | INFO     | analysis.signals:show_rsi_for_pairs:190 -    XRPUSDT: RSI=77.65 🔴 ПЕРЕКУПЛЕНІСТЬ (>= 60.0)
+2025-11-10 21:50:44 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 21:50:44 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-10 21:50:44 | INFO     | analysis.signals:show_rsi_for_pairs:198 - 📊 ══════════════════════════════════════
+2025-11-10 21:50:44 | INFO     | trading.signal_handler:start_external_trade_monitor:1149 - External trade monitor started
+2025-11-10 21:50:45 | INFO     | __main__:main:814 - Бот для настроек запущен
+2025-11-10 21:50:45 | DEBUG    | trading.signal_handler:_get_pybit_session:1186 - PyBit session created successfully (recv_window=20000)
+2025-11-10 21:54:21 | INFO     | __main__:signal_handler:918 - Отримано сигнал 2, зупинка...
+2025-11-10 21:54:21 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-10 21:54:21 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-10 21:54:21 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1533 - External trade monitor loop отменен
+2025-11-10 21:54:21 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1536 - External trade monitor loop завершен
+2025-11-10 21:54:21 | INFO     | __main__:main:821 - Клиент Telegram отменен, graceful shutdown...
+2025-11-10 21:54:21 | INFO     | __main__:main:826 - Начинается graceful shutdown...
+2025-11-10 21:54:21 | INFO     | __main__:main:833 - Закрытие SignalHandler...
+2025-11-10 21:54:21 | INFO     | __main__:main:840 - Закрытие TakeProfit...
+2025-11-10 21:54:21 | INFO     | __main__:signal_handler:918 - Отримано сигнал 2, зупинка...
+2025-11-10 21:54:26 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-10 21:54:26 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-10 21:54:26 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-10 21:54:27 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 21:54:27 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-10 21:54:28 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: 367
+2025-11-10 21:54:29 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-10 21:54:29 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: ALGOUSDT, Направление: SHORT, Цена: 0,1992
+2025-11-10 21:54:29 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: TRUMPUSDT, Направление: SHORT, Цена: 8,685
+2025-11-10 21:54:29 | INFO     | analysis.signals:show_rsi_for_pairs:159 - 📊 ═══════════ ПОТОЧНИЙ RSI ═══════════
+2025-11-10 21:54:29 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-10 21:54:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-10 21:54:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-10 21:54:30 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BTCUSDT: RSI=69.01 🔴 ПЕРЕКУПЛЕНІСТЬ (>= 60.0)
+2025-11-10 21:54:30 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    ETHUSDT: RSI=60.02 🔴 ПЕРЕКУПЛЕНІСТЬ (>= 60.0)
+2025-11-10 21:54:30 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BNBUSDT: RSI=64.20 🔴 ПЕРЕКУПЛЕНІСТЬ (>= 60.0)
+2025-11-10 21:54:31 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    SOLUSDT: RSI=70.52 🔴 ПЕРЕКУПЛЕНІСТЬ (>= 60.0)
+2025-11-10 21:54:31 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    XRPUSDT: RSI=54.39 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-10 21:54:31 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 21:54:31 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-10 21:54:31 | INFO     | analysis.signals:show_rsi_for_pairs:189 - 📊 ══════════════════════════════════════
+2025-11-10 21:54:31 | INFO     | trading.signal_handler:start_external_trade_monitor:1149 - External trade monitor started
+2025-11-10 21:54:31 | INFO     | __main__:main:814 - Бот для настроек запущен
+2025-11-10 21:54:31 | DEBUG    | trading.signal_handler:_get_pybit_session:1186 - PyBit session created successfully (recv_window=20000)
+2025-11-10 21:54:37 | INFO     | __main__:signal_handler:918 - Отримано сигнал 2, зупинка...
+2025-11-10 21:54:37 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1533 - External trade monitor loop отменен
+2025-11-10 21:54:37 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1536 - External trade monitor loop завершен
+2025-11-10 21:54:37 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-10 21:54:37 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-10 21:54:37 | INFO     | __main__:main:821 - Клиент Telegram отменен, graceful shutdown...
+2025-11-10 21:54:37 | INFO     | __main__:main:826 - Начинается graceful shutdown...
+2025-11-10 21:54:37 | INFO     | __main__:main:833 - Закрытие SignalHandler...
+2025-11-10 21:54:37 | INFO     | __main__:main:840 - Закрытие TakeProfit...
+2025-11-10 21:54:37 | INFO     | telegram_bot:start_bot:916 - Aiogram polling cancelled
+2025-11-10 21:54:37 | INFO     | telegram_bot:start_bot:928 -  Aiogram bot stopped

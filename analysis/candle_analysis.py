@@ -34,7 +34,10 @@ async def get_klines(pair, interval, limit):
                         try:
                             data = json.loads(text)
                             if data.get('retCode') == 0:
-                                return data['result']['list']
+                                # Bybit повертає свічки від найновішої до найстарішої
+                                # Перевертаємо для хронологічного порядку (старіша → новіша)
+                                candles = data['result']['list']
+                                return list(reversed(candles))
                         except json.JSONDecodeError:
                             logger.error(f"Некорректный JSON ответ при получении klines для {pair}: {text[:100]}")
                     else:

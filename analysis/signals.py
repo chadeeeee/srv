@@ -128,16 +128,7 @@ async def get_rsi(pair, interval='1', period=14):
             logger.error(f"Некорректная цена закрытия в свече")
             return 50, datetime.datetime.now()
 
-    handler = SignalHandler()
-    try:
-        live_price = await handler.get_real_time_price(pair)
-        if live_price is not None and np.isfinite(live_price):
-            closes[-1] = live_price
-    except Exception as e:
-        logger.debug(f"Не удалось получить live price для RSI: {e}")
-    finally:
-        await handler.close()
-
+    # RSI рахується ТІЛЬКИ на закритих свічках, без live price
     rsi = calculate_rsi_talib(closes, period)
     
     return rsi, datetime.datetime.now()
@@ -162,6 +153,40 @@ async def analyze_price_trend(pair):
         logger.error(f"Ошибка анализа тренда: {e}")
         return {"trend": "up", "bounce": "down", "price_direction": "up", "expected_bounce": "down", "trend_direction": "up", "bounce_direction": "down", "strength": "medium", "timeframe": "1h"}
     return None
+
+async def show_rsi_for_pairs(pairs_list):
+    """Показати поточний RSI для списку пар"""
+    logger.info("📊 ═══════════ ПОТОЧНИЙ RSI ═══════════")
+    
+    signal_handler = SignalHandler()
+    try:
+        # Отримуємо RSI налаштування з БД
+        rsi_settings = await signal_handler._get_rsi_settings_db()
+        rsi_period = int(rsi_settings.get('rsi_period', 14))
+        rsi_high = float(rsi_settings.get('rsi_high', 70))
+        rsi_low = float(rsi_settings.get('rsi_low', 30))
+        
+        for pair in pairs_list:
+            try:
+                rsi_value, _ = await get_rsi(pair, interval='1', period=rsi_period)
+                
+                # Визначаємо статус
+                if rsi_value >= rsi_high:
+                    status = f"🔴 ПЕРЕКУПЛЕНІСТЬ (>= {rsi_high})"
+                elif rsi_value <= rsi_low:
+                    status = f"🟢 ПЕРЕПРОДАНІСТЬ (<= {rsi_low})"
+                else:
+                    status = "⚪ НЕЙТРАЛЬНА ЗОНА"
+                
+                logger.info(f"   {pair}: RSI={rsi_value:.2f} {status}")
+            except Exception as e:
+                logger.warning(f"   {pair}: ⚠ Не вдалося отримати RSI - {e}")
+    except Exception as e:
+        logger.error(f"Помилка отримання RSI: {e}")
+    finally:
+        await signal_handler.close()
+    
+    logger.info("📊 ══════════════════════════════════════")
 
 def _coerce_setting(value, cast, default):
     try:
@@ -316,9 +341,17 @@ async def monitor_and_trade(pair, target, direction, settings):
     rsi_period = int(rsi_settings_from_db.get('rsi_period', 14))
     rsi_high = float(rsi_settings_from_db.get('rsi_high', 70))
     rsi_low = float(rsi_settings_from_db.get('rsi_low', 30))
-    rsi_interval = str(rsi_settings_from_db.get('rsi_interval', '1'))
+    rsi_interval = '1'  # ЖОРСТКО ФІКСУЄМО 1 ХВИЛИНУ для RSI (незалежно від БД)
 
-    logger.info(f" Настройки для {pair}:")
+    # Отримуємо поточне значення RSI при старті
+    try:
+        current_rsi, _ = await get_rsi(pair, interval=rsi_interval, period=rsi_period)
+        logger.info(f"📊 RSI {pair}: {current_rsi:.2f}")
+    except Exception as e:
+        logger.warning(f"⚠ Не вдалося отримати RSI для {pair}: {e}")
+        current_rsi = None
+
+    logger.info(f"⚙ Настройки для {pair}:")
     logger.info(f"   - Целевой уровень: {target}")
     logger.info(f"   - Направление: {direction}")
     logger.info(f"   - RSI (з БД): період={rsi_period}, high={rsi_high}, low={rsi_low}, interval={rsi_interval}")

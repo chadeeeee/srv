@@ -28,7 +28,7 @@ from telegram_bot import notify_user
 from pybit.unified_trading import HTTP
 from decimal import ROUND_DOWN, ROUND_UP
 
-from analysis.signals import stop_all_monitoring
+from analysis.signals import stop_all_monitoring, show_rsi_for_pairs
 
 api_id = CONFIG.get('TELEGRAM_API_ID')
 api_hash = CONFIG.get('TELEGRAM_API_HASH')
@@ -384,6 +384,14 @@ async def main():
     
     logger.info(f" Підключено до каналів: {channel_targets}")
     await get_last_message_from_channel(client, channel_targets)
+    
+    # Показуємо RSI для основних пар
+    try:
+        main_pairs = ["BTCUSDT", "ETHUSDT", "BNBUSDT", "SOLUSDT", "XRPUSDT"]
+        await show_rsi_for_pairs(main_pairs)
+    except Exception as e:
+        logger.warning(f"⚠ Не вдалося показати RSI: {e}")
+    
     await handler.start_external_trade_monitor()
     @client.on(events.NewMessage(chats=channel_targets))
     async def handler_event(event):

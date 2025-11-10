@@ -382,7 +382,7 @@ class SignalHandler:
                         rsi_low = float(rsi_cfg.get("rsi_low", 30))
                         rsi_high = float(rsi_cfg.get("rsi_high", 70))
                         rsi_period = int(rsi_cfg.get("rsi_period", 14))
-                        rsi_interval = str(rsi_cfg.get("rsi_interval", "1"))
+                        rsi_interval = '1'  # ЖОРСТКО ФІКСУЄМО 1 ХВИЛИНУ для RSI
                         direction = meta.get("direction", "long")
                         
                         async def _on_rsi_exit(sym, dirn, reason, context):
@@ -1417,7 +1417,7 @@ class SignalHandler:
                             rsi_exit_short = rsi_cfg.get('rsi_low', 30)  # для SHORT позицій
                             rsi_exit_long = rsi_cfg.get('rsi_high', 70)  # для LONG позицій
                             rsi_length = rsi_cfg.get('rsi_period', 14)
-                            rsi_interval = rsi_cfg.get('rsi_interval', '1')
+                            rsi_interval = '1'  # ЖОРСТКО ФІКСУЄМО 1 ХВИЛИНУ для RSI
                             
                             # ДОДАНО: Логування отриманих значень з БД
                             from utils.logger import rsi_settings_from_db
@@ -1599,7 +1599,10 @@ class SignalHandler:
             }
             result = await self._signed_request("GET", "/v5/market/kline", params)
             if result and result.get("retCode") == 0:
-                return result["result"]["list"]
+                # Bybit повертає свічки від найновішої до найстарішої
+                # Перевертаємо для хронологічного порядку (старіша → новіша)
+                candles = result["result"]["list"]
+                return list(reversed(candles))
             return None
         except Exception as e:
             logger.error(f"Ошибка получения klines для {pair}: {e}")

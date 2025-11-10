@@ -215,7 +215,10 @@ class TakeProfit:
         }
         result = await self._signed_request("GET", "/v5/market/kline", params)
         if result and result.get("retCode") == 0:
-            return result["result"]["list"]
+            # Bybit повертає свічки від найновішої до найстарішої
+            # Перевертаємо для хронологічного порядку (старіша → новіша)
+            candles = result["result"]["list"]
+            return list(reversed(candles))
         return None
 
     async def calculate_rsi(self, pair, interval: str = '1'):
@@ -223,7 +226,8 @@ class TakeProfit:
         if not candles or len(candles) < self.rsi_period + 1: 
             logger.warning(f"Insufficient data for RSI calculation for {pair}")
             return None
-        closes = [float(c[4]) for c in reversed(candles)] 
+        # Свічки вже в хронологічному порядку після get_klines
+        closes = [float(c[4]) for c in candles]
         rsi_array = talib.RSI(np.array(closes), timeperiod=self.rsi_period)
         
         if not np.isnan(rsi_array[-1]):
