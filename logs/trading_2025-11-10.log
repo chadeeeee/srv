@@ -1,0 +1,303 @@
+2025-11-10 17:49:17 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-10 17:49:17 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-10 17:49:17 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-10 17:49:17 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 17:49:17 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-10 17:49:19 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -174
+2025-11-10 17:49:19 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-10 17:49:19 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: SOONUSDT, Направление: LONG, Цена: 1,9617
+2025-11-10 17:49:20 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: TRUMPUSDT, Направление: SHORT, Цена: 8,685
+2025-11-10 17:49:20 | INFO     | trading.signal_handler:start_external_trade_monitor:1149 - External trade monitor started
+2025-11-10 17:49:20 | INFO     | __main__:main:806 - Бот для настроек запущен
+2025-11-10 17:49:20 | DEBUG    | trading.signal_handler:_get_pybit_session:1186 - PyBit session created successfully (recv_window=20000)
+2025-11-10 17:52:10 | INFO     | __main__:signal_handler:910 - Отримано сигнал 2, зупинка...
+2025-11-10 17:52:10 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1523 - External trade monitor loop отменен
+2025-11-10 17:52:10 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1526 - External trade monitor loop завершен
+2025-11-10 17:52:10 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-10 17:52:10 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-10 17:52:10 | INFO     | __main__:main:813 - Клиент Telegram отменен, graceful shutdown...
+2025-11-10 17:52:10 | INFO     | __main__:main:818 - Начинается graceful shutdown...
+2025-11-10 17:52:10 | INFO     | __main__:main:825 - Закрытие SignalHandler...
+2025-11-10 17:52:10 | INFO     | __main__:main:832 - Закрытие TakeProfit...
+2025-11-10 17:52:10 | INFO     | __main__:signal_handler:910 - Отримано сигнал 2, зупинка...
+2025-11-10 18:00:02 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-10 18:00:02 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-10 18:00:02 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-10 18:00:02 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:00:02 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-10 18:00:03 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -95
+2025-11-10 18:00:05 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-10 18:00:06 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: DOTUSDT, Направление: LONG, Цена: 3,0362
+2025-11-10 18:00:06 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: TRUMPUSDT, Направление: SHORT, Цена: 8,685
+2025-11-10 18:00:06 | INFO     | trading.signal_handler:start_external_trade_monitor:1149 - External trade monitor started
+2025-11-10 18:00:06 | INFO     | __main__:main:806 - Бот для настроек запущен
+2025-11-10 18:00:06 | DEBUG    | trading.signal_handler:_get_pybit_session:1186 - PyBit session created successfully (recv_window=20000)
+2025-11-10 18:43:42 | INFO     | __main__:handler_event:398 - 📥 Получено сообщение 1009 из целевого канала
+2025-11-10 18:43:42 | INFO     | __main__:handler_event:522 -  Ціна з каналу: 0.1714
+2025-11-10 18:43:42 | INFO     | __main__:handler_event:532 -  Валидный сигнал: POLUSDT @ 0.1714 (long)
+2025-11-10 18:43:42 | INFO     | __main__:handler_event:533 - 📍 Точная цена для ордера: 0.1714
+2025-11-10 18:43:42 | INFO     | __main__:handler_event:534 -  ID каналу: -1003193138774
+2025-11-10 18:43:42 | INFO     | trading.strategies:get_strategy_for_channel:174 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-10 18:43:42 | INFO     | __main__:handler_event:538 -  Стратегия для канала -1003193138774: Quantum Gravity2
+2025-11-10 18:43:42 | INFO     | utils.logger:trade_signal:33 - Trade signal received
+2025-11-10 18:43:42 | INFO     | utils.logger:signal_from_channel:39 - Signal from channel
+2025-11-10 18:43:43 | INFO     | __main__:handler_event:567 -  IGNORE_PINBAR=True: LONG ордер буде на HIGH свічки: 0.17880000
+2025-11-10 18:43:43 | INFO     | trading.signal_handler:get_usdt_balance:746 - Баланс USDT:
+2025-11-10 18:43:43 | INFO     | trading.signal_handler:get_usdt_balance:747 -    - Кошелек: 712.71 USDT
+2025-11-10 18:43:43 | INFO     | trading.signal_handler:get_usdt_balance:748 -    - В ордерах: 0.00 USDT
+2025-11-10 18:43:43 | INFO     | trading.signal_handler:get_usdt_balance:749 -    - Доступно: 712.71 USDT
+2025-11-10 18:43:44 | INFO     | trading.strategies:get_strategy_for_channel:174 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-10 18:43:44 | INFO     | trading.signal_handler:place_signal_limit_order:1084 - Стратегия для POLUSDT: Quantum Gravity2
+2025-11-10 18:43:44 | INFO     | trading.signal_handler:place_signal_limit_order:1085 -    - Канал: -1003193138774
+2025-11-10 18:43:44 | INFO     | trading.signal_handler:place_signal_limit_order:1086 -    - Точна цена з каналу: 0.1788
+2025-11-10 18:43:44 | INFO     | trading.signal_handler:place_signal_limit_order:1087 -    - Направлення: LONG
+2025-11-10 18:43:44 | INFO     | trading.signal_handler:place_signal_limit_order:1098 - Запуск задачі моніторингу для POLUSDT використовуючи Quantum Gravity2
+2025-11-10 18:43:44 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1544 - Запуск монітора з стратегією: Quantum Gravity2 (channel: -1003193138774)
+2025-11-10 18:43:44 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1557 - Strategy додана в settings: Quantum Gravity2 (channel: -1003193138774)
+2025-11-10 18:43:44 | INFO     | analysis.signals:monitor_and_trade:289 -    - Смещение стоп-лосса: ВЫКЛЮЧЕНО (стоп на экстремуме свечи)
+2025-11-10 18:43:44 | INFO     | trading.signal_handler:place_signal_limit_order:1109 - Завдання моніторингу запущено з Quantum Gravity2
+2025-11-10 18:43:44 | INFO     | __main__:handler_event:641 - 🛰 Запущен мониторинг уровня для POLUSDT — стратегия: Quantum Gravity2
+2025-11-10 18:43:44 | DEBUG    | trading.signal_handler:start_external_trade_monitor:1145 - External trade monitor already running
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-10 18:43:45 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:321 -  Настройки для POLUSDT:
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:322 -    - Целевой уровень: 0.1788
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:323 -    - Направление: long
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:324 -    - RSI (з БД): період=14, high=60.0, low=40.0, interval=1
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:325 -    - Таймфрейм: 1m (API: 1)
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:326 -    - Pinbar body ratio: 2.5
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:327 -    - Таймаут пинбара: 10м
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:328 -    - Таймаут уровня: 5м
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:329 -    - IGNORE_PINBAR: True
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:347 -  Стратегія отримана з settings: Quantum Gravity2
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:354 -  Стратегия: Quantum Gravity2
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:355 -    - ID каналу: -1003193138774
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:356 -    - Направление сигнала з каналу: long
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:357 -    - Направление трейда (після стратегії): short
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:358 -    - Ожидание уровня: False
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:359 -    - Требуется откат: True
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:360 -    - Зона поиска: {'search_after_consolidation': True, 'wait_for_rsi': True, 'rsi_condition': 'overbought', 'rsi_threshold': 'high', 'trade_direction': 'short', 'entry_on': 'low', 'stop_on': 'high', 'invalidate_on': 'high'}
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:362 - 📍 ЛОГІКА СТРАТЕГІЇ:
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:374 -    ═══ СТРАТЕГІЯ 2: QUANTUM GRAVITY2 ═══
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:375 -    📌 Торгівля з RSI екстремумами (з БД)
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:377 -    📊 Сигнал з каналу: LONG (підтримка)
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:378 -    ✓ Чекаємо RSI ПЕРЕКУПЛЕНОСТІ (RSI >= 60.0 з БД)
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:379 -    ✓ Ставимо лімітку на LOW свічки
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:380 -    ✓ Відкриваємо SHORT позицію
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:381 -    🔄 Логіка: Підтримка + перекупленість = SHORT на LOW
+2025-11-10 18:43:45 | INFO     | analysis.signals:monitor_and_trade:392 -    - Таймаут лимитного ордера: 3м
+2025-11-10 18:43:45 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:43:46 | INFO     | analysis.signals:monitor_and_trade:414 -  Стартова ціна для POLUSDT: 0.17820000
+2025-11-10 18:43:46 | INFO     | analysis.signals:monitor_and_trade:415 -  Цільовий рівень: 0.17880000
+2025-11-10 18:43:46 | INFO     | analysis.signals:monitor_and_trade:416 - 📍 Відстань до цілі: 0.00060000
+2025-11-10 18:43:47 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:43:47 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:43:47 | INFO     | analysis.signals:monitor_and_trade:492 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-10 18:43:47 | INFO     | analysis.signals:monitor_and_trade:493 -    Сигнал: ПІДТРИМКА
+2025-11-10 18:43:47 | INFO     | analysis.signals:monitor_and_trade:494 -    RSI: 9.18 (потрібно >= 60.0)
+2025-11-10 18:43:47 | INFO     | analysis.signals:monitor_and_trade:495 -    Відстань: 50.82 до перекупленості
+2025-11-10 18:43:53 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:43:53 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:43:59 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:43:59 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:05 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:05 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:11 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:11 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:16 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:17 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:22 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:23 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:28 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:29 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:34 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:35 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:41 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:41 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:46 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:46 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:51 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:52 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:44:57 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:44:58 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:03 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:04 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:09 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:10 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:16 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:16 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:23 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:23 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:27 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:27 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:33 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:34 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:39 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:39 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:45 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:45 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:51 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:51 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:45:57 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:45:57 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:03 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:03 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:08 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:09 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:14 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:14 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:20 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:20 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:26 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:26 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:32 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:32 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:38 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:38 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:43 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:44 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:49 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:50 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:46:55 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:46:56 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:01 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:01 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:07 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:07 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:13 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:13 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:19 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:19 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:24 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:25 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:30 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:30 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:36 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:37 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:42 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:43 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:48 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:49 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:47:54 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:47:55 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:00 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:00 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:04 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:05 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:10 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:10 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:16 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:16 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:22 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:22 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:28 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:28 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:33 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:34 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:40 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:40 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:46 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:46 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:52 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:52 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:48:57 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:48:58 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:03 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:03 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:09 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:09 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:15 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:15 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:21 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:22 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:27 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:27 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:33 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:34 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:39 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:39 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:45 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:46 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:51 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:52 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:49:57 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:49:57 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:50:03 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:50:03 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:50:09 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:50:09 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:50:15 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:50:15 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:50:20 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:50:21 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:50:27 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:50:27 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:50:33 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:50:33 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:50:39 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:50:39 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:50:44 | INFO     | __main__:signal_handler:910 - Отримано сигнал 2, зупинка...
+2025-11-10 18:50:44 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1523 - External trade monitor loop отменен
+2025-11-10 18:50:44 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1526 - External trade monitor loop завершен
+2025-11-10 18:50:44 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-10 18:50:44 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-10 18:50:44 | INFO     | analysis.signals:monitor_and_trade:883 - Моніторинг скасовано: POLUSDT
+2025-11-10 18:50:44 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-10 18:50:44 | INFO     | __main__:main:813 - Клиент Telegram отменен, graceful shutdown...
+2025-11-10 18:50:44 | INFO     | __main__:main:818 - Начинается graceful shutdown...
+2025-11-10 18:50:44 | INFO     | __main__:main:825 - Закрытие SignalHandler...
+2025-11-10 18:50:44 | INFO     | __main__:main:832 - Закрытие TakeProfit...
+2025-11-10 18:50:44 | INFO     | telegram_bot:start_bot:869 - Aiogram polling cancelled
+2025-11-10 18:50:44 | INFO     | telegram_bot:start_bot:881 -  Aiogram bot stopped
+2025-11-10 18:50:44 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-10 18:50:44 | INFO     | analysis.signals:monitor_and_trade:895 - Моніторинг завершено: POLUSDT
+2025-11-10 18:50:48 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-10 18:50:48 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-10 18:50:48 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-10 18:50:49 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 18:50:49 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-10 18:50:50 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -67
+2025-11-10 18:50:50 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-10 18:50:50 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: POLUSDT, Направление: LONG, Цена: 0,1714
+2025-11-10 18:50:50 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: TRUMPUSDT, Направление: SHORT, Цена: 8,685
+2025-11-10 18:50:50 | INFO     | trading.signal_handler:start_external_trade_monitor:1149 - External trade monitor started
+2025-11-10 18:50:51 | INFO     | __main__:main:806 - Бот для настроек запущен
+2025-11-10 18:50:51 | DEBUG    | trading.signal_handler:_get_pybit_session:1186 - PyBit session created successfully (recv_window=20000)
+2025-11-10 19:29:03 | ERROR    | trading.signal_handler:_check_positions_via_pybit:1214 - PyBit error: HTTPSConnectionPool(host='api.bybit.com', port=443): Max retries exceeded with url: /v5/position/list?category=linear&settleCoin=USDT (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x0000024B397AF830>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))
+2025-11-10 19:29:03 | WARNING  | trading.signal_handler:_signed_request:714 - Connection error GET /v5/position/list (attempt 1/5): Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:04 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 19:29:04 | WARNING  | trading.signal_handler:_signed_request:714 - Connection error GET /v5/position/list (attempt 2/5): Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:05 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 19:29:05 | WARNING  | trading.signal_handler:_signed_request:714 - Connection error GET /v5/position/list (attempt 3/5): Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:07 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 19:29:07 | WARNING  | trading.signal_handler:_signed_request:714 - Connection error GET /v5/position/list (attempt 1/5): Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:07 | WARNING  | trading.signal_handler:_signed_request:714 - Connection error GET /v5/position/list (attempt 4/5): Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:07 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 19:29:07 | WARNING  | trading.signal_handler:_signed_request:714 - Connection error GET /v5/position/list (attempt 2/5): Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:39 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 19:29:40 | WARNING  | trading.signal_handler:_signed_request:714 - Connection error GET /v5/position/list (attempt 5/5): Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:40 | ERROR    | trading.signal_handler:_signed_request:718 - Помилка з'єднання GET /v5/position/list: Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:40 | WARNING  | trading.signal_handler:_signed_request:714 - Connection error GET /v5/position/list (attempt 3/5): Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:42 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 19:29:42 | WARNING  | trading.signal_handler:_signed_request:714 - Connection error GET /v5/position/list (attempt 4/5): Cannot connect to host api.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-10 19:29:44 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-10 19:29:52 | INFO     | __main__:signal_handler:910 - Отримано сигнал 2, зупинка...
+2025-11-10 19:29:52 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-10 19:29:52 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-10 19:29:52 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1533 - External trade monitor loop отменен
+2025-11-10 19:29:52 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1536 - External trade monitor loop завершен
+2025-11-10 19:29:52 | INFO     | __main__:main:813 - Клиент Telegram отменен, graceful shutdown...
+2025-11-10 19:29:52 | INFO     | __main__:main:818 - Начинается graceful shutdown...
+2025-11-10 19:29:52 | INFO     | __main__:main:825 - Закрытие SignalHandler...
+2025-11-10 19:29:52 | INFO     | __main__:main:832 - Закрытие TakeProfit...
+2025-11-10 19:29:52 | INFO     | __main__:signal_handler:910 - Отримано сигнал 2, зупинка...

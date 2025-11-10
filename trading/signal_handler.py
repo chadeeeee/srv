@@ -1,0 +1,1880 @@
+import aiohttp
+import asyncio
+import ssl
+import time
+import hmac
+import hashlib
+import urllib.parse
+import json
+from decimal import Decimal, getcontext, ROUND_DOWN, ROUND_UP
+from config import CONFIG
+from utils.settings_manager import (
+    get_settings, update_setting, get_bybit_base_url,
+    is_blacklisted, is_bot_active,
+    is_trading_paused
+)
+from trading.take_profit import TakeProfit
+from trading.risk_manager import RiskManager
+from utils.logger import (
+    limit_order_placed
+)
+from loguru import logger
+import pandas as pd
+import asyncpg
+from telegram_bot import notify_user
+from pybit.unified_trading import HTTP
+from trading.strategies import get_strategy_for_channel
+
+DB_HOST = CONFIG['DB_HOST']
+DB_PORT = CONFIG['DB_PORT']
+DB_NAME = CONFIG['DB_NAME']
+DB_USER = CONFIG['DB_USER']
+DB_PASS = CONFIG['DB_PASS']
+
+SESSION_REUSE_TIMEOUT = 600
+MAX_SL_ATTEMPTS = 5
+
+class SignalHandler:
+    _STOP_CREATE_TYPES = {"CreateByStopLoss", "CreateByStopOrder", "CreateByTrailingStop", "CreateByStopLossSwitchMode"}
+    _TAKE_PROFIT_CREATE_TYPES = {"CreateByTakeProfit", "CreateByPartialTakeProfit"}
+    _USER_CLOSE_CREATE_TYPES = {"CreateByUser"}
+
+    def __init__(self):
+        self.api_key = CONFIG['BYBIT_API_KEY']
+        self.api_secret = CONFIG['BYBIT_API_SECRET']
+        self.base_url = get_bybit_base_url()
+        self.recv_window = "20000"
+        self._time_offset = 0
+        self.position_size_percent = CONFIG.get('POSITION_SIZE_PERCENT', 2)
+        self.safety_factor = 0.8
+        self._symbol_specs = {}
+        self.pinbar_detected = False
+        self.pinbar_type = None
+        self.pinbar_candle = None
+        self._session = None
+        self._session_timeout = aiohttp.ClientTimeout(total=30, connect=10)
+        self._sem = asyncio.Semaphore(5)
+        self._db_pool = None
+        self._db_lock = asyncio.Lock()
+        getcontext().prec = 18
+        self._closed = False
+        self._active_monitors = 0
+        self._take_profit_helper = TakeProfit()
+        self._risk_manager = RiskManager()
+        self._position_meta = {}
+        self._pair_to_order = {}
+        self._bot_owned_positions = set()
+        self._bot_owned_position_ids = set()
+        self._bot_owned_order_ids = set()
+        self._manually_closed_positions = set()
+        self._external_trade_monitor_running = False
+        self._managed_external_positions = set()
+        self._last_balance_log_time = 0.0
+        self._balance_log_interval = float(CONFIG.get('BALANCE_LOG_INTERVAL', 300))
+        self._pybit_session = None
+        self._current_strategy = None
+        self._processed_external_positions = set()  # ДОДАНО: відстеження оброблених позицій
+        
+    async def _init_db(self):
+        if self._db_pool:
+            return
+        async with self._db_lock:
+            if self._db_pool:
+                return
+            try:
+                self._db_pool = await asyncpg.create_pool(
+                    host=DB_HOST,
+                    port=DB_PORT,
+                    database=DB_NAME,
+                    user=DB_USER,
+                    password=DB_PASS,
+                    min_size=1,
+                    max_size=3,  # Обмежуємо максимальну кількість з'єднань
+                    max_queries=50,
+                    max_inactive_connection_lifetime=300.0,
+                    timeout=30.0,
+                    command_timeout=60.0
+                )
+                logger.info("Подключение к базе данных установлено")
+            except Exception as e:
+                logger.error(f"Не удалось подключиться к базе данных: {e}")
+                self._db_pool = None
+                
+    async def _get_max_retries(self):
+        await self._init_db()
+        if not self._db_pool:
+            logger.error("База данных не подключена, используется значение max_retries=1")
+            return 1
+        try:
+            async with self._db_pool.acquire() as conn:
+                result = await conn.fetchval("SELECT max_retries FROM settings LIMIT 1")
+                return int(result) if result is not None else 1
+        except Exception as e:
+            logger.error(f"Не удалось получить max_retries из базы данных: {e}, используется значение по умолчанию=1")
+            return 1
+            
+    async def _get_rsi_settings_db(self):
+        await self._init_db()
+        defaults = {"rsi_low": 30, "rsi_high": 70, "rsi_period": 14, "rsi_interval": "1"}
+        if not self._db_pool:
+            logger.warning("БД недоступна, використовуються RSI настройки по умолчанию")
+            return defaults
+        try:
+            async with self._db_pool.acquire() as conn:
+                logger.info("Читаю RSI настройки з БД...")
+                row = await conn.fetchrow("SELECT rsi_low, rsi_high, rsi_period, rsi_interval FROM settings ORDER BY id DESC LIMIT 1")
+                if not row:
+                    logger.warning("Немає запису в БД, використовую defaults")
+                    return defaults
+                
+                logger.info(f"Сирі дані з БД: row={row}")
+                logger.info(f"   row[0] (rsi_low) = {row[0]}")
+                logger.info(f"   row[1] (rsi_high) = {row[1]}")
+                logger.info(f"   row[2] (rsi_period) = {row[2]}")
+                logger.info(f"   row[3] (rsi_interval) = {row[3]}")
+                result = {
+                    "rsi_low": float(row[0]) if row[0] is not None else defaults["rsi_low"],
+                    "rsi_high": float(row[1]) if row[1] is not None else defaults["rsi_high"], 
+                    "rsi_period": int(row[2]) if row[2] is not None else defaults["rsi_period"],
+                    "rsi_interval": str(row[3]) if row[3] is not None else defaults["rsi_interval"],
+                }
+                
+                logger.info(f"RSI настройки з БД отримано:")
+                logger.info(f"   rsi_low (SHORT exit): {result['rsi_low']}")
+                logger.info(f"   rsi_high (LONG exit): {result['rsi_high']}")
+                logger.info(f"   rsi_period: {result['rsi_period']}")
+                logger.info(f"   rsi_interval: {result['rsi_interval']}")
+                
+                return result
+        except Exception as e:
+            logger.error(f"Не удалось получить RSI настройки из БД: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
+            return defaults
+            
+    async def get_server_time_offset(self):
+        url = f"{self.base_url}/v5/market/time"
+        ssl_context = ssl.create_default_context()
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
+        connector = aiohttp.TCPConnector(ssl=ssl_context)
+        max_retries = 3
+        retry_delay = 1
+        for attempt in range(max_retries):
+            try:
+                async with aiohttp.ClientSession(connector=connector) as session:
+                    async with session.get(url) as response:
+                        if response.status == 200:
+                            text = await response.text()
+                            if text and len(text) > 0:
+                                data = json.loads(text)
+                                if data.get("retCode") == 0:
+                                    server_time = int(data["result"]["timeNano"]) // 1000000
+                                    local_time = int(time.time() * 1000)
+                                    offset = server_time - local_time
+                                    await asyncio.to_thread(update_setting, 'timestamp_offset', offset)
+                                    return offset
+            except Exception:
+                pass
+            await asyncio.sleep(retry_delay * (2 ** attempt))
+        logger.warning("Не удалось получить время сервера, используется локальное время")
+        return 0
+        
+    async def _get_session(self):
+        """Get or create session with proper closed state handling"""
+        if self._closed:
+            # Reset closed state
+            self._closed = False
+            self._session = None
+        
+        if self._session is None or self._session.closed:
+            ssl_context = ssl.create_default_context()
+            ssl_context.check_hostname = False
+            ssl_context.verify_mode = ssl.CERT_NONE
+            connector = aiohttp.TCPConnector(
+                ssl=ssl_context, 
+                limit=50, 
+                enable_cleanup_closed=True,
+                force_close=False,
+                ttl_dns_cache=300
+            )
+            default_headers = {
+                "Accept": "application/json",
+                "Accept-Encoding": "gzip, deflate",
+                "User-Agent": "bybit-strategy/1.0"
+            }
+            self._session = aiohttp.ClientSession(
+                connector=connector,
+                timeout=self._session_timeout,
+                headers=default_headers
+            )
+            self._closed = False
+            logger.debug("SignalHandler session created")
+        return self._session
+        
+    async def close(self):
+        """Properly close all resources"""
+        if self._closed:
+            return
+        
+        if getattr(self, "_external_trade_monitor_running", False):
+            try:
+                await self.stop_external_trade_monitor()
+            except Exception as e:
+                logger.warning(f"Error stopping external trade monitor: {e}")
+        
+        try:
+            tp = getattr(self, "_take_profit_helper", None)
+            if tp:
+                try:
+                    await tp.close()
+                    logger.debug("TakeProfit helper closed")
+                except Exception as e:
+                    logger.warning(f"Error closing TakeProfit helper: {e}")
+        except Exception:
+            pass
+        
+        await self._close_session()
+        
+        if self._db_pool:
+            try:
+                await self._db_pool.close()
+                logger.info("Database connection closed")
+            except Exception as e:
+                logger.warning(f"Error closing DB pool: {e}")
+            finally:
+                self._db_pool = None
+                
+    async def _close_session(self):
+        """Close session with proper cleanup"""
+        if self._session and not self._session.closed:
+            try:
+                await self._session.close()
+                # Wait for cleanup
+                await asyncio.sleep(0.25)
+            except Exception as e:
+                logger.warning(f"Error closing session: {e}")
+        self._session = None
+        self._closed = True
+        
+    async def _on_monitor_complete(self):
+        if self._active_monitors > 0:
+            self._active_monitors -= 1
+        if self._active_monitors == 0:
+            await self._close_session()
+    async def _watch_position_exit(self, pair, poll_interval=3):
+        order_id = self._pair_to_order.get(pair)
+        if not order_id:
+            logger.warning(f"Нет order_id для пары {pair}. Попытка получить позицию напрямую.")
+            position = await self._take_profit_helper.get_position(pair)
+            if position and float(position.get("size", 0) or 0) > 0:
+                synthetic_id = f"synthetic_{pair}_{time.time()}"
+                logger.info(f"Создан синтетический order_id {synthetic_id} для мониторинга позиции {pair}")
+                self._pair_to_order[pair] = synthetic_id
+                self._position_meta[synthetic_id] = {
+                    "pair": pair,
+                    "direction": "long" if position.get("side") == "Buy" else "short",
+                    "entry_price": float(position.get("entryPrice", 0) or 0),
+                    "created_at": time.time(),
+                    "retry_count": 0
+                }
+                order_id = synthetic_id
+            else:
+                logger.warning(f"Не найдена позиция для {pair}, прекращение мониторинга")
+                return
+        
+        sl_attempted = False
+        
+        while True:
+            meta = self._position_meta.get(order_id)
+            if not meta:
+                logger.error(f"Нет метаданных для order_id {order_id}, пара {pair}. Попытка восстановить...")
+                if pair in self._pair_to_order:
+                    current_order_id = self._pair_to_order[pair]
+                    if current_order_id != order_id and current_order_id in self._position_meta:
+                        logger.warning(f"Найдено расхождение order_id для {pair}. Используем актуальные метаданные.")
+                        order_id = current_order_id
+                        meta = self._position_meta.get(order_id)
+                if not meta:
+                    logger.error(f"Невозможно восстановить метаданные для {pair}, прекращение мониторинга")
+                    return
+            if meta.get("finalized") or meta.get("exit_reason"):
+                return
+            try:
+                position = await self._take_profit_helper.get_position(pair)
+            except Exception as exc:
+                logger.error(f"Не удалось получить данные позиции для {pair}: {exc}")
+                await asyncio.sleep(poll_interval)
+                continue
+            size = 0.0
+            if position:
+                try:
+                    size = float(position.get("size", 0) or 0)
+                except (TypeError, ValueError):
+                    size = 0
+            try:
+                if size > 0:
+                    meta.setdefault("rsi_tracker_started", False)
+                    meta.setdefault("open_notified", False)
+                    meta.setdefault("sl_set", False)
+                    
+                    if not meta["sl_set"] and not sl_attempted and meta.get("stop_loss"):
+                        sl_attempted = True
+                        try:
+                            stop_loss_price = meta.get("stop_loss")
+                            direction = meta.get("direction")
+                            entry_price = float(position.get("avgPrice", 0) or 0)
+                            
+                            logger.info(f"НЕГАЙНЕ встановлення SL для {pair}...")
+                            logger.info(f"   Позиція виявлена: entry={entry_price:.8f}")
+                            logger.info(f"   Встановлюємо SL: {stop_loss_price:.8f}")
+                            
+                            sl_success = False
+                            
+                            for sl_attempt in range(MAX_SL_ATTEMPTS):
+                                if sl_attempt > 0:
+                                    logger.warning(f"Повторна спроба встановлення SL ({sl_attempt + 1}/{MAX_SL_ATTEMPTS})")
+                                    await asyncio.sleep(1)
+                                
+                                success = await self.set_stop_loss(pair, stop_loss_price, direction)
+                                
+                                if success:
+                                    logger.info(f"SL встановлено ОДРАЗУ: {stop_loss_price:.8f}")
+                                    meta["sl_set"] = True
+                                    sl_success = True
+                                    break
+                                else:
+                                    if sl_attempt < MAX_SL_ATTEMPTS - 1:
+                                        logger.warning(f"Не вдалося встановити SL, спроба {sl_attempt + 1}/{MAX_SL_ATTEMPTS}")
+                            
+                            if not sl_success:
+                                logger.error(f"Не вдалося встановити SL після {MAX_SL_ATTEMPTS} спроб")
+                                
+                        except Exception as e:
+                            logger.error(f"Помилка встановлення SL: {e}")
+                    
+                    if not meta["open_notified"]:
+                        try:
+                            settings = get_settings()
+                            tf_display = settings.get('timeframe', '1m')
+                            
+                            msg = (
+                                f"ПОЗИЦІЯ ВІДКРИТА\n"
+                                f"━━━━━━━━━━━━━━━━━━\n"
+                                f"Монета: {pair}\n"
+                                f"Напрямок: {meta.get('direction', 'N/A').upper()}\n"
+                                f"Вхід: {meta.get('entry_price', 0):.8f}\n"
+                                f"Стоп: {meta.get('stop_loss', 0):.8f}\n"
+                            )
+                            
+                            if meta.get('candle_high') and meta.get('candle_low'):
+                                msg += f"Свічка (TF {tf_display}):\n"
+                                msg += f"   High: {meta['candle_high']:.8f}\n"
+                                msg += f"   Low: {meta['candle_low']:.8f}\n"
+                            
+                            await notify_user(msg)
+                        except Exception as e:
+                            logger.error(f"Помилка відправки повідомлення про відкриття: {e}")
+                        meta["open_notified"] = True
+                    
+                    if not meta["rsi_tracker_started"]:
+                        rsi_cfg = await self._get_rsi_settings_db()
+                        rsi_low = float(rsi_cfg.get("rsi_low", 30))
+                        rsi_high = float(rsi_cfg.get("rsi_high", 70))
+                        rsi_period = int(rsi_cfg.get("rsi_period", 14))
+                        rsi_interval = str(rsi_cfg.get("rsi_interval", "1"))
+                        direction = meta.get("direction", "long")
+                        
+                        async def _on_rsi_exit(sym, dirn, reason, context):
+                            logger.info(f"RSI TP выход обратного вызова для {sym}: причина={reason}, инфо={context}")
+                        
+                        logger.info(f"Запуск RSI TP трекера для {pair}: dir={direction}, high={rsi_high}, low={rsi_low}, period={rsi_period}, interval={rsi_interval}")
+                        asyncio.create_task(
+                            self._take_profit_helper.track_position_rsi(
+                                pair,
+                                direction,
+                                on_exit=_on_rsi_exit,
+                                rsi_high_override=rsi_high,
+                                rsi_low_override=rsi_low,
+                                rsi_period_override=rsi_period,
+                                rsi_interval_override=rsi_interval,
+                                poll_seconds=max(15, int(self._interval_to_seconds(rsi_interval) // 2))
+                            )
+                        )
+                        meta["rsi_tracker_started"] = True
+            except Exception as exc:
+                logger.error(f"Не удалось запустить RSI трекер для {pair}: {exc}")
+            if size <= 0:
+                try:
+                    direction = meta.get("direction")
+                    meta.get("stop_loss")
+                    closing_price = await self.get_real_time_price(pair)
+                    meta["close_price"] = closing_price
+                    meta["close_order"] = await self._get_latest_close_order(pair)
+                    reason = await self._determine_exit_reason(pair, meta, closing_price=closing_price)
+                    meta["exit_reason"] = reason
+                    logger.info(f"Причина закриття {pair}: {reason}")
+                except Exception as e:
+                    logger.error(f"Не удалось класифіковане закриття для {pair}: {e}")
+                    meta["exit_reason"] = meta.get("exit_reason", "position_closed")
+                try:
+                    msg = f"Закрита {pair} ({meta.get('direction')}) причина: {meta.get('exit_reason')} ціна: {meta.get('close_price')}"
+                    await notify_user(msg)
+                except Exception:
+                    pass
+                await self._handle_position_exit(pair, meta["exit_reason"], meta)
+                return
+            await asyncio.sleep(poll_interval)
+    async def _get_latest_close_order(self, pair):
+        endpoints = ("/v5/order/history", "/v5/order/list")
+        params = {"category": "linear", "symbol": pair, "limit": "10"}
+        for endpoint in endpoints:
+            result = await self._signed_request("GET", endpoint, params)
+            if not result or result.get("retCode") != 0:
+                continue
+            orders = result.get("result", {}).get("list", []) or []
+            if not orders:
+                continue
+            orders.sort(key=lambda o: int(o.get("updatedTime") or o.get("createdTime") or 0), reverse=True)
+            for order in orders:
+                if order.get("orderStatus") in {"Filled", "Cancelled"}:
+                    return order
+        logger.debug(f"Не знайдено інформацію про закритий ордер для {pair}")
+        return None
+    async def _handle_position_exit(self, pair, reason, meta, context=None):
+        if not meta:
+            logger.warning(f"Нет метаданных для {pair}")
+            return
+        if meta.get("finalized"):
+            logger.info(f"Позиция для {pair} уже завершена")
+            return
+        
+        position_key = meta.get("position_key")
+        if position_key and position_key in self._managed_external_positions:
+            self._managed_external_positions.discard(position_key)
+            logger.info(f"Удалено {position_key} из управляемых внешних позиций")
+        
+        direction = meta.get("direction")
+        entry_price = meta.get("entry_price")
+        stop_loss = meta.get("stop_loss")
+        take_profit = meta.get("take_profit")
+        source = meta.get("source")
+        retry_count = meta.get("retry_count", 0)
+        closing_price = meta.get("close_price")
+        max_retries = await self._get_max_retries()
+        
+        logger.info(f"Обработка закрытия {pair}:")
+        logger.info(f"   - Причина: {reason}")
+        logger.info(f"   - Направление: {direction}")
+        logger.info(f"   - Источник: {source}")
+        logger.info(f"   - Цена входа: {entry_price:.6f}" if entry_price else "   - Цена входа: N/A")
+        logger.info(f"   - Цена закрытия: {closing_price:.6f}" if closing_price else "   - Цена закрытия: N/A")
+        logger.info(f"   - Стоп-лосс: {stop_loss:.6f}" if stop_loss else "   - Стоп-лосс: N/A")
+        logger.info(f"   - Тейк-профит: {take_profit:.6f}" if take_profit else "   - Тейк-профіт: N/A")
+        
+        # Додати RSI інформацію якщо це take_profit
+        if reason == "take_profit" and context:
+            rsi_value = context.get("rsi")
+            rsi_threshold = context.get("rsi_threshold")
+            if rsi_value is not None and rsi_threshold is not None:
+                logger.info(f"   - RSI при закритті: {rsi_value:.2f} (поріг: {rsi_threshold:.2f})")
+                
+                # Відправка детального повідомлення в Telegram
+                try:
+                    pnl_percent = 0
+                    if entry_price and closing_price:
+                        if direction == "long":
+                            pnl_percent = ((closing_price - entry_price) / entry_price * 100)
+                        else:
+                            pnl_percent = ((entry_price - closing_price) / entry_price * 100)
+                    
+                    msg = (
+                        f"TAKE PROFIT: {pair}\n"
+                        f"━━━━━━━━━━━━━━━━━━\n"
+                        f"Напрямок: {direction.upper()}\n"
+                        f"Вхід: {entry_price:.8f}\n"
+                        f"Вихід: {closing_price:.8f}\n"
+                        f"PnL: {pnl_percent:+.2f}%\n"
+                        f"RSI: {rsi_value:.2f} (поріг: {rsi_threshold:.2f})\n"
+                        f"Причина: {reason}"
+                    )
+                    await notify_user(msg)
+                except Exception as e:
+                    logger.error(f"Помилка відправки TG повідомлення: {e}")
+        
+        # Для інших причин закриття
+        elif reason in {"stop_loss", "manual_close"}:
+            try:
+                pnl_percent = 0
+                if entry_price and closing_price:
+                    if direction == "long":
+                        pnl_percent = ((closing_price - entry_price) / entry_price * 100)
+                    else:
+                        pnl_percent = ((entry_price - closing_price) / entry_price * 100)
+                
+                reason_emoji = "СТОП" if reason == "stop_loss" else "ВРУЧНУ"
+                reason_text = "СТОП-ЛОСС" if reason == "stop_loss" else "ЗАКРИТО ВРУЧНУ"
+                
+                msg = (
+                    f"{reason_emoji} {reason_text}: {pair}\n"
+                    f"━━━━━━━━━━━━━━━━━━\n"
+                    f"Напрямок: {direction.upper()}\n"
+                    f"Вхід: {entry_price:.8f}\n" if entry_price else ""
+                    f"Вихід: {closing_price:.8f}\n" if closing_price else ""
+                    f"PnL: {pnl_percent:+.2f}%\n"
+                    f"Причина: {reason}"
+                )
+                await notify_user(msg)
+            except Exception as e:
+                logger.error(f"Помилка відправки TG повідомлення про закриття: {e}")
+        
+        logger.info(f"   - Попытки: {retry_count}/{max_retries}")
+        
+        if source and source.startswith("external"):
+            logger.info(f"Позиция {pair} была открыта ВРУЧНУЮ (source={source})")
+            logger.info(f"   - НЕ определяем причину закрытия")
+            logger.info(f"   - НЕ делаем повторный вход")
+            if pair in self._bot_owned_positions:
+                self._bot_owned_positions.discard(pair)
+            order_id = self._pair_to_order.get(pair)
+            if order_id and order_id in self._bot_owned_order_ids:
+                self._bot_owned_order_ids.discard(order_id)
+            meta["finalized"] = True
+            order_id = self._pair_to_order.pop(pair, None)
+            if order_id:
+                self._position_meta.pop(order_id, None)
+            return
+            
+        if reason in {"position_closed", "tracking_stopped"}:
+            try:
+                old_reason = reason
+                reason = await self._determine_exit_reason(pair, meta, closing_price=meta.get("close_price"))
+                meta["exit_reason"] = reason
+                logger.info(f"Переклассифицирована причина для {pair}: {old_reason} → {reason}")
+            except Exception as exc:
+                logger.error(f"Не удалось переклассифицировать причину закрытия для {pair}: {exc}")
+                reason = "manual_close"
+                
+        if reason == "take_profit":
+            logger.info(f"Позиция по {pair} ({direction}) закрыта по тейк-профиту")
+            if closing_price and take_profit:
+                distance = abs(closing_price - take_profit)
+                logger.info(f"   Цена закрытия {closing_price:.6f} близка к TP {take_profit:.6f} (расстояние: {distance:.6f})")
+        elif reason == "stop_loss":
+            if closing_price and stop_loss:
+                distance = abs(closing_price - stop_loss)
+                from utils.logger import position_closed_by_stop
+                position_closed_by_stop(pair, direction, closing_price, stop_loss, distance)
+            else:
+                logger.warning(f"Позиція по {pair} ({direction}) закрита по стоп-лоссу")
+        elif reason == "manual_close":
+            if closing_price and stop_loss:
+                distance = abs(closing_price - stop_loss)
+                from utils.logger import position_closed_manually
+                position_closed_manually(pair, direction, closing_price, stop_loss, distance)
+            else:
+                logger.info(f"Позиція по {pair} ({direction}) була закрита вручну")
+        else:
+            logger.info(f"Позиція по {pair} закрита з невідомою причиною: {reason}")
+            
+        if reason == "stop_loss" and retry_count < max_retries:
+            from utils.logger import reentry_allowed
+            reentry_allowed(pair, f"Сработал стоп, попытка {retry_count + 1}/{max_retries}")
+            logger.info(f"Условия для повторного входа выполнены:")
+            logger.info(f"   - Закриття по стоп-лоссу")
+            logger.info(f"   - Спроба {retry_count + 1} з {max_retries}")
+            if CONFIG.get("IGNORE_PINBAR", False):
+                logger.info(f"Режим IGNORE_PINBAR: немедлений повторний вхід для {pair}")
+                try:
+                    meta["retry_count"] = retry_count + 1
+                    success = await self._reenter_immediately(pair, direction, meta)
+                    if success:
+                        logger.info(f"Повторний вхід успішно виконано для {pair}")
+                    else:
+                        logger.error(f"Повторний вхід не удалася для {pair}")
+                except Exception as exc:
+                    logger.error(f"Немедлений повторний вхід не удалася для {pair}: {exc}")
+            else:
+                signal_level = meta.get("signal_level") or entry_price
+                if signal_level:
+                    try:
+                        logger.info(f"Перезапуск пошуку пин-бара для {pair} около уровня {signal_level}")
+                        asyncio.create_task(self._start_monitor_pinbar_task(pair, signal_level, direction))
+                    except Exception as exc:
+                        logger.error(f"Не вдалося перезапустити пошук пин-бара для {pair}: {exc}")
+                else:
+                    logger.info("Нет записанного уровня для повторного входа по пин-бару")
+        else:
+            from utils.logger import reentry_blocked
+            if reason == "stop_loss":
+                reentry_blocked(pair, f"Достигнут максимум спроб ({retry_count}/{max_retries})")
+                logger.warning(f"Достигнут максимум спроб для {pair}: {retry_count}/{max_retries}")
+            else:
+                reentry_blocked(pair, f"Не стоп-лосс (причина: {reason})")
+                logger.info(f"Повторний вхід ЗАБОРОНЕНИЙ для {pair}:")
+                logger.info(f"   - Причина закриття: {reason}")
+                logger.info(f"   - Кількість спроб: {retry_count}/{max_retries}")
+                
+        if pair in self._bot_owned_positions:
+            self._bot_owned_positions.discard(pair)
+        order_id = self._pair_to_order.get(pair)
+        if order_id and order_id in self._bot_owned_order_ids:
+            self._bot_owned_order_ids.discard(order_id)
+            logger.debug(f"Удален orderId {order_id} из bot_owned")
+        if reason == "manual_close":
+            self._manually_closed_positions.add(pair)
+            logger.info(f"👤 Вручну закрита позиція {pair} відслідковується для запобігання переоткриття")
+        meta["finalized"] = True
+        order_id = self._pair_to_order.pop(pair, None)
+        if order_id:
+            self._position_meta.pop(order_id, None)
+    async def aclose(self):
+        await self.close()
+    async def __aenter__(self):
+        await self._init_db()
+        return self
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.close()
+    def __del__(self):
+        if getattr(self, "_session", None) and not self._session.closed:
+            logger.warning("SignalHandler собран сборщиком мусора с открытой сессией aiohttp; вызовите await close() явно.")
+    async def _signed_request(self, method, endpoint, params=None):
+        if self._time_offset == 0:
+            settings = get_settings()
+            stored_offset = settings.get('timestamp_offset', 0)
+            if stored_offset:
+                self._time_offset = stored_offset
+            else:
+                self._time_offset = await self.get_server_time_offset()
+        url = f"{self.base_url}{endpoint}"
+        params = params or {}
+        sorted_params = {k: params[k] for k in sorted(params)}
+        timestamp = str(int(time.time() * 1000) + self._time_offset)
+        if method.upper() == "GET":
+            payload = urllib.parse.urlencode(sorted_params)
+        else:
+            payload = json.dumps(sorted_params, separators=(',', ':'))
+        pre_sign = f"{timestamp}{self.api_key}{self.recv_window}{payload}"
+        signature = hmac.new(self.api_secret.encode('utf-8'), pre_sign.encode('utf-8'), hashlib.sha256).hexdigest()
+        headers = {
+            "X-BAPI-API-KEY": self.api_key,
+            "X-BAPI-TIMESTAMP": timestamp,
+            "X-BAPI-SIGN": signature,
+            "X-BAPI-RECV-WINDOW": self.recv_window,
+        }
+        if method.upper() == "POST":
+            headers["Content-Type"] = "application/json"
+        max_retries = 5
+        base_delay = 0.6
+        for attempt in range(1, max_retries + 1):
+            try:
+                async with self._sem:
+                    session = await self._get_session()
+                    
+                    # ВИПРАВЛЕНО: Перевірка що сесія не закрита перед запитом
+                    if session.closed:
+                        logger.warning(f"Сесія закрита, створюємо нову...")
+                        self._session = None
+                        session = await self._get_session()
+                    
+                    if method.upper() == "GET":
+                        resp = await session.get(url, params=sorted_params, headers=headers)
+                    else:
+                        resp = await session.post(url, data=payload, headers=headers)
+                async with resp:
+                    status = resp.status
+                    text = await resp.text()
+                if status == 404:
+                    return {"retCode": 404, "retMsg": "HTTP 404 Not Found"}
+                if not text.strip():
+                    logger.warning(f"Порожня відповідь від {method} {endpoint} (статус {status}) спроба {attempt}/{max_retries}")
+                    if attempt == max_retries:
+                        logger.error(f"Порожня відповідь {method} {endpoint} після {attempt} спроб")
+                        return None
+                    # ВИПРАВЛЕНО: Не закриваємо сесію, просто чекаємо
+                    await asyncio.sleep(base_delay * attempt)
+                    continue
+                try:
+                    data = json.loads(text)
+                except json.JSONDecodeError:
+                    if attempt == max_retries:
+                        logger.error(f"Невалідний JSON {method} {endpoint}: {text[:120]}")
+                        return None
+                    await asyncio.sleep(base_delay * attempt)
+                    continue
+                if data.get('retCode') == 10002:
+                    self._time_offset = await self.get_server_time_offset()
+                    if attempt < max_retries:
+                        await asyncio.sleep(base_delay * attempt)
+                        continue
+                if resp.status != 200 and attempt == max_retries:
+                    logger.error(f"HTTP {resp.status} {method} {endpoint}: {data}")
+                return data
+            except aiohttp.ClientConnectionError as e:
+                logger.warning(f"Connection error {method} {endpoint} (attempt {attempt}/{max_retries}): {e}")
+                # ВИПРАВЛЕНО: Пересоздаємо сесію при помилці з'єднання
+                self._session = None
+                if attempt == max_retries:
+                    logger.error(f"Помилка з'єднання {method} {endpoint}: {e}")
+                    return None
+                await asyncio.sleep(base_delay * attempt)
+            except aiohttp.ClientError as e:
+                logger.warning(f"Client error {method} {endpoint} (attempt {attempt}/{max_retries}): {e}")
+                if attempt == max_retries:
+                    logger.error(f"Помилка клієнта {method} {endpoint}: {e}")
+                    return None
+                await asyncio.sleep(base_delay * attempt)
+            except Exception as e:
+                logger.warning(f"Unexpected error {method} {endpoint} (attempt {attempt}/{max_retries}): {e}")
+                if attempt == max_retries:
+                    logger.error(f"Непередбачена помилка {method} {endpoint}: {e}")
+                    return None
+                await asyncio.sleep(base_delay * attempt)
+        return None
+    async def get_usdt_balance(self):
+        result = await self._signed_request("GET", "/v5/account/wallet-balance", {"accountType": "UNIFIED"})
+        if result and result.get("retCode") == 0:
+            coins = result.get("result", {}).get("list", [{}])[0].get("coin", [])
+            for coin in coins:
+                if coin.get("coin") == "USDT":
+                    usdt_info = coin
+                    equity = float(usdt_info.get("equity", 0) or 0)
+                    wallet_balance = float(usdt_info.get("walletBalance", 0) or 0)
+                    available = wallet_balance - float(usdt_info.get("totalOrderIM", 0) or 0)
+                    now = time.time()
+                    if now - self._last_balance_log_time >= self._balance_log_interval:
+                        logger.info(f"Баланс USDT:")
+                        logger.info(f"   - Кошелек: {wallet_balance:.2f} USDT")
+                        logger.info(f"   - В ордерах: {float(usdt_info.get('totalOrderIM', 0)):.2f} USDT")
+                        logger.info(f"   - Доступно: {available:.2f} USDT")
+                        self._last_balance_log_time = now
+                    else:
+                        logger.debug(f"USDT balance (suppressed INFO): wallet={wallet_balance:.2f} available={available:.2f} equity={equity:.2f}")
+                    return {"equity": equity, "available": available, "wallet": wallet_balance}
+        logger.debug(f"Не вдалося отримати баланс USDT: {result}")
+        return {"equity": 0, "available": 0, "wallet": 0}
+    async def display_usdt_balance(self):
+        balance = await self.get_usdt_balance()
+        equity = balance["equity"]
+        available = balance["available"]
+        logger.info(f"Баланс USDT:")
+        logger.info(f"   - Полный equity: {equity:.2f} USDT")
+        logger.info(f"   - Доступний для виведення: {available:.2f} USDT")
+        if equity > 0:
+            logger.info(f"   - Використано: {(equity - available):.2f} USDT")
+    async def _get_symbol_specs(self, symbol):
+        if symbol in self._symbol_specs:
+            return self._symbol_specs[symbol]
+        url = f"{self.base_url}/v5/market/instruments-info?category=linear&symbol={symbol}"
+        ssl_context = ssl.create_default_context()
+        ssl_context.check_hostname = False
+        ssl_context.verify_mode = ssl.CERT_NONE
+        connector = aiohttp.TCPConnector(ssl=ssl_context)
+        async with aiohttp.ClientSession(connector=connector) as session:
+            async with session.get(url) as response:
+                text = await response.text()
+                if not text:
+                    raise ValueError(f"Пустая інформація об інструмент для {symbol}")
+                data = json.loads(text)
+                if data.get("retCode") != 0:
+                    raise ValueError(f"Ошибка інформації об інструмент для {symbol}: {data}")
+                items = data.get("result", {}).get("list", [])
+                if not items:
+                    raise ValueError(f"Нет інформації об інструмент для {symbol}")
+                lot = items[0].get("lotSizeFilter", {})
+                price_filter = items[0].get("priceFilter", {})
+                leverage = items[0].get("leverageFilter", {})
+                specs = {
+                    "qty_step": float(lot.get("qtyStep", 0.0001) or 0.0001),
+                    "min_qty": float(lot.get("minOrderQty", lot.get("qtyStep", 0.0001)) or 0.0001),
+                    "price_step": float(price_filter.get("tickSize", 0.5) or 0.5),
+                    "min_leverage": float(leverage.get("minLeverage", 1) or 1),
+                    "max_leverage": 100.0,
+                }
+                self._symbol_specs[symbol] = specs
+                return specs
+    async def _set_leverage(self, symbol, leverage):
+        leverage = max(1.0, leverage)
+        specs = await self._get_symbol_specs(symbol)
+        leverage = min(max(leverage, specs["min_leverage"]), specs["max_leverage"])
+        params = {
+            "category": "linear",
+            "symbol": symbol,
+            "buyLeverage": f"{leverage:.2f}",
+            "sellLeverage": f"{leverage:.2f}",
+        }
+        result = await self._signed_request("POST", "/v5/position/set-leverage", params)
+        if not result or result.get("retCode") != 0:
+            logger.warning(f"Не вдалося встановити кредитне плече {leverage:.2f} для {symbol}: {result}")
+    @staticmethod
+    def _quantize(value, step):
+        if step <= 0:
+            return value
+        step_dec = Decimal(str(step))
+        value_dec = Decimal(str(value))
+        steps = (value_dec / step_dec).to_integral_value(rounding=ROUND_DOWN)
+        return float(steps * step_dec)
+    @staticmethod
+    def _quantize_price(value, step, rounding=ROUND_DOWN):
+        if step <= 0:
+            return value
+        step_dec = Decimal(str(step))
+        value_dec = Decimal(str(value))
+        steps = (value_dec / step_dec).to_integral_value(rounding=rounding)
+        return float(steps * step_dec)
+    @staticmethod
+    def _interval_to_seconds(interval):
+        """Convert interval to seconds - accepts both display and internal formats"""
+        if not interval:
+            interval = '1m'
+        
+        interval = str(interval).strip().lower()
+        
+        # Map display format to internal format
+        display_to_internal = {
+            '1m': '1', '3m': '3', '5m': '5', '15m': '15', '30m': '30',
+            '1h': '60', '2h': '120', '4h': '240', '6h': '360', '12h': '720',
+            '1d': 'D', '1w': 'W', '1mon': 'M'
+        }
+        
+        internal_value = display_to_internal.get(interval, interval)
+        
+        # Convert internal format to seconds
+        mapping = {
+            '1': 60, '3': 180, '5': 300, '15': 900, '30': 1800,
+            '60': 3600, '120': 7200, '240': 14400, '360': 21600, '720': 43200,
+            'd': 86400, 'w': 604800, 'm': 2592000
+        }
+        return mapping.get(internal_value.lower(), 60)
+    
+    def _parse_timeframe_for_api(self, timeframe):
+        """Parse timeframe from display format (1m, 5m, 1h) to API format (1, 5, 60)"""
+        if not timeframe:
+            return '1'
+        
+        timeframe = str(timeframe).strip().lower()
+        
+        # Map display format to API format
+        display_to_api = {
+            '1m': '1', '3m': '3', '5m': '5', '15m': '15', '30m': '30',
+            '1h': '60', '2h': '120', '4h': '240', '6h': '360', '12h': '720',
+            '1d': 'D', '1w': 'W', '1mon': 'M'
+        }
+        
+        result = display_to_api.get(timeframe)
+        if result:
+            return result
+        
+        # Check if already in API format
+        valid_api = {'1', '3', '5', '15', '30', '60', '120', '240', '360', '720', 'd', 'w', 'm'}
+        if timeframe in valid_api:
+            return timeframe
+        
+        return '1'
+
+    async def _calculate_extremum_stop_loss(self, symbol, direction):
+        try:
+            klines = await self.get_klines(symbol, "15", limit=20)
+            if not klines:
+                return None
+            df = pd.DataFrame(klines)
+            df.columns = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'turnover']
+            for col in ['high', 'low', 'close', 'open']:
+                df[col] = pd.to_numeric(df[col], errors='coerce')
+            if direction == "long":
+                recent_low = df['low'].min() * 0.998
+                return float(recent_low)
+            else:
+                recent_high = df['high'].max() * 1.002
+                return float(recent_high)
+        except Exception as e:
+            logger.error(f"_calculate_extremum_stop_loss error for {symbol}: {e}")
+            return None
+    async def _is_drawdown_blocked(self):
+        from utils.settings_manager import is_drawdown_protection_active, check_and_update_drawdown
+        if is_drawdown_protection_active():
+            logger.warning("Drawdown protection active: new orders disabled. Use START to re-enable.")
+            return True
+        try:
+            bal = await self.get_usdt_balance()
+            equity = float(bal.get('equity', 0) or 0)
+            if equity > 0:
+                if check_and_update_drawdown(equity):
+                    return True
+        except Exception as e:
+            logger.error(f"Error checking drawdown: {e}")
+            return False
+        if is_trading_paused():
+            logger.warning("Trading paused due to consecutive losses.")
+            return True
+        return False
+    async def place_limit_order(self, pair, direction, price, quantity_usdt, stop_loss=None, take_profit=None, reduce_only=False, metadata=None):
+        if await self._is_drawdown_blocked():
+            logger.warning(f"Пропускаем размещення лимитного ордера для {pair}: защита по просадке")
+            return None
+        position = await self._take_profit_helper.get_position(pair)
+        size = 0.0
+        if position:
+            size = float(position.get("size", 0) or 0)
+        if size > 0:
+            logger.info(f"Позиція по {pair} вже відкрита (розмір {size}), пропускаємо відкриття нової.")
+            return None
+        specs = await self._get_symbol_specs(pair)
+        price_step = specs.get("price_step", 0.0)
+        stop_loss_float = float(stop_loss) if stop_loss is not None else None
+        take_profit_float = float(take_profit) if take_profit is not None else None
+        if stop_loss_float is not None:
+            if direction == "long":
+                if stop_loss_float >= price:
+                    logger.warning(f"ОШИБКА: Стоп-лосс {stop_loss_float} >= ціни входу {price} для LONG. Корректируем...")
+                    stop_loss_float = price * 0.993
+            else:
+                if stop_loss_float <= price:
+                    logger.warning(f"ОШИБКА: Стоп-лосс {stop_loss_float} <= ціни входу {price} для SHORT. Корректируем...")
+                    stop_loss_float = price * 1.007
+        price_rounding = ROUND_DOWN if direction == "long" else ROUND_UP
+        price = self._quantize_price(price, price_step, price_rounding)
+        if stop_loss_float is not None:
+            sl_rounding = ROUND_DOWN if direction == "long" else ROUND_UP
+            stop_loss_float = self._quantize_price(stop_loss_float, price_step, sl_rounding)
+            if direction == "long" and stop_loss_float >= price:
+                stop_loss_float = self._quantize_price(price * 0.993, price_step, ROUND_DOWN)
+                logger.warning(f"Скорректирован SL после квантования: {stop_loss_float}")
+            elif direction == "short" and stop_loss_float <= price:
+                stop_loss_float = self._quantize_price(price * 1.007, price_step, ROUND_UP)
+                logger.warning(f"Скорректирован SL после квантования: {stop_loss_float}")
+        if take_profit_float is not None:
+            tp_rounding = ROUND_UP if direction == "long" else ROUND_DOWN
+            take_profit_float = self._quantize_price(take_profit_float, price_step, tp_rounding)
+        sl_percent = None
+        tp_percent = None
+        if stop_loss_float and price:
+            if direction == "long":
+                sl_percent = (price - stop_loss_float) / price * 100
+            else:
+                sl_percent = (stop_loss_float - price) / price * 100
+        if take_profit_float and price:
+            tp_percent = (take_profit_float - price) / price * 100 if direction == "long" else (price - take_profit_float) / price * 100
+        quantity_usdt_value = float(quantity_usdt)
+        margin_usdt = quantity_usdt_value
+        leverage = 10
+        notional_usdt = margin_usdt * leverage
+        quantity_asset = self._quantize(notional_usdt / price, specs["qty_step"])
+        if quantity_asset < specs["min_qty"]:
+            quantity_asset = specs["min_qty"]
+        order_value = quantity_asset * price
+        price_str = format(price, 'f')
+        params = {
+            "category": "linear",
+            "symbol": pair,
+            "side": "Buy" if direction == "long" else "Sell",
+            "orderType": "Limit",
+            "price": price_str,
+            "qty": format(quantity_asset, 'f'),
+            "timeInForce": "GTC",
+            "reduceOnly": reduce_only,
+            "positionIdx": 0
+        }
+        
+        result = await self._signed_request("POST", "/v5/order/create", params)
+        if result and result.get("retCode") == 0:
+            limit_order_placed(direction, pair, price_str, f"{order_value:.2f} USDT @ {leverage}x (маржа {margin_usdt:.2f})")
+            
+            if stop_loss_float is not None:
+                logger.info(f"SL буде встановлений після відкриття: {stop_loss_float:.8f} ({sl_percent:.2f}%)")
+            if take_profit_float is not None:
+                logger.info(f"TP буде встановлений після відкриття: {take_profit_float:.8f} ({tp_percent:.2f}%)")
+            
+            order_id = result["result"].get("orderId")
+            if order_id:
+                meta = dict(metadata or {})
+                meta.update({
+                    "pair": pair,
+                    "direction": direction,
+                    "entry_price": price,
+                    "stop_loss": stop_loss_float,
+                    "take_profit": take_profit_float,
+                    "order_value": order_value,
+                    "quantity_asset": quantity_asset,
+                    "created_at": time.time(),
+                    "retry_count": meta.get("retry_count", 0)
+                })
+                self._position_meta[order_id] = meta
+                self._pair_to_order[pair] = order_id
+                self._active_monitors += 1
+                asyncio.create_task(self._watch_position_exit(pair))
+            return result["result"]
+        else:
+            if not result:
+                logger.error(f"Не удалось разместить лимитний ордер для {pair}: Нет відповіді від API")
+            elif result.get("retCode") != 0:
+                ret_code = result.get("retCode")
+                ret_msg = result.get("retMsg", "Неизвестная ошибка")
+                logger.error(f"Не вдалося розмістити лімітний ордер для {pair}: {ret_msg} (код {ret_code})")
+            else:
+                logger.error(f"Не вдалося розмістити лімітний ордер для {pair}: Невідомий формат відповіді - {result}")
+        return None
+    async def _wait_and_place_limit(self, pair, direction, target_price, quantity_usdt, stop_loss_price, take_profit_price, metadata, timeout_minutes=60, poll_interval=1.0):
+        try:
+            deadline = time.time() + max(60, int(timeout_minutes) * 60)
+            logger.info(f"Waiting for {pair} to reach {target_price} before placing limit ({direction}), timeout {timeout_minutes}m")
+            while time.time() <= deadline:
+                cur = await self.get_real_time_price(pair)
+                if cur is None:
+                    await asyncio.sleep(poll_interval)
+                    continue
+                if (direction == "long" and cur <= float(target_price)) or (direction == "short" and cur >= float(target_price)):
+                    try:
+                        specs = await self._get_symbol_specs(pair)
+                        price_step = specs.get("price_step", 0.0)
+                        rounding = ROUND_DOWN if direction == "long" else ROUND_UP
+                        entry_price = self._quantize_price(float(target_price), price_step, rounding)
+                        logger.info(f"Target reached for {pair} (cur={cur:.8f}) — placing limit @ {entry_price}")
+                        result = await self.place_limit_order(pair=pair, direction=direction, price=entry_price, quantity_usdt=quantity_usdt, stop_loss=stop_loss_price, take_profit=take_profit_price, metadata=metadata)
+                        if result:
+                            logger.info(f"Placed delayed limit for {pair} @ {entry_price}")
+                        else:
+                            logger.error(f"Failed to place delayed limit for {pair} @ {entry_price}")
+                        return result
+                    except Exception as e:
+                        logger.error(f"Error placing delayed limit for {pair}: {e}")
+                        return None
+                await asyncio.sleep(poll_interval)
+            logger.warning(f"Timeout waiting for {pair} to reach {target_price} (gave up after {timeout_minutes} minutes)")
+            return None
+        except asyncio.CancelledError:
+            logger.info(f"Waiting task for {pair} cancelled")
+            return None
+        except Exception as e:
+            logger.error(f"Unexpected error in _wait_and_place_limit for {pair}: {e}")
+            return None
+    async def place_signal_limit_order(self, pair, direction, entry_price, channel_id=None):
+        if await self._is_drawdown_blocked():
+            logger.warning(f"Пропускаем сигнальний лимит для {pair}: защита по просадке")
+            return None
+        direction = (direction or "").lower()
+        if direction not in ("long", "short"):
+            logger.error(f"Неподдерживаемая сторона '{direction}' для сигнала на {pair}")
+            return None
+
+        if not is_bot_active():
+            logger.warning(f"Бот остановлен. Игнорируем сигнал для {pair}")
+            return None
+
+        if is_blacklisted(pair):
+            logger.warning(f"Символ {pair} в черном списке. Игнорируем сигнал")
+            return None
+
+        if pair in self._manually_closed_positions:
+            self._manually_closed_positions.remove(pair)
+            logger.info(f"Позиція {pair} була закрита вручну, але буде знову відкрита на основі нового сигналу")
+
+        try:
+            entry_price = float(entry_price)
+        except (TypeError, ValueError):
+            logger.error(f"Невалидна цена входа '{entry_price}' для {pair}")
+            return None
+
+        if channel_id:
+            strategy = get_strategy_for_channel(channel_id)
+        else:
+            from trading.strategies import QuantumPremium2Strategy
+            strategy = QuantumPremium2Strategy(-1003193138774)
+        
+        logger.info(f"Стратегия для {pair}: {strategy.name}")
+        logger.info(f"   - Канал: {channel_id}")
+        logger.info(f"   - Точна цена з каналу: {entry_price}")
+        logger.info(f"   - Направлення: {direction.upper()}")
+        
+        specs = await self._get_symbol_specs(pair)
+        specs.get("price_step", 0.0)
+        original_level = entry_price
+        
+        if entry_price <= 0:
+            logger.error(f"Цена входа невалидна для {pair}: {entry_price}")
+            return None
+        
+        try:
+            logger.info(f"Запуск задачі моніторингу для {pair} використовуючи {strategy.name}")
+            asyncio.create_task(self._start_monitor_pinbar_task(
+                pair, 
+                original_level, 
+                direction,
+                strategy=strategy
+            ))
+            try:
+                await notify_user(f"Моніторинг {strategy.name}: {pair} {direction} @ {original_level}")
+            except Exception:
+                pass
+            logger.info(f"Завдання моніторингу запущено з {strategy.name}")
+            return {
+                "status": "monitor_started", 
+                "pair": pair, 
+                "level": original_level, 
+                "direction": direction,
+                "strategy": strategy.name
+            }
+        except Exception as e:
+            logger.error(f"Не вдалося запустити задачу monitor_pinbar для {pair}: {e}")
+            return None
+    async def verify_limit_order_capability(self, symbol: str) -> bool:
+        try:
+            await self._init_db()
+            specs = await self._get_symbol_specs(symbol)
+            if not specs:
+                return False
+            params = {"category": "linear", "symbol": symbol}
+            res = await self._signed_request("GET", "/v5/market/tickers", params)
+            if not res or res.get("retCode") != 0:
+                return False
+            listing = res.get("result", {}).get("list", [])
+            if not listing:
+                return False
+            try:
+                last = float(listing[0].get("lastPrice", 0) or 0)
+            except Exception:
+                last = 0.0
+            if last <= 0:
+                return False
+            return True
+        except Exception as exc:
+            logger.error(f"verify_limit_order_capability error for {symbol}: {exc}")
+            return False
+    async def start_external_trade_monitor(self):
+        if getattr(self, "_external_trade_monitor_running", False):
+            logger.debug("External trade monitor already running")
+            return
+        self._external_trade_monitor_running = True
+        self._external_monitor_task = asyncio.create_task(self._external_trade_monitor_loop())
+        logger.info("External trade monitor started")
+    async def stop_external_trade_monitor(self):
+        if not getattr(self, "_external_trade_monitor_running", False):
+            return
+        self._external_trade_monitor_running = False
+        task = getattr(self, "_external_monitor_task", None)
+        if task:
+            task.cancel()
+            try:
+                await task
+            except asyncio.CancelledError:
+                pass
+            except Exception as e:
+                logger.warning(f"Error awaiting external monitor task cancellation: {e}")
+        logger.info("External trade monitor stopped")
+    def _get_pybit_session(self):
+        if self._pybit_session is None:
+            use_testnet = CONFIG.get('USE_TESTNET', False)
+            recv_window = int(CONFIG.get('RECV_WINDOW', '20000'))
+            
+            try:
+                if use_testnet:
+                    self._pybit_session = HTTP(
+                        testnet=False,
+                        demo=True,
+                        api_key=self.api_key,
+                        api_secret=self.api_secret,
+                        recv_window=recv_window,
+                    )
+                else:
+                    self._pybit_session = HTTP(
+                        testnet=False,
+                        demo=False,
+                        api_key=self.api_key,
+                        api_secret=self.api_secret,
+                        recv_window=recv_window,
+                    )
+                logger.debug(f"PyBit session created successfully (recv_window={recv_window})")
+            except Exception as e:
+                logger.error(f"Failed to create PyBit session: {e}")
+                self._pybit_session = None
+    
+        return self._pybit_session
+    async def _check_positions_via_pybit(self):
+        try:
+            session = self._get_pybit_session()
+            
+            if not session:
+                logger.warning("PyBit session not available, falling back to API")
+                return []
+            
+            try:
+                result = await asyncio.to_thread(
+                    session.get_positions,
+                    category="linear",
+                    settleCoin="USDT"
+                )
+            except Exception as e:
+                # Handle specific pybit errors
+                error_msg = str(e)
+                if "Retryable error" in error_msg or "network" in error_msg.lower():
+                    logger.warning(f"PyBit network error, recreating session: {e}")
+                    self._pybit_session = None  # Force recreate on next call
+                    return []
+                else:
+                    logger.error(f"PyBit error: {e}")
+                    return []
+            
+            if result.get("retCode") != 0:
+                logger.error(f"pybit error getting positions: {result.get('retMsg')}")
+                return []
+            
+            positions = result.get("result", {}).get("list", [])
+            active_positions = [p for p in positions if float(p.get("size", 0)) > 0]
+            
+            return active_positions
+            
+        except Exception as e:
+            logger.error(f" Exception in _check_positions_via_pybit: {e}")
+            import traceback
+            logger.debug(traceback.format_exc())
+            return []
+    async def _external_trade_monitor_loop(self):
+        try:
+            scan_count = 0
+            while getattr(self, "_external_trade_monitor_running", False):
+                try:
+                    scan_count += 1
+                    
+                    pybit_positions = await self._check_positions_via_pybit()
+                    
+                    result = await self._signed_request("GET", "/v5/position/list", {"category": "linear"})
+                    api_positions = []
+                    if result and result.get("retCode") == 0:
+                        api_positions = result.get("result", {}).get("list", [])
+                    
+                    positions_to_process = pybit_positions if pybit_positions else api_positions
+                    active_positions = [p for p in positions_to_process if float(p.get("size", 0)) > 0]
+                    
+                    current_active_keys = set()
+                    for pos in active_positions:
+                        pair = pos.get("symbol")
+                        position_id = pos.get("positionIdx", "0")
+                        pos_key = f"{pair}_{position_id}"
+                        current_active_keys.add(pos_key)
+                    
+                    # Видаляємо закриті позиції з відстеження
+                    closed_keys = self._managed_external_positions - current_active_keys
+                    for closed_key in closed_keys:
+                        logger.info(f"Внешняя позиция {closed_key} закрита - удаляем из управляемих")
+                        self._managed_external_positions.discard(closed_key)
+                        self._processed_external_positions.discard(closed_key)  # ДОДАНО
+                    
+                    for pos in active_positions:
+                        pair = pos.get("symbol")
+                        size = float(pos.get("size", 0) or 0)
+                        
+                        if size <= 0:
+                            continue
+                        
+                        if pair in self._bot_owned_positions:
+                            continue
+                        
+                        position_id = pos.get("positionIdx", "0")
+                        pos_key = f"{pair}_{position_id}"
+                        
+                        # КРИТИЧНО: Перевіряємо чи вже оброблена ця позиція
+                        if pos_key in self._processed_external_positions:
+                            continue
+                        
+                        if pos_key in self._managed_external_positions:
+                            continue
+                        
+                        direction = "long" if pos.get("side") == "Buy" else "short"
+                        entry_price = float(pos.get("avgPrice", 0) or 0)
+                        
+                        logger.info(f"===== ОБНАРУЖЕНА НОВАЯ РУЧНАЯ ПОЗИЦИЯ =====")
+                        logger.info(f"Монета: {pair}")
+                        logger.info(f"Направление: {direction.upper()}")
+                        logger.info(f"Размер: {size}")
+                        logger.info(f"Цена входа: {entry_price:.6f}")
+                        logger.info(f"Плечо: {pos.get('leverage', 'N/A')}x")
+                        logger.info(f"Position Key: {pos_key}")
+                        logger.info(f"=====")
+
+                        # Print High/Low of the last closed candle on timeframe from DB
+                        try:
+                            from utils.settings_manager import get_settings as get_settings_fn
+                            settings = get_settings_fn()
+                            tf = settings.get('timeframe', '1m')
+                            tf_display = tf
+                            
+                            tf_api = self._parse_timeframe_for_api(tf)
+                            
+                            logger.info(f"Получаю свечу для {pair} на TF {tf_display} (API: {tf_api})")
+                            
+                            candles = await self.get_klines(pair, tf_api, limit=2)
+                            
+                            if candles and len(candles) >= 2:
+                                last_closed = candles[-2]
+                                c_high = float(last_closed[2])
+                                c_low = float(last_closed[3])
+                                
+                                logger.info(f"Получена свеча для {pair}")
+                                logger.info(f"   TF: {tf_display}")
+                                logger.info(f"   High: {c_high:.8f}")
+                                logger.info(f"   Low: {c_low:.8f}")
+                                
+                                from utils.logger import candle_high_low_info
+                                candle_high_low_info(pair, tf_display, c_high, c_low)
+                            else:
+                                logger.warning(f"Нет данных свечей для {pair} на TF {tf_display}")
+                        except Exception as e:
+                            logger.error(f"Ошибка получения High/Low свечи для {pair}: {e}")
+                            import traceback
+                            logger.error(traceback.format_exc())
+
+                        from utils.logger import external_position_detect
+                        external_position_detect(pair, direction, entry_price, pos.get('leverage', 'N/A'))
+                        
+                        # Check if position already has stop loss
+                        has_sl = False
+                        try:
+                            stop_loss_str = pos.get('stopLoss')
+                            if stop_loss_str and stop_loss_str != '' and stop_loss_str != '0':
+                                has_sl = True
+                                logger.info(f"Позиція вже має SL: {stop_loss_str}")
+                        except Exception:
+                            has_sl = False
+                        
+                        # КРИТИЧНО: Додаємо позицію до оброблених ОДРАЗУ після виявлення
+                        self._processed_external_positions.add(pos_key)
+                        
+                        if not has_sl and entry_price > 0:
+                            try:
+                                # ВИПРАВЛЕНО: Для зовнішніх позицій використовуємо fallback (pinbar_candle_index=None)
+                                extremum_data = await self.get_candle_extremum_from_db_timeframe(
+                                    pair, 
+                                    direction,
+                                    pinbar_candle_index=None
+                                )
+                                
+                                if extremum_data:
+                                    stop_price = extremum_data["stop_price"]
+                                    candle_high = extremum_data["candle_high"]
+                                    candle_low = extremum_data["candle_low"]
+                                    tf_display = extremum_data["timeframe"]
+                                    
+                                    from utils.logger import candle_high_low_info
+                                    candle_high_low_info(pair, tf_display, candle_high, candle_low)
+                                    
+                                    if direction == "long" and stop_price >= entry_price:
+                                        logger.error(f"ПОМИЛКА: SL для LONG ({stop_price:.8f}) >= ціни входу ({entry_price:.8f})")
+                                        specs = await self._get_symbol_specs(pair)
+                                        price_step = specs.get("price_step", 0.00001)
+                                        stop_price = self._quantize_price(entry_price * 0.995, price_step, ROUND_DOWN)
+                                        logger.warning(f"Використовую резервний SL: {stop_price:.8f}")
+                                    elif direction == "short" and stop_price <= entry_price:
+                                        logger.error(f"ПОМИЛКА: SL для SHORT ({stop_price:.8f}) <= ціни входу ({entry_price:.8f})")
+                                        specs = await self._get_symbol_specs(pair)
+                                        price_step = specs.get("price_step", 0.00001)
+                                        stop_price = self._quantize_price(entry_price * 1.005, price_step, ROUND_UP)
+                                        logger.warning(f"Використовую резервний SL: {stop_price:.8f}")
+                                    
+                                    logger.info(f"Встановлюю SL для {pair} на екстремумі свічки...")
+                                    success = await self.set_stop_loss(pair, stop_price, direction)
+                                    
+                                    if success:
+                                        logger.info(f"SL ВСТАНОВЛЕНО НА ЕКСТРЕМУМІ СВІЧКИ:")
+                                        logger.info(f"   Свічка (TF {tf_display}): H={candle_high:.8f} L={candle_low:.8f}")
+                                        logger.info(f"   Екстремум ({direction.upper()}): {candle_low if direction == 'long' else candle_high:.8f}")
+                                        logger.info(f"   Стоп: {stop_price:.8f}")
+                                        
+                                        # Додаємо до managed після успішного встановлення SL
+                                        self._managed_external_positions.add(pos_key)
+                                        
+                                        # ДОДАНО: Відправка Telegram повідомлення про встановлений SL
+                                        try:
+                                            await notify_user(
+                                                f"СТОП-ЛОСС ВСТАНОВЛЕНО\n"
+                                                f"━━━━━━━━━━━━━━━━━━\n"
+                                                f"{pair}\n"
+                                                f"Напрямок: {direction.upper()}\n"
+                                                f"Вхід: {entry_price:.8f}\n"
+                                                f"Стоп: {stop_price:.8f}\n"
+                                                f"Свічка (TF {tf_display}):\n"
+                                                f"   H: {candle_high:.8f}\n"
+                                                f"   L: {candle_low:.8f}"
+                                            )
+                                        except Exception as e:
+                                            logger.error(f"Помилка відправки Telegram повідомлення про SL: {e}")
+                                    else:
+                                        logger.error(f"Не вдалося встановити SL для {pair}")
+                            except Exception as e:
+                                logger.error(f"Не удалось встановити SL для {pair}: {e}")
+                                import traceback
+                                logger.error(traceback.format_exc())
+                        elif has_sl:
+                            # Якщо SL вже є, також додаємо до managed
+                            self._managed_external_positions.add(pos_key)
+                        
+                        # ДОДАНО: Запускаємо RSI трекер і повідомляємо про це
+                        try:
+                            from utils.settings_manager import get_settings as get_settings_fn
+                            settings = get_settings_fn()
+                            
+                            # ВИПРАВЛЕНО: Отримуємо RSI настройки з БД через правильну функцію
+                            rsi_cfg = await self._get_rsi_settings_db()
+                            rsi_exit_short = rsi_cfg.get('rsi_low', 30)  # для SHORT позицій
+                            rsi_exit_long = rsi_cfg.get('rsi_high', 70)  # для LONG позицій
+                            rsi_length = rsi_cfg.get('rsi_period', 14)
+                            rsi_interval = rsi_cfg.get('rsi_interval', '1')
+                            
+                            # ДОДАНО: Логування отриманих значень з БД
+                            from utils.logger import rsi_settings_from_db
+                            rsi_settings_from_db(pair, rsi_exit_short, rsi_exit_long, rsi_length, rsi_interval)
+                            
+                            logger.info(f"RSI настройки з БД для {pair}:")
+                            logger.info(f"   - RSI Low (SHORT exit): {rsi_exit_short}")
+                            logger.info(f"   - RSI High (LONG exit): {rsi_exit_long}")
+                            logger.info(f"   - RSI Length: {rsi_length}")
+                            logger.info(f"   - RSI Interval: {rsi_interval}")
+                            
+                            # Отримуємо поточний RSI
+                            from analysis.signals import get_rsi
+                            current_rsi, _ = await get_rsi(pair, interval=rsi_interval, period=rsi_length)
+                            
+                            logger.info(f"Запуск RSI Take-Profit для {pair}:")
+                            logger.info(f"   - Напрямок: {direction.upper()}")
+                            logger.info(f"   - Поточний RSI: {current_rsi:.2f}")
+                            if direction == "long":
+                                logger.info(f"   - Поріг закриття (RSI High): {rsi_exit_long}")
+                                logger.info(f"   - Закриється при RSI >= {rsi_exit_long}")
+                                threshold_text = f"RSI >= {rsi_exit_long}"
+                                distance = rsi_exit_long - current_rsi
+                            else:
+                                logger.info(f"   - Поріг закриття (RSI Low): {rsi_exit_short}")
+                                logger.info(f"   - Закриється при RSI <= {rsi_exit_short}")
+                                threshold_text = f"RSI <= {rsi_exit_short}"
+                                distance = current_rsi - rsi_exit_short
+                            
+                            # КРИТИЧНО: Запускаємо RSI трекер
+                            logger.info(f"ЗАПУСКАЮ RSI трекер для {pair}...")
+                            
+                            async def _on_rsi_exit_external(sym, dirn, reason, context):
+                                logger.info(f"RSI TP для ЗОВНІШНЬОЇ позиції {sym}: причина={reason}, контекст={context}")
+                            
+                            # Визначаємо інтервал опитування
+                            rsi_interval_seconds = self._interval_to_seconds(rsi_interval)
+                            poll_seconds = max(15, int(rsi_interval_seconds // 2))
+                            
+                            logger.info(f"   - RSI інтервал: {rsi_interval} ({rsi_interval_seconds}s)")
+                            logger.info(f"   - Опитування кожні: {poll_seconds}s)")
+                            
+                            asyncio.create_task(
+                                self._take_profit_helper.track_position_rsi(
+                                    pair,
+                                    direction,
+                                    on_exit=_on_rsi_exit_external,
+                                    rsi_high_override=rsi_exit_long,
+                                    rsi_low_override=rsi_exit_short,
+                                    rsi_period_override=rsi_length,
+                                    rsi_interval_override=rsi_interval,
+                                    poll_seconds=poll_seconds
+                                )
+                            )
+                            
+                            logger.info(f"RSI трекер ЗАПУЩЕНО для {pair}")
+                            
+                            # ВИПРАВЛЕНО: Отримуємо stop_price з extremum_data
+                            stop_price_for_msg = None
+                            if not has_sl:
+                                try:
+                                    # ВИПРАВЛЕНО: Для зовнішніх позицій використовуємо fallback (pinbar_candle_index=None)
+                                    extremum_data = await self.get_candle_extremum_from_db_timeframe(
+                                        pair, 
+                                        direction,
+                                        pinbar_candle_index=None
+                                    )
+                                    if extremum_data:
+                                        stop_price_for_msg = extremum_data["stop_price"]
+                                except Exception:
+                                    pass
+                            else:
+                                # Якщо SL вже є, використовуємо його
+                                try:
+                                    stop_price_for_msg = float(pos.get('stopLoss', 0))
+                                except Exception:
+                                    pass
+                            
+                            if stop_price_for_msg and stop_price_for_msg > 0:
+                                await notify_user(
+                                    f" RSI TAKE-PROFIT АКТИВОВАНО\n"
+                                    f"━━━━━━━━━━━━━━━━━━\n"
+                                    f" {pair}\n"
+                                    f" Напрямок: {direction.upper()}\n"
+                                    f" Ціна входу: {entry_price:.6f}\n"
+                                    f" Стоп-лосс: {stop_price_for_msg:.8f}\n"
+                                    f" Поточний RSI: {current_rsi:.2f}\n"
+                                    f" Умова закриття: {threshold_text}\n"
+                                    f"📏 Відстань до TP: {abs(distance):.2f} пунктів RSI"
+                                )
+                            else:
+                                await notify_user(
+                                    f" RSI TAKE-PROFIT АКТИВОВАНО\n"
+                                    f"━━━━━━━━━━━━━━━━━━\n"
+                                    f" {pair}\n"
+                                    f" Напрямок: {direction.upper()}\n"
+                                    f" Ціна входу: {entry_price:.6f}\n"
+                                    f" Поточний RSI: {current_rsi:.2f}\n"
+                                    f" Умова закриття: {threshold_text}\n"
+                                    f"📏 Відстань до TP: {abs(distance):.2f} пунктів RSI"
+                                )
+                        except Exception as e:
+                            logger.error(f"Помилка запуску RSI трекера для {pair}: {e}")
+                            import traceback
+                            logger.error(traceback.format_exc())
+                
+                except Exception as e:
+                    logger.error(f" Ошибка при сканировании позиций: {e}")
+                
+                await asyncio.sleep(10)
+                
+        except asyncio.CancelledError:
+            logger.debug("External trade monitor loop отменен")
+        finally:
+            self._external_trade_monitor_running = False
+            logger.debug("External trade monitor loop завершен")
+
+    async def _start_monitor_pinbar_task(self, pair, level, direction, strategy=None):
+        try:
+            import importlib
+            mod = importlib.import_module("analysis.signals")
+            monitor = getattr(mod, "monitor_pinbar", None) or getattr(mod, "monitor_and_trade", None)
+            if monitor is None:
+                logger.error(f"monitor_pinbar/monitor_and_trade not found in analysis.signals for {pair}")
+                return
+            
+            # КРИТИЧНО: Перевіряємо що strategy передана
+            if not strategy:
+                logger.error(f"КРИТИЧНА ПОМИЛКА: strategy не передана для {pair}!")
+                from trading.strategies import QuantumPremium2Strategy
+                strategy = QuantumPremium2Strategy(-1002990245762)
+                logger.warning(f"Використовую FALLBACK стратегію: {strategy.name}")
+            
+            logger.info(f"Запуск монітора з стратегією: {strategy.name} (channel: {strategy.channel_id})")
+            
+            if getattr(monitor, "__name__", "") == "monitor_and_trade":
+                settings = {}
+                try:
+                    settings_fn = getattr(mod, "get_settings", None)
+                    if callable(settings_fn):
+                        settings = settings_fn() or {}
+                except Exception:
+                    settings = {}
+                
+                # КРИТИЧНО: Передаємо strategy в settings
+                settings['strategy'] = strategy
+                logger.info(f"Strategy додана в settings: {strategy.name} (channel: {strategy.channel_id})")
+                
+                await monitor(pair, level, direction, settings)
+            else:
+                await monitor(pair, level, direction, strategy=strategy)
+        except Exception as e:
+            logger.error(f"Failed to start monitor_pinbar task for {pair}: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
+
+    async def get_real_time_price(self, pair):
+        """Get current price for a symbol"""
+        try:
+            params = {"category": "linear", "symbol": pair}
+            result = await self._signed_request("GET", "/v5/market/tickers", params)
+            if result and result.get("retCode") == 0:
+                tickers = result.get("result", {}).get("list", [])
+                if tickers:
+                    return float(tickers[0].get("lastPrice", 0))
+            return None
+        except Exception as e:
+            logger.error(f"Ошибка получения цены в реальном времени для {pair}: {e}")
+            return None
+
+    async def get_klines(self, pair, interval, limit=200):
+        """Get klines/candles for a symbol"""
+        try:
+            params = {
+                "category": "linear",
+                "symbol": pair,
+                "interval": interval,
+                "limit": str(limit)
+            }
+            result = await self._signed_request("GET", "/v5/market/kline", params)
+            if result and result.get("retCode") == 0:
+                return result["result"]["list"]
+            return None
+        except Exception as e:
+            logger.error(f"Ошибка получения klines для {pair}: {e}")
+            return None
+
+    async def set_stop_loss(self, pair, price, direction):
+        """Set stop loss for a position"""
+        try:
+            params = {
+                "category": "linear",
+                "symbol": pair,
+                "stopLoss": str(price),
+                "slTriggerBy": "LastPrice"
+            }
+            result = await self._signed_request("POST", "/v5/position/trading-stop", params)
+            if result and result.get("retCode") == 0:
+                logger.info(f" Стоп-лосс встановлено для {pair}: {price:.8f}")
+                return True
+            logger.error(f" Не вдалося встановити стоп-лосс для {pair}: {result}")
+            return False
+        except Exception as e:
+            logger.error(f" Помилка встановлення стоп-лосса для {pair}: {e}")
+            return False
+
+    async def set_take_profit(self, pair, price, direction):
+        """Set take profit for a position"""
+        try:
+            params = {
+                "category": "linear",
+                "symbol": pair,
+                "takeProfit": str(price),
+                "tpTriggerBy": "LastPrice"
+            }
+            result = await self._signed_request("POST", "/v5/position/trading-stop", params)
+            if result and result.get("retCode") == 0:
+                logger.info(f"Тейк-профіт установлен для {pair} на {price}")
+                return True
+            logger.error(f"Не удалось установить тейк-профіт для {pair}: {result}")
+            return False
+        except Exception as e:
+            logger.error(f"Ошибка установки тейк-профита для {pair}: {e}")
+            return False
+
+    async def get_active_positions_count(self):
+        """Get count of active positions"""
+        try:
+            result = await self._signed_request("GET", "/v5/position/list", {"category": "linear"})
+            if result and result.get("retCode") == 0:
+                positions = result.get("result", {}).get("list", [])
+                return len([p for p in positions if float(p.get("size", 0)) > 0])
+            return 0
+        except Exception as e:
+            logger.error(f"Ошибка получения количества активных позиций: {e}")
+            return 0
+
+    async def _determine_exit_reason(self, pair, meta, closing_price=None):
+        """Determine why a position was closed"""
+        try:
+            source = meta.get("source", "")
+            if source and source.startswith("external"):
+                if meta.get("rsi_tracker_started"):
+                    return "take_profit"
+            
+            close_order = meta.get("close_order")
+            if not close_order:
+                close_order = await self._get_latest_close_order(pair)
+            
+            if not close_order:
+                if meta.get("rsi_tracker_started"):
+                    logger.info(f" Нет close_order для {pair}, но RSI трекер был активен - это RSI take-profit")
+                    return "take_profit"
+                return "position_closed"
+            
+            create_type = close_order.get("createType", "")
+            stop_order_type = close_order.get("stopOrderType", "")
+            order_type = close_order.get("orderType", "")
+            
+            if create_type in self._STOP_CREATE_TYPES or stop_order_type in ("StopLoss", "TrailingStop"):
+                return "stop_loss"
+            
+            if create_type in self._TAKE_PROFIT_CREATE_TYPES or stop_order_type == "TakeProfit":
+                return "take_profit"
+            
+            if order_type == "Market" and close_order.get("reduceOnly"):
+                if meta.get("rsi_tracker_started"):
+                    logger.info(f" Market reduceOnly ордер + активный RSI трекер для {pair} = RSI take-profit")
+                    return "take_profit"
+            
+            if create_type in self._USER_CLOSE_CREATE_TYPES:
+                return "manual_close"
+            
+            if closing_price:
+                stop_loss = meta.get("stop_loss")
+                take_profit = meta.get("take_profit")
+                
+                if stop_loss:
+                    sl_distance = abs(closing_price - stop_loss)
+
+                    if sl_distance < stop_loss * 0.001:
+                        return "stop_loss"
+                
+                if take_profit:
+                    tp_distance = abs(closing_price - take_profit)
+                    if tp_distance < take_profit * 0.001:
+                        return "take_profit"
+            
+            if meta.get("rsi_tracker_started"):
+                logger.info(f" Fallback: RSI трекер був активний для {pair} - це take-profit")
+                return "take_profit"
+            
+        except Exception as e:
+            logger.error(f"Ошибка определения причины выхода для {pair}: {e}")
+            if meta.get("rsi_tracker_started"):
+                return "take_profit"
+            return "position_closed"
+            
+    async def _reenter_immediately(self, pair, direction, meta):
+        """Immediately re-enter a position after stop loss"""
+        try:
+            logger.info(f" Attempting immediate re-entry for {pair} {direction}")
+            
+            current_price = await self.get_real_time_price(pair)
+            if not current_price:
+                logger.error(f"Cannot get current price for immediate re-entry on {pair}")
+                return False
+            
+            specs = await self._get_symbol_specs(pair)
+            price_step = specs.get("price_step", 0.0)
+            
+            settings = get_settings()
+            stop_loss_offset = float(settings.get('stop_loss_offset', 0.007))
+            
+            if direction == "long":
+                entry_price = self._quantize_price(current_price, price_step, ROUND_DOWN)
+                stop_loss_price = self._quantize_price(entry_price * (1 - stop_loss_offset), price_step, ROUND_DOWN)
+            else:
+                entry_price = self._quantize_price(current_price, price_step, ROUND_UP)
+                stop_loss_price = self._quantize_price(entry_price * (1 + stop_loss_offset), price_step, ROUND_UP)
+
+            qty_usdt = await self._risk_manager.calculate_position_size(pair, entry_price)
+            if not qty_usdt or qty_usdt < 10:
+                qty_usdt = 10
+            
+            retry_metadata = {
+                "source": "retry_immediate",
+                "signal_level": meta.get("signal_level", entry_price),
+                "direction": direction,
+                "retry_count": meta.get("retry_count", 0)
+            }
+            
+            result = await self.place_limit_order(
+                pair=pair,
+                direction=direction,
+                price=entry_price,
+                quantity_usdt=qty_usdt,
+                stop_loss=stop_loss_price,
+                take_profit=None,
+                metadata=retry_metadata
+            )
+            
+            if result:
+                logger.info(f" Immediate re-entry successful for {pair} @ {entry_price}")
+                return True
+            else:
+                logger.error(f" Immediate re-entry failed for {pair}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"Error in immediate re-entry for {pair}: {e}")
+            return False
+
+    async def get_candle_extremum_from_db_timeframe(self, pair, direction, pinbar_candle_index=None):
+        """
+        Get stop loss based on extremum of SIGNAL CANDLE (pinbar)
+        
+        Args:
+            pair: Trading pair
+            direction: 'long' or 'short'
+            pinbar_candle_index: Index of pinbar candle in array (None = fallback to old logic)
+        """
+        try:
+            settings = get_settings()
+            timeframe_display = settings.get('timeframe', '1m')
+            
+            stop_buffer_type = settings.get('stop_buffer_type', None)
+            stop_buffer_value = settings.get('stop_buffer_value', None)
+            
+            timeframe_api = self._parse_timeframe_for_api(timeframe_display)
+            
+            logger.info(f"Отримую екстремум для {pair}:")
+            logger.info(f"   - TF: {timeframe_display}")
+            logger.info(f"   - Напрямок: {direction.upper()}")
+            if pinbar_candle_index is not None:
+                logger.info(f"   - Індекс пін-бара: {pinbar_candle_index}")
+            if stop_buffer_type and stop_buffer_value:
+                logger.info(f"   - Буфер стопа: {stop_buffer_type} = {stop_buffer_value}")
+            
+            candles = await self.get_klines(pair, timeframe_api, 10)
+            
+            if not candles or len(candles) < 2:
+                logger.error(f"Недостатньо свічок для {pair}")
+                return None
+            
+            # ✅ ПРАВИЛЬНО: Якщо передано індекс пін-бара - використовуємо ЦЮ свічку
+            if pinbar_candle_index is not None:
+                if pinbar_candle_index < 0 or pinbar_candle_index >= len(candles):
+                    logger.error(f"Невалідний індекс пін-бара: {pinbar_candle_index}")
+                    extremum_candle = candles[-2]  # Fallback
+                    logger.warning(f"⚠️ Використовую FALLBACK (остання закрита свічка)")
+                else:
+                    extremum_candle = candles[pinbar_candle_index]
+                    logger.info(f"✅ Використовую СИГНАЛЬНУ свічку (пін-бар) з індексом {pinbar_candle_index}")
+            else:
+                # ❌ FALLBACK: Старий метод (для зворотної сумісності)
+                logger.warning(f"⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)")
+                extremum_candle = candles[-2]
+            
+            candle_high = float(extremum_candle[2])
+            candle_low = float(extremum_candle[3])
+            candle_timestamp = int(extremum_candle[0])
+            
+            import datetime
+            candle_time = datetime.datetime.fromtimestamp(candle_timestamp / 1000)
+            
+            logger.info(f"📊 Сигнальна свічка (TF {timeframe_display}):")
+            logger.info(f"   - ЧАС: {candle_time.strftime('%H:%M:%S %d.%m.%Y')}")
+            logger.info(f"   - HIGH: {candle_high:.8f}")
+            logger.info(f"   - LOW: {candle_low:.8f}")
+            
+            specs = await self._get_symbol_specs(pair)
+            price_step = specs.get("price_step", 0.00001)
+            
+            # Екстремум СИГНАЛЬНОЇ свічки
+            signal_extremum = candle_low if direction.lower() == "long" else candle_high
+            
+            # Розрахунок буфера
+            buffer_distance = 0.0
+            if stop_buffer_type and stop_buffer_value is not None:
+                try:
+                    buffer_value_float = float(stop_buffer_value)
+                    if stop_buffer_type == 'percent':
+                        buffer_distance = signal_extremum * (buffer_value_float / 100.0)
+                    elif stop_buffer_type == 'points':
+                        buffer_distance = buffer_value_float
+                    elif stop_buffer_type == 'ticks':
+                        buffer_distance = buffer_value_float * price_step
+                    logger.info(f"📏 Буфер: {buffer_distance:.8f}")
+                except (TypeError, ValueError) as e:
+                    logger.warning(f"Помилка розрахунку буфера: {e}")
+                    buffer_distance = 0.0
+            
+            # Розрахунок фінального стопа
+            if direction.lower() == "long":
+                stop_price = self._quantize_price(signal_extremum - buffer_distance, price_step, ROUND_DOWN)
+                logger.info(f"✅ LONG: SL = LOW сигнальної свічки - буфер")
+            else:
+                stop_price = self._quantize_price(signal_extremum + buffer_distance, price_step, ROUND_UP)
+                logger.info(f"✅ SHORT: SL = HIGH сигнальної свічки + буфер")
+            
+            logger.info(f"   - Екстремум сигнальної свічки: {signal_extremum:.8f}")
+            logger.info(f"   - Буфер: {buffer_distance:.8f}")
+            logger.info(f"   - Фінальний стоп: {stop_price:.8f}")
+            
+            return {
+                "stop_price": stop_price,
+                "candle_high": candle_high,
+                "candle_low": candle_low,
+                "signal_extremum": signal_extremum,
+                "buffer_distance": buffer_distance,
+                "timeframe": timeframe_display,
+                "candle_timestamp": candle_timestamp
+            }
+            
+        except Exception as e:
+            logger.error(f" Помилка отримання екстремуму свічки для {pair}: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
+            return None
