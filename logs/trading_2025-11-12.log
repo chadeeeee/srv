@@ -1,0 +1,1557 @@
+2025-11-12 16:33:44 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-12 16:33:44 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-12 16:33:44 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-12 16:33:45 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 16:33:45 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 16:33:46 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -4331
+2025-11-12 16:33:47 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-12 16:33:47 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: LINEAUSDT, Направление: SHORT, Цена: 0,01408
+2025-11-12 16:33:47 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: NXPCUSDT, Направление: SHORT, Цена: 0,4434
+2025-11-12 16:33:47 | INFO     | analysis.signals:show_rsi_for_pairs:159 - 📊 ═══════════ ПОТОЧНИЙ RSI ═══════════
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 16:33:48 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 16:33:48 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BTCUSDT: RSI=47.97 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-12 16:33:48 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    ETHUSDT: RSI=33.00 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:33:49 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BNBUSDT: RSI=36.56 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:33:49 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    SOLUSDT: RSI=36.01 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:33:49 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    XRPUSDT: RSI=35.18 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:33:49 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-12 16:33:49 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-12 16:33:49 | INFO     | analysis.signals:show_rsi_for_pairs:189 - 📊 ══════════════════════════════════════
+2025-11-12 16:33:49 | INFO     | trading.signal_handler:start_external_trade_monitor:1256 - External trade monitor started
+2025-11-12 16:33:50 | INFO     | __main__:main:814 - Бот для настроек запущен
+2025-11-12 16:33:50 | DEBUG    | trading.signal_handler:_get_pybit_session:1293 - PyBit session created successfully (recv_window=20000)
+2025-11-12 16:33:53 | WARNING  | trading.signal_handler:_check_positions_via_pybit:1317 - PyBit network error, recreating session: Retryable error occurred, retrying...
+2025-11-12 16:34:04 | DEBUG    | trading.signal_handler:_get_pybit_session:1293 - PyBit session created successfully (recv_window=20000)
+2025-11-12 16:34:07 | WARNING  | trading.signal_handler:_check_positions_via_pybit:1317 - PyBit network error, recreating session: Retryable error occurred, retrying...
+2025-11-12 16:34:17 | DEBUG    | trading.signal_handler:_get_pybit_session:1293 - PyBit session created successfully (recv_window=20000)
+2025-11-12 16:34:21 | WARNING  | trading.signal_handler:_check_positions_via_pybit:1317 - PyBit network error, recreating session: Retryable error occurred, retrying...
+2025-11-12 16:34:22 | INFO     | __main__:signal_handler:918 - Отримано сигнал 2, зупинка...
+2025-11-12 16:34:22 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-12 16:34:22 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-12 16:34:22 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1640 - External trade monitor loop отменен
+2025-11-12 16:34:22 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1643 - External trade monitor loop завершен
+2025-11-12 16:34:22 | INFO     | __main__:main:821 - Клиент Telegram отменен, graceful shutdown...
+2025-11-12 16:34:22 | INFO     | __main__:main:826 - Начинается graceful shutdown...
+2025-11-12 16:34:22 | INFO     | __main__:main:833 - Закрытие SignalHandler...
+2025-11-12 16:34:22 | INFO     | __main__:main:840 - Закрытие TakeProfit...
+2025-11-12 16:34:22 | INFO     | telegram_bot:start_bot:951 - Aiogram polling cancelled
+2025-11-12 16:34:22 | INFO     | telegram_bot:start_bot:963 -  Aiogram bot stopped
+2025-11-12 16:34:32 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-12 16:34:32 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-12 16:34:32 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-12 16:34:33 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 16:34:33 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 16:34:34 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -100
+2025-11-12 16:34:35 | INFO     | __main__:signal_handler:918 - Отримано сигнал 2, зупинка...
+2025-11-12 16:34:35 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-12 16:34:35 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-12 16:34:41 | INFO     | __main__:signal_handler:918 - Отримано сигнал 2, зупинка...
+2025-11-12 16:36:26 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-12 16:36:26 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-12 16:36:26 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-12 16:36:26 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 16:36:26 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 16:36:27 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -108
+2025-11-12 16:36:28 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-12 16:36:28 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: LINEAUSDT, Направление: SHORT, Цена: 0,01408
+2025-11-12 16:36:28 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: NXPCUSDT, Направление: SHORT, Цена: 0,4434
+2025-11-12 16:36:28 | INFO     | analysis.signals:show_rsi_for_pairs:159 - 📊 ═══════════ ПОТОЧНИЙ RSI ═══════════
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 16:36:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 16:36:29 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BTCUSDT: RSI=35.74 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:36:29 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    ETHUSDT: RSI=28.01 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:36:30 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BNBUSDT: RSI=28.92 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:36:30 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    SOLUSDT: RSI=34.55 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:36:30 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    XRPUSDT: RSI=27.10 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:36:30 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-12 16:36:30 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-12 16:36:30 | INFO     | analysis.signals:show_rsi_for_pairs:189 - 📊 ══════════════════════════════════════
+2025-11-12 16:36:30 | INFO     | trading.signal_handler:start_external_trade_monitor:1256 - External trade monitor started
+2025-11-12 16:36:30 | INFO     | __main__:main:814 - Бот для настроек запущен
+2025-11-12 16:36:30 | DEBUG    | trading.signal_handler:_get_pybit_session:1293 - PyBit session created successfully (recv_window=20000)
+2025-11-12 16:42:48 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-12 16:42:48 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-12 16:42:49 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-12 16:42:49 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 16:42:49 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 16:42:50 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -96
+2025-11-12 16:42:51 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-12 16:42:51 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: LINEAUSDT, Направление: SHORT, Цена: 0,01408
+2025-11-12 16:42:51 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: NXPCUSDT, Направление: SHORT, Цена: 0,4434
+2025-11-12 16:42:51 | INFO     | analysis.signals:show_rsi_for_pairs:159 - 📊 ═══════════ ПОТОЧНИЙ RSI ═══════════
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 16:42:51 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 16:42:52 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BTCUSDT: RSI=38.88 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:42:52 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    ETHUSDT: RSI=26.31 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:42:52 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BNBUSDT: RSI=37.03 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:42:53 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    SOLUSDT: RSI=35.55 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:42:53 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    XRPUSDT: RSI=33.36 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 16:42:53 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-12 16:42:53 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-12 16:42:53 | INFO     | analysis.signals:show_rsi_for_pairs:189 - 📊 ══════════════════════════════════════
+2025-11-12 16:42:53 | INFO     | trading.signal_handler:start_external_trade_monitor:1256 - External trade monitor started
+2025-11-12 16:42:53 | INFO     | __main__:main:814 - Бот для настроек запущен
+2025-11-12 16:42:53 | DEBUG    | trading.signal_handler:_get_pybit_session:1293 - PyBit session created successfully (recv_window=20000)
+2025-11-12 16:49:19 | INFO     | __main__:handler_event:406 - 📥 Получено сообщение 1042 из целевого канала
+2025-11-12 16:49:19 | INFO     | __main__:handler_event:530 -  Ціна з каналу: 2.932
+2025-11-12 16:49:19 | INFO     | __main__:handler_event:540 -  Валидный сигнал: APTUSDT @ 2.932 (long)
+2025-11-12 16:49:19 | INFO     | __main__:handler_event:541 - 📍 Точная цена для ордера: 2.932
+2025-11-12 16:49:19 | INFO     | __main__:handler_event:542 -  ID каналу: -1003193138774
+2025-11-12 16:49:19 | INFO     | trading.strategies:get_strategy_for_channel:143 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 16:49:19 | INFO     | __main__:handler_event:546 -  Стратегия для канала -1003193138774: Quantum Gravity2
+2025-11-12 16:49:19 | INFO     | utils.logger:trade_signal:33 - Trade signal received
+2025-11-12 16:49:19 | INFO     | utils.logger:signal_from_channel:39 - Signal from channel
+2025-11-12 16:49:19 | INFO     | __main__:handler_event:575 -  IGNORE_PINBAR=True: LONG ордер буде на HIGH свічки: 3.08700000
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 710.69 USDT
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 710.69 USDT
+2025-11-12 16:49:20 | INFO     | trading.strategies:get_strategy_for_channel:143 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:place_signal_limit_order:1191 - Стратегия для APTUSDT: Quantum Gravity2
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:place_signal_limit_order:1192 -    - Канал: -1003193138774
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:place_signal_limit_order:1193 -    - Точна цена з каналу: 3.087
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:place_signal_limit_order:1194 -    - Направлення: LONG
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:place_signal_limit_order:1205 - Запуск задачі моніторингу для APTUSDT використовуючи Quantum Gravity2
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1661 - Запуск монітора з стратегією: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1674 - Strategy додана в settings: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 16:49:20 | INFO     | analysis.signals:monitor_and_trade:314 -    - Смещение стоп-лосса: ВЫКЛЮЧЕНО (стоп на экстремуме свечи)
+2025-11-12 16:49:20 | INFO     | trading.signal_handler:place_signal_limit_order:1216 - Завдання моніторингу запущено з Quantum Gravity2
+2025-11-12 16:49:20 | INFO     | __main__:handler_event:649 - 🛰 Запущен мониторинг уровня для APTUSDT — стратегия: Quantum Gravity2
+2025-11-12 16:49:20 | DEBUG    | trading.signal_handler:start_external_trade_monitor:1252 - External trade monitor already running
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 16:49:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:349 - 📊 RSI APTUSDT: 10.72
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:354 - ⚙ Настройки для APTUSDT:
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:355 -    - Целевой уровень: 3.087
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:356 -    - Направление: long
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:357 -    - RSI (з БД): період=14, high=60.0, low=40.0, interval=1
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:358 -    - Таймфрейм: 1m (API: 1)
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:359 -    - Pinbar body ratio: 2.5
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:360 -    - Таймаут пинбара: 10м
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:361 -    - Таймаут уровня: 5м
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:362 -    - IGNORE_PINBAR: True
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:380 -  Стратегія отримана з settings: Quantum Gravity2
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:387 -  Стратегия: Quantum Gravity2
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:388 -    - ID каналу: -1003193138774
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:389 -    - Направление сигнала з каналу: long
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:390 -    - Направление трейда (після стратегії): short
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:391 -    - Ожидание уровня: False
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:392 -    - Требуется откат: True
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:393 -    - Зона поиска: {'search_after_consolidation': True, 'wait_for_rsi': True, 'rsi_condition': 'overbought', 'rsi_threshold': 'high', 'trade_direction': 'short', 'entry_on': 'low', 'stop_on': 'high', 'invalidate_on': 'high'}
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:395 - 📍 ЛОГІКА СТРАТЕГІЇ:
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:407 -    ═══ СТРАТЕГІЯ 2: QUANTUM GRAVITY2 ═══
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:408 -    📌 Торгівля з RSI екстремумами (з БД)
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:410 -    📊 Сигнал з каналу: LONG (підтримка)
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:411 -    ✓ Чекаємо RSI ПЕРЕКУПЛЕНОСТІ (RSI >= 60.0 з БД)
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:412 -    ✓ Ставимо лімітку на LOW свічки
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:413 -    ✓ Відкриваємо SHORT позицію
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:414 -    🔄 Логіка: Підтримка + перекупленість = SHORT на LOW
+2025-11-12 16:49:21 | INFO     | analysis.signals:monitor_and_trade:425 -    - Таймаут лимитного ордера: 3м
+2025-11-12 16:49:22 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 16:49:22 | INFO     | analysis.signals:monitor_and_trade:447 -  Стартова ціна для APTUSDT: 3.04600000
+2025-11-12 16:49:22 | INFO     | analysis.signals:monitor_and_trade:448 -  Цільовий рівень: 3.08700000
+2025-11-12 16:49:22 | INFO     | analysis.signals:monitor_and_trade:449 - 📍 Відстань до цілі: 0.04100000
+2025-11-12 16:49:23 | INFO     | analysis.signals:monitor_and_trade:525 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-12 16:49:23 | INFO     | analysis.signals:monitor_and_trade:526 -    Сигнал: ПІДТРИМКА
+2025-11-12 16:49:23 | INFO     | analysis.signals:monitor_and_trade:527 -    RSI: 10.72 (потрібно >= 60.0)
+2025-11-12 16:49:23 | INFO     | analysis.signals:monitor_and_trade:528 -    Відстань: 49.28 до перекупленості
+2025-11-12 17:04:24 | INFO     | analysis.signals:monitor_and_trade:525 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-12 17:04:24 | INFO     | analysis.signals:monitor_and_trade:526 -    Сигнал: ПІДТРИМКА
+2025-11-12 17:04:24 | INFO     | analysis.signals:monitor_and_trade:527 -    RSI: 52.89 (потрібно >= 60.0)
+2025-11-12 17:04:24 | INFO     | analysis.signals:monitor_and_trade:528 -    Відстань: 7.11 до перекупленості
+2025-11-12 18:15:25 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-12 18:15:25 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-12 18:15:26 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-12 18:15:27 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 18:15:27 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 18:15:28 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -64
+2025-11-12 18:15:29 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-12 18:15:29 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: TREEUSDT, Направление: LONG, Цена: 0,14372
+2025-11-12 18:15:29 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: ZORAUSDT, Направление: LONG, Цена: 0,055748
+2025-11-12 18:15:29 | INFO     | analysis.signals:show_rsi_for_pairs:159 - 📊 ═══════════ ПОТОЧНИЙ RSI ═══════════
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 18:15:29 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 18:15:30 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BTCUSDT: RSI=36.46 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 18:15:30 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    ETHUSDT: RSI=37.78 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 18:15:30 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BNBUSDT: RSI=34.36 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 18:15:31 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    SOLUSDT: RSI=29.62 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 18:15:31 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    XRPUSDT: RSI=37.08 🟢 ПЕРЕПРОДАНІСТЬ (<= 40.0)
+2025-11-12 18:15:31 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-12 18:15:31 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-12 18:15:31 | INFO     | analysis.signals:show_rsi_for_pairs:189 - 📊 ══════════════════════════════════════
+2025-11-12 18:15:31 | INFO     | trading.signal_handler:start_external_trade_monitor:1400 - External trade monitor started
+2025-11-12 18:15:31 | INFO     | __main__:main:814 - Бот для настроек запущен
+2025-11-12 18:15:31 | DEBUG    | trading.signal_handler:_get_pybit_session:1437 - PyBit session created successfully (recv_window=20000)
+2025-11-12 18:58:21 | INFO     | __main__:handler_event:406 - 📥 Получено сообщение 1047 из целевого канала
+2025-11-12 18:58:21 | INFO     | __main__:handler_event:530 -  Ціна з каналу: 0.3158
+2025-11-12 18:58:21 | INFO     | __main__:handler_event:540 -  Валидный сигнал: DRIFTUSDT @ 0.3158 (long)
+2025-11-12 18:58:21 | INFO     | __main__:handler_event:541 - 📍 Точная цена для ордера: 0.3158
+2025-11-12 18:58:21 | INFO     | __main__:handler_event:542 -  ID каналу: -1003193138774
+2025-11-12 18:58:21 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 18:58:21 | INFO     | __main__:handler_event:546 -  Стратегия для канала -1003193138774: Quantum Gravity2
+2025-11-12 18:58:21 | INFO     | utils.logger:trade_signal:33 - Trade signal received
+2025-11-12 18:58:21 | INFO     | utils.logger:signal_from_channel:39 - Signal from channel
+2025-11-12 18:58:22 | INFO     | __main__:handler_event:575 -  IGNORE_PINBAR=True: LONG ордер буде на HIGH свічки: 0.33030000
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 710.69 USDT
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 710.69 USDT
+2025-11-12 18:58:23 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:place_signal_limit_order:1335 - Стратегия для DRIFTUSDT: Quantum Gravity2
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:place_signal_limit_order:1336 -    - Канал: -1003193138774
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:place_signal_limit_order:1337 -    - Точна цена з каналу: 0.3303
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:place_signal_limit_order:1338 -    - Направлення: LONG
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:place_signal_limit_order:1349 - Запуск задачі моніторингу для DRIFTUSDT використовуючи Quantum Gravity2
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1805 - Запуск монітора з стратегією: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 18:58:23 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1818 - Strategy додана в settings: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 18:58:23 | INFO     | analysis.signals:monitor_and_trade:314 -    - Смещение стоп-лосса: ВЫКЛЮЧЕНО (стоп на экстремуме свечи)
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:place_signal_limit_order:1360 - Завдання моніторингу запущено з Quantum Gravity2
+2025-11-12 18:58:24 | INFO     | __main__:handler_event:649 - 🛰 Запущен мониторинг уровня для DRIFTUSDT — стратегия: Quantum Gravity2
+2025-11-12 18:58:24 | DEBUG    | trading.signal_handler:start_external_trade_monitor:1396 - External trade monitor already running
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 18:58:24 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:349 - 📊 RSI DRIFTUSDT: 29.66
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:354 - ⚙ Настройки для DRIFTUSDT:
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:355 -    - Целевой уровень: 0.3303
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:356 -    - Направление: long
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:357 -    - RSI (з БД): період=14, high=60.0, low=40.0, interval=1
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:358 -    - Таймфрейм: 1m (API: 1)
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:359 -    - Pinbar body ratio: 2.5
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:360 -    - Таймаут пинбара: 10м
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:361 -    - Таймаут уровня: 5м
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:362 -    - IGNORE_PINBAR: True
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:380 -  Стратегія отримана з settings: Quantum Gravity2
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:387 -  Стратегия: Quantum Gravity2
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:388 -    - ID каналу: -1003193138774
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:389 -    - Направление сигнала з каналу: long
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:390 -    - Направление трейда (після стратегії): short
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:391 -    - Ожидание уровня: False
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:392 -    - Требуется откат: True
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:393 -    - Зона поиска: {'search_after_consolidation': True, 'wait_for_rsi': True, 'rsi_condition': 'overbought', 'rsi_threshold': 'high', 'trade_direction': 'short', 'entry_on': 'low', 'stop_on': 'high', 'invalidate_on': 'high'}
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:395 - 📍 ЛОГІКА СТРАТЕГІЇ:
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:407 -    ═══ СТРАТЕГІЯ 2: QUANTUM GRAVITY2 ═══
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:408 -    📌 Торгівля з RSI екстремумами (з БД)
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:410 -    📊 Сигнал з каналу: LONG (підтримка)
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:411 -    ✓ Чекаємо RSI ПЕРЕКУПЛЕНОСТІ (RSI >= 60.0 з БД)
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:412 -    ✓ Ставимо лімітку на LOW свічки
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:413 -    ✓ Відкриваємо SHORT позицію
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:414 -    🔄 Логіка: Підтримка + перекупленість = SHORT на LOW
+2025-11-12 18:58:24 | INFO     | analysis.signals:monitor_and_trade:425 -    - Таймаут лимитного ордера: 3м
+2025-11-12 18:58:25 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 18:58:25 | INFO     | analysis.signals:monitor_and_trade:447 -  Стартова ціна для DRIFTUSDT: 0.32850000
+2025-11-12 18:58:25 | INFO     | analysis.signals:monitor_and_trade:448 -  Цільовий рівень: 0.33030000
+2025-11-12 18:58:25 | INFO     | analysis.signals:monitor_and_trade:449 - 📍 Відстань до цілі: 0.00180000
+2025-11-12 18:58:26 | INFO     | analysis.signals:monitor_and_trade:525 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-12 18:58:26 | INFO     | analysis.signals:monitor_and_trade:526 -    Сигнал: ПІДТРИМКА
+2025-11-12 18:58:26 | INFO     | analysis.signals:monitor_and_trade:527 -    RSI: 29.66 (потрібно >= 60.0)
+2025-11-12 18:58:26 | INFO     | analysis.signals:monitor_and_trade:528 -    Відстань: 30.34 до перекупленості
+2025-11-12 19:00:12 | ERROR    | analysis.candle_analysis:get_klines:46 - Ошибка API запроса (попытка 2) для DRIFTUSDT: Session is closed
+2025-11-12 19:00:14 | ERROR    | analysis.candle_analysis:get_klines:46 - Ошибка API запроса (попытка 3) для DRIFTUSDT: Session is closed
+2025-11-12 19:00:18 | ERROR    | analysis.candle_analysis:get_klines:50 - Не удалось получить klines для DRIFTUSDT после 3 попыток
+2025-11-12 19:00:18 | DEBUG    | analysis.signals:get_rsi:116 - Не удалось получить свечи для RSI: DRIFTUSDT (interval=1, API=1)
+2025-11-12 19:13:25 | INFO     | analysis.signals:monitor_and_trade:525 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-12 19:13:25 | INFO     | analysis.signals:monitor_and_trade:526 -    Сигнал: ПІДТРИМКА
+2025-11-12 19:13:25 | INFO     | analysis.signals:monitor_and_trade:527 -    RSI: 31.66 (потрібно >= 60.0)
+2025-11-12 19:13:25 | INFO     | analysis.signals:monitor_and_trade:528 -    Відстань: 28.34 до перекупленості
+2025-11-12 19:19:34 | INFO     | __main__:handler_event:406 - 📥 Получено сообщение 1048 из целевого канала
+2025-11-12 19:19:34 | INFO     | __main__:handler_event:530 -  Ціна з каналу: 0.16586
+2025-11-12 19:19:34 | INFO     | __main__:handler_event:540 -  Валидный сигнал: FLUXUSDT @ 0.16586 (long)
+2025-11-12 19:19:34 | INFO     | __main__:handler_event:541 - 📍 Точная цена для ордера: 0.16586
+2025-11-12 19:19:34 | INFO     | __main__:handler_event:542 -  ID каналу: -1003193138774
+2025-11-12 19:19:34 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 19:19:34 | INFO     | __main__:handler_event:546 -  Стратегия для канала -1003193138774: Quantum Gravity2
+2025-11-12 19:19:34 | INFO     | utils.logger:trade_signal:33 - Trade signal received
+2025-11-12 19:19:34 | INFO     | utils.logger:signal_from_channel:39 - Signal from channel
+2025-11-12 19:19:35 | INFO     | __main__:handler_event:575 -  IGNORE_PINBAR=True: LONG ордер буде на HIGH свічки: 0.17299000
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 710.69 USDT
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 710.69 USDT
+2025-11-12 19:19:36 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:place_signal_limit_order:1335 - Стратегия для FLUXUSDT: Quantum Gravity2
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:place_signal_limit_order:1336 -    - Канал: -1003193138774
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:place_signal_limit_order:1337 -    - Точна цена з каналу: 0.17299
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:place_signal_limit_order:1338 -    - Направлення: LONG
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:place_signal_limit_order:1349 - Запуск задачі моніторингу для FLUXUSDT використовуючи Quantum Gravity2
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1805 - Запуск монітора з стратегією: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 19:19:36 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1818 - Strategy додана в settings: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 19:19:36 | INFO     | analysis.signals:monitor_and_trade:314 -    - Смещение стоп-лосса: ВЫКЛЮЧЕНО (стоп на экстремуме свечи)
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:place_signal_limit_order:1360 - Завдання моніторингу запущено з Quantum Gravity2
+2025-11-12 19:19:37 | INFO     | __main__:handler_event:649 - 🛰 Запущен мониторинг уровня для FLUXUSDT — стратегия: Quantum Gravity2
+2025-11-12 19:19:37 | DEBUG    | trading.signal_handler:start_external_trade_monitor:1396 - External trade monitor already running
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:19:37 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:349 - 📊 RSI FLUXUSDT: 32.13
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:354 - ⚙ Настройки для FLUXUSDT:
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:355 -    - Целевой уровень: 0.17299
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:356 -    - Направление: long
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:357 -    - RSI (з БД): період=14, high=60.0, low=40.0, interval=1
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:358 -    - Таймфрейм: 1m (API: 1)
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:359 -    - Pinbar body ratio: 2.5
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:360 -    - Таймаут пинбара: 10м
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:361 -    - Таймаут уровня: 5м
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:362 -    - IGNORE_PINBAR: True
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:380 -  Стратегія отримана з settings: Quantum Gravity2
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:387 -  Стратегия: Quantum Gravity2
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:388 -    - ID каналу: -1003193138774
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:389 -    - Направление сигнала з каналу: long
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:390 -    - Направление трейда (після стратегії): short
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:391 -    - Ожидание уровня: False
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:392 -    - Требуется откат: True
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:393 -    - Зона поиска: {'search_after_consolidation': True, 'wait_for_rsi': True, 'rsi_condition': 'overbought', 'rsi_threshold': 'high', 'trade_direction': 'short', 'entry_on': 'low', 'stop_on': 'high', 'invalidate_on': 'high'}
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:395 - 📍 ЛОГІКА СТРАТЕГІЇ:
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:407 -    ═══ СТРАТЕГІЯ 2: QUANTUM GRAVITY2 ═══
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:408 -    📌 Торгівля з RSI екстремумами (з БД)
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:410 -    📊 Сигнал з каналу: LONG (підтримка)
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:411 -    ✓ Чекаємо RSI ПЕРЕКУПЛЕНОСТІ (RSI >= 60.0 з БД)
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:412 -    ✓ Ставимо лімітку на LOW свічки
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:413 -    ✓ Відкриваємо SHORT позицію
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:414 -    🔄 Логіка: Підтримка + перекупленість = SHORT на LOW
+2025-11-12 19:19:37 | INFO     | analysis.signals:monitor_and_trade:425 -    - Таймаут лимитного ордера: 3м
+2025-11-12 19:19:38 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 19:19:38 | INFO     | analysis.signals:monitor_and_trade:447 -  Стартова ціна для FLUXUSDT: 0.17269000
+2025-11-12 19:19:38 | INFO     | analysis.signals:monitor_and_trade:448 -  Цільовий рівень: 0.17299000
+2025-11-12 19:19:38 | INFO     | analysis.signals:monitor_and_trade:449 - 📍 Відстань до цілі: 0.00030000
+2025-11-12 19:19:39 | INFO     | analysis.signals:monitor_and_trade:525 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-12 19:19:39 | INFO     | analysis.signals:monitor_and_trade:526 -    Сигнал: ПІДТРИМКА
+2025-11-12 19:19:39 | INFO     | analysis.signals:monitor_and_trade:527 -    RSI: 32.13 (потрібно >= 60.0)
+2025-11-12 19:19:39 | INFO     | analysis.signals:monitor_and_trade:528 -    Відстань: 27.87 до перекупленості
+2025-11-12 19:28:27 | INFO     | analysis.signals:monitor_and_trade:525 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-12 19:28:27 | INFO     | analysis.signals:monitor_and_trade:526 -    Сигнал: ПІДТРИМКА
+2025-11-12 19:28:27 | INFO     | analysis.signals:monitor_and_trade:527 -    RSI: 41.35 (потрібно >= 60.0)
+2025-11-12 19:28:27 | INFO     | analysis.signals:monitor_and_trade:528 -    Відстань: 18.65 до перекупленості
+2025-11-12 19:34:39 | INFO     | analysis.signals:monitor_and_trade:525 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-12 19:34:39 | INFO     | analysis.signals:monitor_and_trade:526 -    Сигнал: ПІДТРИМКА
+2025-11-12 19:34:39 | INFO     | analysis.signals:monitor_and_trade:527 -    RSI: 53.48 (потрібно >= 60.0)
+2025-11-12 19:34:39 | INFO     | analysis.signals:monitor_and_trade:528 -    Відстань: 6.52 до перекупленості
+2025-11-12 19:37:19 | INFO     | analysis.signals:monitor_and_trade:519 - ✅ GRAVITY2: RSI ПЕРЕКУПЛЕНІСТЬ для SHORT
+2025-11-12 19:37:19 | INFO     | analysis.signals:monitor_and_trade:520 -    Сигнал з каналу: LONG (підтримка)
+2025-11-12 19:37:19 | INFO     | analysis.signals:monitor_and_trade:521 -    Відкриваємо: SHORT позицію
+2025-11-12 19:37:19 | INFO     | analysis.signals:monitor_and_trade:522 -    RSI: 60.41 >= 60.0 (поріг перекупленості)
+2025-11-12 19:37:19 | INFO     | analysis.signals:monitor_and_trade:523 -    Вхід буде на LOW свічки
+2025-11-12 19:37:28 | INFO     | analysis.signals:monitor_and_trade:519 - ✅ GRAVITY2: RSI ПЕРЕКУПЛЕНІСТЬ для SHORT
+2025-11-12 19:37:28 | INFO     | analysis.signals:monitor_and_trade:520 -    Сигнал з каналу: LONG (підтримка)
+2025-11-12 19:37:28 | INFO     | analysis.signals:monitor_and_trade:521 -    Відкриваємо: SHORT позицію
+2025-11-12 19:37:28 | INFO     | analysis.signals:monitor_and_trade:522 -    RSI: 60.23 >= 60.0 (поріг перекупленості)
+2025-11-12 19:37:28 | INFO     | analysis.signals:monitor_and_trade:523 -    Вхід буде на LOW свічки
+2025-11-12 19:38:00 | INFO     | analysis.signals:monitor_and_trade:762 - 🚀 IGNORE_PINBAR + GRAVITY2: Відкриття на екстремумі свічки
+2025-11-12 19:38:00 | INFO     | analysis.signals:monitor_and_trade:763 -    Стратегія: Quantum Gravity2
+2025-11-12 19:38:00 | INFO     | analysis.signals:monitor_and_trade:764 -    Сигнал з каналу: long
+2025-11-12 19:38:00 | INFO     | analysis.signals:monitor_and_trade:765 -    Направлення угоди: short
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:38:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:38:01 | INFO     | analysis.signals:monitor_and_trade:785 - 📊 Сигнальна свічка: H=0.32750000 L=0.32660000
+2025-11-12 19:38:01 | INFO     | analysis.signals:monitor_and_trade:794 - 📉 GRAVITY2: Сигнал ПІДТРИМКА (long)
+2025-11-12 19:38:01 | INFO     | analysis.signals:monitor_and_trade:795 -    ✓ Знайдено RSI перекупленість (> 60.0)
+2025-11-12 19:38:01 | INFO     | analysis.signals:monitor_and_trade:796 -    → Відкриваємо SHORT позицію
+2025-11-12 19:38:01 | INFO     | analysis.signals:monitor_and_trade:797 -    → Вхід на LOW свічки: 0.32660000
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для DRIFTUSDT:
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:38:01 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:37:00 12.11.2025
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.32850000
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.32700000
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.32850000
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.32850000
+2025-11-12 19:38:01 | INFO     | analysis.signals:monitor_and_trade:846 - 📝 Розміщення лімітного ордера (IGNORE_PINBAR + GRAVITY2)...
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 710.69 USDT
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-12 19:38:01 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 710.69 USDT
+2025-11-12 19:38:02 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-12 19:38:02 | INFO     | utils.logger:limit_order_placed:58 - Limit order placed
+2025-11-12 19:38:02 | INFO     | trading.signal_handler:place_limit_order:1089 - SL буде встановлений після відкриття: 0.32850000 (0.58%)
+2025-11-12 19:38:02 | INFO     | analysis.signals:monitor_and_trade:859 - ✅ Ордер розміщено: DRIFTUSDT @ 0.32660000
+2025-11-12 19:38:02 | INFO     | trading.signal_handler:start_external_trade_monitor:1400 - External trade monitor started
+2025-11-12 19:38:02 | ERROR    | trading.signal_handler:_monitor_limit_order_lifetime:341 - Помилка моніторингу часу життя лімітки для DRIFTUSDT: '<=' not supported between instances of 'str' and 'int'
+2025-11-12 19:38:02 | INFO     | trading.signal_handler:stop_external_trade_monitor:1414 - External trade monitor stopped
+2025-11-12 19:38:02 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-12 19:38:03 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-12 19:38:03 | INFO     | analysis.signals:monitor_and_trade:1132 - Моніторинг завершено: DRIFTUSDT
+2025-11-12 19:38:03 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-12 19:38:03 | INFO     | trading.signal_handler:_watch_position_exit:433 - НЕГАЙНЕ встановлення SL для DRIFTUSDT...
+2025-11-12 19:38:03 | INFO     | trading.signal_handler:_watch_position_exit:434 -    Позиція виявлена: entry=0.32910000
+2025-11-12 19:38:03 | INFO     | trading.signal_handler:_watch_position_exit:435 -    Встановлюємо SL: 0.32850000
+2025-11-12 19:38:03 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 19:38:03 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для DRIFTUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:32850000 set for Sell position should greater base_price:32900000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969083915}
+2025-11-12 19:38:03 | WARNING  | trading.signal_handler:_watch_position_exit:453 - Не вдалося встановити SL, спроба 1/5
+2025-11-12 19:38:03 | WARNING  | trading.signal_handler:_watch_position_exit:441 - Повторна спроба встановлення SL (2/5)
+2025-11-12 19:38:05 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для DRIFTUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:32850000 set for Sell position should greater base_price:32900000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969085132}
+2025-11-12 19:38:05 | WARNING  | trading.signal_handler:_watch_position_exit:453 - Не вдалося встановити SL, спроба 2/5
+2025-11-12 19:38:05 | WARNING  | trading.signal_handler:_watch_position_exit:441 - Повторна спроба встановлення SL (3/5)
+2025-11-12 19:38:06 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для DRIFTUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:32850000 set for Sell position should greater base_price:32920000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969086360}
+2025-11-12 19:38:06 | WARNING  | trading.signal_handler:_watch_position_exit:453 - Не вдалося встановити SL, спроба 3/5
+2025-11-12 19:38:06 | WARNING  | trading.signal_handler:_watch_position_exit:441 - Повторна спроба встановлення SL (4/5)
+2025-11-12 19:38:07 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для DRIFTUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:32850000 set for Sell position should greater base_price:32920000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969087582}
+2025-11-12 19:38:07 | WARNING  | trading.signal_handler:_watch_position_exit:453 - Не вдалося встановити SL, спроба 4/5
+2025-11-12 19:38:07 | WARNING  | trading.signal_handler:_watch_position_exit:441 - Повторна спроба встановлення SL (5/5)
+2025-11-12 19:38:08 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для DRIFTUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:32850000 set for Sell position should greater base_price:32900000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969088811}
+2025-11-12 19:38:08 | ERROR    | trading.signal_handler:_watch_position_exit:456 - Не вдалося встановити SL після 5 спроб
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_watch_position_exit:496 - Запуск RSI TP трекера для DRIFTUSDT: dir=short, high=60.0, low=40.0, period=14, interval=1
+2025-11-12 19:38:09 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для DRIFTUSDT:
+2025-11-12 19:38:09 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: SHORT
+2025-11-12 19:38:09 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-12 19:38:09 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-12 19:38:09 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-12 19:38:09 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1536 - ===== ОБНАРУЖЕНА НОВАЯ РУЧНАЯ ПОЗИЦИЯ =====
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1537 - Монета: DRIFTUSDT
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1538 - Направление: SHORT
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1539 - Размер: 306.0
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1540 - Цена входа: 0.329100
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1541 - Плечо: 10x
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1542 - Position Key: DRIFTUSDT_0
+2025-11-12 19:38:09 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1543 - =====
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1554 - Получаю свечу для DRIFTUSDT на TF 1m (API: 1)
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1563 - Получена свеча для DRIFTUSDT
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1564 -    TF: 1m
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1565 -    High: 0.32850000
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1566 -    Low: 0.32700000
+2025-11-12 19:38:10 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 19:38:10 | WARNING  | utils.logger:external_position_detect:156 - External position detected
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для DRIFTUSDT:
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:38:10 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:37:00 12.11.2025
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.32850000
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.32700000
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.32850000
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.32850000
+2025-11-12 19:38:10 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 19:38:10 | ERROR    | trading.signal_handler:_external_trade_monitor_loop:1618 - ПОМИЛКА: SL для SHORT (0.32850000) <= ціни входу (0.32910000)
+2025-11-12 19:38:10 | WARNING  | trading.signal_handler:_external_trade_monitor_loop:1622 - Використовую резервний SL: 0.33080000
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1624 - Встановлюю SL для DRIFTUSDT на екстремумі свічки...
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:set_stop_loss:1873 -  Стоп-лосс встановлено для DRIFTUSDT: 0.33080000
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1628 - SL ВСТАНОВЛЕНО НА ЕКСТРЕМУМІ СВІЧКИ:
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1629 -    Свічка (TF 1m): H=0.32850000 L=0.32700000
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1630 -    Екстремум (SHORT): 0.32850000
+2025-11-12 19:38:10 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1631 -    Стоп: 0.33080000
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:38:11 | INFO     | utils.logger:rsi_settings_from_db:324 - RSI settings from DB
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1677 - RSI настройки з БД для DRIFTUSDT:
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1678 -    - RSI Low (SHORT exit): 40.0
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1679 -    - RSI High (LONG exit): 60.0
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1680 -    - RSI Length: 14
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1681 -    - RSI Interval: 1
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1687 - Запуск RSI Take-Profit для DRIFTUSDT:
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1688 -    - Напрямок: SHORT
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1689 -    - Поточний RSI: 64.42
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1696 -    - Поріг закриття (RSI Low): 40.0
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1697 -    - Закриється при RSI <= 40.0
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1702 - ЗАПУСКАЮ RSI трекер для DRIFTUSDT...
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1711 -    - RSI інтервал: 1 (60s)
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1712 -    - Опитування кожні: 30s)
+2025-11-12 19:38:11 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1727 - RSI трекер ЗАПУЩЕНО для DRIFTUSDT
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для DRIFTUSDT:
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:38:12 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для DRIFTUSDT:
+2025-11-12 19:38:12 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: SHORT
+2025-11-12 19:38:12 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-12 19:38:12 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-12 19:38:12 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-12 19:38:12 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-12 19:38:12 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-12 19:38:12 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:37:00 12.11.2025
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.32850000
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.32700000
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.32850000
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:38:12 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.32850000
+2025-11-12 19:39:00 | INFO     | analysis.signals:monitor_and_trade:762 - 🚀 IGNORE_PINBAR + GRAVITY2: Відкриття на екстремумі свічки
+2025-11-12 19:39:00 | INFO     | analysis.signals:monitor_and_trade:763 -    Стратегія: Quantum Gravity2
+2025-11-12 19:39:00 | INFO     | analysis.signals:monitor_and_trade:764 -    Сигнал з каналу: long
+2025-11-12 19:39:00 | INFO     | analysis.signals:monitor_and_trade:765 -    Направлення угоди: short
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:39:00 | INFO     | analysis.signals:monitor_and_trade:785 - 📊 Сигнальна свічка: H=0.17538000 L=0.17508000
+2025-11-12 19:39:00 | INFO     | analysis.signals:monitor_and_trade:794 - 📉 GRAVITY2: Сигнал ПІДТРИМКА (long)
+2025-11-12 19:39:00 | INFO     | analysis.signals:monitor_and_trade:795 -    ✓ Знайдено RSI перекупленість (> 60.0)
+2025-11-12 19:39:00 | INFO     | analysis.signals:monitor_and_trade:796 -    → Відкриваємо SHORT позицію
+2025-11-12 19:39:00 | INFO     | analysis.signals:monitor_and_trade:797 -    → Вхід на LOW свічки: 0.17508000
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для FLUXUSDT:
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:39:00 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:39:01 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:38:00 12.11.2025
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.17538000
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.17508000
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.17538000
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.17538000
+2025-11-12 19:39:01 | INFO     | analysis.signals:monitor_and_trade:846 - 📝 Розміщення лімітного ордера (IGNORE_PINBAR + GRAVITY2)...
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 710.59 USDT
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-12 19:39:01 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 710.59 USDT
+2025-11-12 19:39:01 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-12 19:39:02 | INFO     | utils.logger:limit_order_placed:58 - Limit order placed
+2025-11-12 19:39:02 | INFO     | trading.signal_handler:place_limit_order:1089 - SL буде встановлений після відкриття: 0.17538000 (0.17%)
+2025-11-12 19:39:02 | INFO     | analysis.signals:monitor_and_trade:859 - ✅ Ордер розміщено: FLUXUSDT @ 0.17508000
+2025-11-12 19:39:02 | INFO     | trading.signal_handler:start_external_trade_monitor:1400 - External trade monitor started
+2025-11-12 19:39:02 | ERROR    | trading.signal_handler:_monitor_limit_order_lifetime:341 - Помилка моніторингу часу життя лімітки для FLUXUSDT: '<=' not supported between instances of 'str' and 'int'
+2025-11-12 19:39:02 | INFO     | trading.signal_handler:stop_external_trade_monitor:1414 - External trade monitor stopped
+2025-11-12 19:39:02 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-12 19:39:02 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-12 19:39:02 | INFO     | analysis.signals:monitor_and_trade:1132 - Моніторинг завершено: FLUXUSDT
+2025-11-12 19:39:03 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-12 19:39:03 | INFO     | trading.signal_handler:_watch_position_exit:433 - НЕГАЙНЕ встановлення SL для FLUXUSDT...
+2025-11-12 19:39:03 | INFO     | trading.signal_handler:_watch_position_exit:434 -    Позиція виявлена: entry=0.17553956
+2025-11-12 19:39:03 | INFO     | trading.signal_handler:_watch_position_exit:435 -    Встановлюємо SL: 0.17538000
+2025-11-12 19:39:03 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 19:39:03 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для FLUXUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:17538000 set for Sell position should greater base_price:17569000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969143571}
+2025-11-12 19:39:03 | WARNING  | trading.signal_handler:_watch_position_exit:453 - Не вдалося встановити SL, спроба 1/5
+2025-11-12 19:39:03 | WARNING  | trading.signal_handler:_watch_position_exit:441 - Повторна спроба встановлення SL (2/5)
+2025-11-12 19:39:04 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1536 - ===== ОБНАРУЖЕНА НОВАЯ РУЧНАЯ ПОЗИЦИЯ =====
+2025-11-12 19:39:04 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1537 - Монета: FLUXUSDT
+2025-11-12 19:39:04 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1538 - Направление: SHORT
+2025-11-12 19:39:04 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1539 - Размер: 571.0
+2025-11-12 19:39:04 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1540 - Цена входа: 0.175540
+2025-11-12 19:39:04 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1541 - Плечо: 10x
+2025-11-12 19:39:04 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1542 - Position Key: FLUXUSDT_0
+2025-11-12 19:39:04 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1543 - =====
+2025-11-12 19:39:04 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1554 - Получаю свечу для FLUXUSDT на TF 1m (API: 1)
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1563 - Получена свеча для FLUXUSDT
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1564 -    TF: 1m
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1565 -    High: 0.17538000
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1566 -    Low: 0.17508000
+2025-11-12 19:39:05 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 19:39:05 | WARNING  | utils.logger:external_position_detect:156 - External position detected
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для FLUXUSDT:
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:39:05 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для FLUXUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:17538000 set for Sell position should greater base_price:17578000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969145214}
+2025-11-12 19:39:05 | WARNING  | trading.signal_handler:_watch_position_exit:453 - Не вдалося встановити SL, спроба 2/5
+2025-11-12 19:39:05 | WARNING  | trading.signal_handler:_watch_position_exit:441 - Повторна спроба встановлення SL (3/5)
+2025-11-12 19:39:05 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:38:00 12.11.2025
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.17538000
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.17508000
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.17538000
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.17538000
+2025-11-12 19:39:05 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 19:39:05 | ERROR    | trading.signal_handler:_external_trade_monitor_loop:1618 - ПОМИЛКА: SL для SHORT (0.17538000) <= ціни входу (0.17553956)
+2025-11-12 19:39:05 | WARNING  | trading.signal_handler:_external_trade_monitor_loop:1622 - Використовую резервний SL: 0.17642000
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1624 - Встановлюю SL для FLUXUSDT на екстремумі свічки...
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:set_stop_loss:1873 -  Стоп-лосс встановлено для FLUXUSDT: 0.17642000
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1628 - SL ВСТАНОВЛЕНО НА ЕКСТРЕМУМІ СВІЧКИ:
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1629 -    Свічка (TF 1m): H=0.17538000 L=0.17508000
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1630 -    Екстремум (SHORT): 0.17538000
+2025-11-12 19:39:05 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1631 -    Стоп: 0.17642000
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:39:06 | INFO     | utils.logger:rsi_settings_from_db:324 - RSI settings from DB
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1677 - RSI настройки з БД для FLUXUSDT:
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1678 -    - RSI Low (SHORT exit): 40.0
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1679 -    - RSI High (LONG exit): 60.0
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1680 -    - RSI Length: 14
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1681 -    - RSI Interval: 1
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1687 - Запуск RSI Take-Profit для FLUXUSDT:
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1688 -    - Напрямок: SHORT
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1689 -    - Поточний RSI: 68.27
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1696 -    - Поріг закриття (RSI Low): 40.0
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1697 -    - Закриється при RSI <= 40.0
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1702 - ЗАПУСКАЮ RSI трекер для FLUXUSDT...
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1711 -    - RSI інтервал: 1 (60s)
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1712 -    - Опитування кожні: 30s)
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1727 - RSI трекер ЗАПУЩЕНО для FLUXUSDT
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для FLUXUSDT:
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:39:06 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для FLUXUSDT:
+2025-11-12 19:39:06 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: SHORT
+2025-11-12 19:39:06 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-12 19:39:06 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-12 19:39:06 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-12 19:39:06 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-12 19:39:06 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для FLUXUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:17538000 set for Sell position should greater base_price:17578000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969146439}
+2025-11-12 19:39:06 | WARNING  | trading.signal_handler:_watch_position_exit:453 - Не вдалося встановити SL, спроба 3/5
+2025-11-12 19:39:06 | WARNING  | trading.signal_handler:_watch_position_exit:441 - Повторна спроба встановлення SL (4/5)
+2025-11-12 19:39:06 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:38:00 12.11.2025
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.17538000
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.17508000
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.17538000
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:39:06 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.17538000
+2025-11-12 19:39:08 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для FLUXUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:17538000 set for Sell position should greater base_price:17578000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969147998}
+2025-11-12 19:39:08 | WARNING  | trading.signal_handler:_watch_position_exit:453 - Не вдалося встановити SL, спроба 4/5
+2025-11-12 19:39:08 | WARNING  | trading.signal_handler:_watch_position_exit:441 - Повторна спроба встановлення SL (5/5)
+2025-11-12 19:39:09 | ERROR    | trading.signal_handler:set_stop_loss:1875 -  Не вдалося встановити стоп-лосс для FLUXUSDT: {'retCode': 10001, 'retMsg': 'StopLoss:17538000 set for Sell position should greater base_price:17569000??LastPrice', 'result': {}, 'retExtInfo': {}, 'time': 1762969149248}
+2025-11-12 19:39:09 | ERROR    | trading.signal_handler:_watch_position_exit:456 - Не вдалося встановити SL після 5 спроб
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:39:09 | INFO     | trading.signal_handler:_watch_position_exit:496 - Запуск RSI TP трекера для FLUXUSDT: dir=short, high=60.0, low=40.0, period=14, interval=1
+2025-11-12 19:39:09 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для FLUXUSDT:
+2025-11-12 19:39:09 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: SHORT
+2025-11-12 19:39:09 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-12 19:39:09 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-12 19:39:09 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-12 19:39:09 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1509 - Внешняя позиция DRIFTUSDT_0 закрита - удаляем из управляемих
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_watch_position_exit:521 - Причина закриття DRIFTUSDT: stop_loss
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:571 - Обработка закрытия DRIFTUSDT:
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:572 -    - Причина: stop_loss
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:573 -    - Направление: short
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:574 -    - Источник: monitor_quantum_gravity2_ignore_pinbar
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:575 -    - Цена входа: 0.326600
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:576 -    - Цена закрытия: 0.330600
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:577 -    - Стоп-лосс: 0.328500
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:578 -    - Тейк-профіт: N/A
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:636 -    - Попытки: 0/5
+2025-11-12 19:39:17 | WARNING  | utils.logger:position_closed_by_stop:74 - Position closed by stop loss
+2025-11-12 19:39:17 | INFO     | utils.logger:reentry_allowed:90 - Re-entry allowed
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:688 - Условия для повторного входа выполнены:
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:689 -    - Закриття по стоп-лоссу
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:690 -    - Спроба 1 з 5
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_handle_position_exit:692 - Режим IGNORE_PINBAR: немедлений повторний вхід для DRIFTUSDT
+2025-11-12 19:39:17 | INFO     | trading.signal_handler:_reenter_immediately:1976 -  Attempting immediate re-entry for DRIFTUSDT short
+2025-11-12 19:39:18 | DEBUG    | trading.signal_handler:get_usdt_balance:857 - USDT balance (suppressed INFO): wallet=709.90 available=709.90 equity=709.70
+2025-11-12 19:39:18 | WARNING  | trading.signal_handler:place_limit_order:1038 - ОШИБКА: Стоп-лосс 0.3306 <= ціни входу 0.3306 для SHORT. Корректируем...
+2025-11-12 19:39:19 | INFO     | utils.logger:limit_order_placed:58 - Limit order placed
+2025-11-12 19:39:19 | INFO     | trading.signal_handler:place_limit_order:1089 - SL буде встановлений після відкриття: 0.33300000 (0.73%)
+2025-11-12 19:39:19 | INFO     | trading.signal_handler:_reenter_immediately:2018 -  Immediate re-entry successful for DRIFTUSDT @ 0.3306
+2025-11-12 19:39:19 | INFO     | trading.signal_handler:_handle_position_exit:697 - Повторний вхід успішно виконано для DRIFTUSDT
+2025-11-12 19:39:19 | WARNING  | trading.signal_handler:_watch_position_exit:373 - Нет order_id для пары DRIFTUSDT. Попытка получить позицию напрямую.
+2025-11-12 19:39:19 | ERROR    | trading.signal_handler:_monitor_limit_order_lifetime:341 - Помилка моніторингу часу життя лімітки для DRIFTUSDT: '<=' not supported between instances of 'str' and 'int'
+2025-11-12 19:39:19 | WARNING  | trading.signal_handler:_watch_position_exit:388 - Не найдена позиция для DRIFTUSDT, прекращение мониторинга
+2025-11-12 19:39:19 | WARNING  | trading.signal_handler:__del__:745 - SignalHandler собран сборщиком мусора с открытой сессией aiohttp; вызовите await close() явно.
+2025-11-12 19:39:41 | INFO     | trading.take_profit:track_position_rsi:479 - Position closed for DRIFTUSDT
+2025-11-12 19:39:41 | INFO     | trading.signal_handler:_on_rsi_exit:494 - RSI TP выход обратного вызова для DRIFTUSDT: причина=position_closed, инфо={'reason': 'missing_position'}
+2025-11-12 19:39:41 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for DRIFTUSDT
+2025-11-12 19:39:44 | INFO     | trading.take_profit:track_position_rsi:479 - Position closed for DRIFTUSDT
+2025-11-12 19:39:44 | INFO     | trading.signal_handler:_on_rsi_exit_external:1705 - RSI TP для ЗОВНІШНЬОЇ позиції DRIFTUSDT: причина=position_closed, контекст={'reason': 'missing_position'}
+2025-11-12 19:39:44 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for DRIFTUSDT
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1536 - ===== ОБНАРУЖЕНА НОВАЯ РУЧНАЯ ПОЗИЦИЯ =====
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1537 - Монета: DRIFTUSDT
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1538 - Направление: SHORT
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1539 - Размер: 302.0
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1540 - Цена входа: 0.330600
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1541 - Плечо: 10x
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1542 - Position Key: DRIFTUSDT_0
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1543 - =====
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1554 - Получаю свечу для DRIFTUSDT на TF 1m (API: 1)
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1563 - Получена свеча для DRIFTUSDT
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1564 -    TF: 1m
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1565 -    High: 0.32930000
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1566 -    Low: 0.32850000
+2025-11-12 19:39:59 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 19:39:59 | WARNING  | utils.logger:external_position_detect:156 - External position detected
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для DRIFTUSDT:
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:39:59 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:38:00 12.11.2025
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.32930000
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.32850000
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.32930000
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.32930000
+2025-11-12 19:39:59 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 19:39:59 | ERROR    | trading.signal_handler:_external_trade_monitor_loop:1618 - ПОМИЛКА: SL для SHORT (0.32930000) <= ціни входу (0.33060000)
+2025-11-12 19:39:59 | WARNING  | trading.signal_handler:_external_trade_monitor_loop:1622 - Використовую резервний SL: 0.33230000
+2025-11-12 19:39:59 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1624 - Встановлюю SL для DRIFTUSDT на екстремумі свічки...
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:set_stop_loss:1873 -  Стоп-лосс встановлено для DRIFTUSDT: 0.33230000
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1628 - SL ВСТАНОВЛЕНО НА ЕКСТРЕМУМІ СВІЧКИ:
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1629 -    Свічка (TF 1m): H=0.32930000 L=0.32850000
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1630 -    Екстремум (SHORT): 0.32930000
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1631 -    Стоп: 0.33230000
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:40:00 | INFO     | utils.logger:rsi_settings_from_db:324 - RSI settings from DB
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1677 - RSI настройки з БД для DRIFTUSDT:
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1678 -    - RSI Low (SHORT exit): 40.0
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1679 -    - RSI High (LONG exit): 60.0
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1680 -    - RSI Length: 14
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1681 -    - RSI Interval: 1
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1687 - Запуск RSI Take-Profit для DRIFTUSDT:
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1688 -    - Напрямок: SHORT
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1689 -    - Поточний RSI: 71.09
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1696 -    - Поріг закриття (RSI Low): 40.0
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1697 -    - Закриється при RSI <= 40.0
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1702 - ЗАПУСКАЮ RSI трекер для DRIFTUSDT...
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1711 -    - RSI інтервал: 1 (60s)
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1712 -    - Опитування кожні: 30s)
+2025-11-12 19:40:00 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1727 - RSI трекер ЗАПУЩЕНО для DRIFTUSDT
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для DRIFTUSDT:
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:40:01 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для DRIFTUSDT:
+2025-11-12 19:40:01 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: SHORT
+2025-11-12 19:40:01 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-12 19:40:01 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-12 19:40:01 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-12 19:40:01 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-12 19:40:01 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:39:00 12.11.2025
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.33080000
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.32920000
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.33080000
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:40:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.33080000
+2025-11-12 19:41:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1509 - Внешняя позиция FLUXUSDT_0 закрита - удаляем из управляемих
+2025-11-12 19:41:16 | INFO     | trading.signal_handler:_watch_position_exit:521 - Причина закриття FLUXUSDT: stop_loss
+2025-11-12 19:41:16 | INFO     | trading.signal_handler:_handle_position_exit:571 - Обработка закрытия FLUXUSDT:
+2025-11-12 19:41:16 | INFO     | trading.signal_handler:_handle_position_exit:572 -    - Причина: stop_loss
+2025-11-12 19:41:16 | INFO     | trading.signal_handler:_handle_position_exit:573 -    - Направление: short
+2025-11-12 19:41:16 | INFO     | trading.signal_handler:_handle_position_exit:574 -    - Источник: monitor_quantum_gravity2_ignore_pinbar
+2025-11-12 19:41:16 | INFO     | trading.signal_handler:_handle_position_exit:575 -    - Цена входа: 0.175080
+2025-11-12 19:41:16 | INFO     | trading.signal_handler:_handle_position_exit:576 -    - Цена закрытия: 0.176420
+2025-11-12 19:41:16 | INFO     | trading.signal_handler:_handle_position_exit:577 -    - Стоп-лосс: 0.175380
+2025-11-12 19:41:16 | INFO     | trading.signal_handler:_handle_position_exit:578 -    - Тейк-профіт: N/A
+2025-11-12 19:41:17 | INFO     | trading.signal_handler:_handle_position_exit:636 -    - Попытки: 0/5
+2025-11-12 19:41:17 | WARNING  | utils.logger:position_closed_by_stop:74 - Position closed by stop loss
+2025-11-12 19:41:17 | INFO     | utils.logger:reentry_allowed:90 - Re-entry allowed
+2025-11-12 19:41:17 | INFO     | trading.signal_handler:_handle_position_exit:688 - Условия для повторного входа выполнены:
+2025-11-12 19:41:17 | INFO     | trading.signal_handler:_handle_position_exit:689 -    - Закриття по стоп-лоссу
+2025-11-12 19:41:17 | INFO     | trading.signal_handler:_handle_position_exit:690 -    - Спроба 1 з 5
+2025-11-12 19:41:17 | INFO     | trading.signal_handler:_handle_position_exit:692 - Режим IGNORE_PINBAR: немедлений повторний вхід для FLUXUSDT
+2025-11-12 19:41:17 | INFO     | trading.signal_handler:_reenter_immediately:1976 -  Attempting immediate re-entry for FLUXUSDT short
+2025-11-12 19:41:17 | DEBUG    | trading.signal_handler:get_usdt_balance:857 - USDT balance (suppressed INFO): wallet=709.21 available=709.21 equity=708.82
+2025-11-12 19:41:18 | WARNING  | trading.signal_handler:place_limit_order:1038 - ОШИБКА: Стоп-лосс 0.17642 <= ціни входу 0.17642 для SHORT. Корректируем...
+2025-11-12 19:41:18 | INFO     | utils.logger:limit_order_placed:58 - Limit order placed
+2025-11-12 19:41:18 | INFO     | trading.signal_handler:place_limit_order:1089 - SL буде встановлений після відкриття: 0.17766000 (0.70%)
+2025-11-12 19:41:18 | INFO     | trading.signal_handler:_reenter_immediately:2018 -  Immediate re-entry successful for FLUXUSDT @ 0.17642
+2025-11-12 19:41:18 | INFO     | trading.signal_handler:_handle_position_exit:697 - Повторний вхід успішно виконано для FLUXUSDT
+2025-11-12 19:41:18 | WARNING  | trading.signal_handler:_watch_position_exit:373 - Нет order_id для пары FLUXUSDT. Попытка получить позицию напрямую.
+2025-11-12 19:41:18 | ERROR    | trading.signal_handler:_monitor_limit_order_lifetime:341 - Помилка моніторингу часу життя лімітки для FLUXUSDT: '<=' not supported between instances of 'str' and 'int'
+2025-11-12 19:41:18 | INFO     | trading.signal_handler:_watch_position_exit:377 - Создан синтетический order_id synthetic_FLUXUSDT_1762969278.5586624 для мониторинга позиции FLUXUSDT
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:41:19 | INFO     | trading.signal_handler:_watch_position_exit:496 - Запуск RSI TP трекера для FLUXUSDT: dir=short, high=60.0, low=40.0, period=14, interval=1
+2025-11-12 19:41:19 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для FLUXUSDT:
+2025-11-12 19:41:19 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: SHORT
+2025-11-12 19:41:19 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-12 19:41:19 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-12 19:41:19 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-12 19:41:19 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-12 19:41:24 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1536 - ===== ОБНАРУЖЕНА НОВАЯ РУЧНАЯ ПОЗИЦИЯ =====
+2025-11-12 19:41:24 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1537 - Монета: FLUXUSDT
+2025-11-12 19:41:24 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1538 - Направление: SHORT
+2025-11-12 19:41:24 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1539 - Размер: 566.0
+2025-11-12 19:41:24 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1540 - Цена входа: 0.176425
+2025-11-12 19:41:24 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1541 - Плечо: 10x
+2025-11-12 19:41:24 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1542 - Position Key: FLUXUSDT_0
+2025-11-12 19:41:24 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1543 - =====
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1554 - Получаю свечу для FLUXUSDT на TF 1m (API: 1)
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1563 - Получена свеча для FLUXUSDT
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1564 -    TF: 1m
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1565 -    High: 0.17604000
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1566 -    Low: 0.17526000
+2025-11-12 19:41:25 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 19:41:25 | WARNING  | utils.logger:external_position_detect:156 - External position detected
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для FLUXUSDT:
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:41:25 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:40:00 12.11.2025
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.17604000
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.17526000
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.17604000
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.17604000
+2025-11-12 19:41:25 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 19:41:25 | ERROR    | trading.signal_handler:_external_trade_monitor_loop:1618 - ПОМИЛКА: SL для SHORT (0.17604000) <= ціни входу (0.17642470)
+2025-11-12 19:41:25 | WARNING  | trading.signal_handler:_external_trade_monitor_loop:1622 - Використовую резервний SL: 0.17731000
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1624 - Встановлюю SL для FLUXUSDT на екстремумі свічки...
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:set_stop_loss:1873 -  Стоп-лосс встановлено для FLUXUSDT: 0.17731000
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1628 - SL ВСТАНОВЛЕНО НА ЕКСТРЕМУМІ СВІЧКИ:
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1629 -    Свічка (TF 1m): H=0.17604000 L=0.17526000
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1630 -    Екстремум (SHORT): 0.17604000
+2025-11-12 19:41:25 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1631 -    Стоп: 0.17731000
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 19:41:26 | INFO     | utils.logger:rsi_settings_from_db:324 - RSI settings from DB
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1677 - RSI настройки з БД для FLUXUSDT:
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1678 -    - RSI Low (SHORT exit): 40.0
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1679 -    - RSI High (LONG exit): 60.0
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1680 -    - RSI Length: 14
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1681 -    - RSI Interval: 1
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1687 - Запуск RSI Take-Profit для FLUXUSDT:
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1688 -    - Напрямок: SHORT
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1689 -    - Поточний RSI: 70.54
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1696 -    - Поріг закриття (RSI Low): 40.0
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1697 -    - Закриється при RSI <= 40.0
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1702 - ЗАПУСКАЮ RSI трекер для FLUXUSDT...
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1711 -    - RSI інтервал: 1 (60s)
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1712 -    - Опитування кожні: 30s)
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1727 - RSI трекер ЗАПУЩЕНО для FLUXUSDT
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для FLUXUSDT:
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 19:41:26 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для FLUXUSDT:
+2025-11-12 19:41:26 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: SHORT
+2025-11-12 19:41:26 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-12 19:41:26 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-12 19:41:26 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-12 19:41:26 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-12 19:41:26 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 19:40:00 12.11.2025
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.17604000
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.17526000
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.17604000
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 19:41:26 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.17604000
+2025-11-12 19:43:41 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=56.36 (чекаємо <= 40.0, залишилось 16.36)
+2025-11-12 19:43:44 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=56.36 (чекаємо <= 40.0, залишилось 16.36)
+2025-11-12 19:44:35 | INFO     | trading.take_profit:track_position_rsi:561 - DRIFTUSDT SHORT: RSI=54.83 (чекаємо <= 40.0, залишилось 14.83)
+2025-11-12 19:45:53 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=61.54 (чекаємо <= 40.0, залишилось 21.54)
+2025-11-12 19:46:02 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=59.99 (чекаємо <= 40.0, залишилось 19.99)
+2025-11-12 19:48:45 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=50.59 (чекаємо <= 40.0, залишилось 10.59)
+2025-11-12 19:48:48 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=50.84 (чекаємо <= 40.0, залишилось 10.84)
+2025-11-12 19:49:40 | INFO     | trading.take_profit:track_position_rsi:561 - DRIFTUSDT SHORT: RSI=50.31 (чекаємо <= 40.0, залишилось 10.31)
+2025-11-12 19:50:58 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=60.68 (чекаємо <= 40.0, залишилось 20.68)
+2025-11-12 19:51:07 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=59.85 (чекаємо <= 40.0, залишилось 19.85)
+2025-11-12 19:53:50 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=59.11 (чекаємо <= 40.0, залишилось 19.11)
+2025-11-12 19:53:53 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=60.39 (чекаємо <= 40.0, залишилось 20.39)
+2025-11-12 19:54:45 | INFO     | trading.take_profit:track_position_rsi:561 - DRIFTUSDT SHORT: RSI=60.60 (чекаємо <= 40.0, залишилось 20.60)
+2025-11-12 19:56:02 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=66.47 (чекаємо <= 40.0, залишилось 26.47)
+2025-11-12 19:56:12 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=64.16 (чекаємо <= 40.0, залишилось 24.16)
+2025-11-12 19:58:55 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=71.93 (чекаємо <= 40.0, залишилось 31.93)
+2025-11-12 19:58:57 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=72.58 (чекаємо <= 40.0, залишилось 32.58)
+2025-11-12 19:59:49 | INFO     | trading.take_profit:track_position_rsi:561 - DRIFTUSDT SHORT: RSI=60.80 (чекаємо <= 40.0, залишилось 20.80)
+2025-11-12 20:01:07 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=61.07 (чекаємо <= 40.0, залишилось 21.07)
+2025-11-12 20:01:17 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=61.80 (чекаємо <= 40.0, залишилось 21.80)
+2025-11-12 20:03:59 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=68.40 (чекаємо <= 40.0, залишилось 28.40)
+2025-11-12 20:04:02 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=67.93 (чекаємо <= 40.0, залишилось 27.93)
+2025-11-12 20:04:32 | INFO     | trading.take_profit:track_position_rsi:479 - Position closed for FLUXUSDT
+2025-11-12 20:04:32 | INFO     | trading.signal_handler:_on_rsi_exit:494 - RSI TP выход обратного вызова для FLUXUSDT: причина=position_closed, инфо={'reason': 'missing_position'}
+2025-11-12 20:04:32 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for FLUXUSDT
+2025-11-12 20:04:32 | INFO     | trading.signal_handler:_watch_position_exit:521 - Причина закриття FLUXUSDT: stop_loss
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:571 - Обработка закрытия FLUXUSDT:
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:572 -    - Причина: stop_loss
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:573 -    - Направление: short
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:574 -    - Источник: None
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:575 -    - Цена входа: N/A
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:576 -    - Цена закрытия: 0.177420
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:577 -    - Стоп-лосс: N/A
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:578 -    - Тейк-профіт: N/A
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:636 -    - Попытки: 0/5
+2025-11-12 20:04:33 | WARNING  | trading.signal_handler:_handle_position_exit:674 - Позиція по FLUXUSDT (short) закрита по стоп-лоссу
+2025-11-12 20:04:33 | INFO     | utils.logger:reentry_allowed:90 - Re-entry allowed
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:688 - Условия для повторного входа выполнены:
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:689 -    - Закриття по стоп-лоссу
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:690 -    - Спроба 1 з 5
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_handle_position_exit:692 - Режим IGNORE_PINBAR: немедлений повторний вхід для FLUXUSDT
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:_reenter_immediately:1976 -  Attempting immediate re-entry for FLUXUSDT short
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 708.46 USDT
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-12 20:04:33 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 708.46 USDT
+2025-11-12 20:04:34 | WARNING  | trading.signal_handler:place_limit_order:1038 - ОШИБКА: Стоп-лосс 0.1774 <= ціни входу 0.1774 для SHORT. Корректируем...
+2025-11-12 20:04:34 | INFO     | utils.logger:limit_order_placed:58 - Limit order placed
+2025-11-12 20:04:34 | INFO     | trading.signal_handler:place_limit_order:1089 - SL буде встановлений після відкриття: 0.17865000 (0.70%)
+2025-11-12 20:04:34 | INFO     | trading.signal_handler:_reenter_immediately:2018 -  Immediate re-entry successful for FLUXUSDT @ 0.1774
+2025-11-12 20:04:34 | INFO     | trading.signal_handler:_handle_position_exit:697 - Повторний вхід успішно виконано для FLUXUSDT
+2025-11-12 20:04:34 | WARNING  | trading.signal_handler:_watch_position_exit:373 - Нет order_id для пары FLUXUSDT. Попытка получить позицию напрямую.
+2025-11-12 20:04:34 | ERROR    | trading.signal_handler:_monitor_limit_order_lifetime:341 - Помилка моніторингу часу життя лімітки для FLUXUSDT: '<=' not supported between instances of 'str' and 'int'
+2025-11-12 20:04:34 | WARNING  | trading.signal_handler:_watch_position_exit:388 - Не найдена позиция для FLUXUSDT, прекращение мониторинга
+2025-11-12 20:04:34 | WARNING  | trading.signal_handler:__del__:745 - SignalHandler собран сборщиком мусора с открытой сессией aiohttp; вызовите await close() явно.
+2025-11-12 20:04:37 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1509 - Внешняя позиция FLUXUSDT_0 закрита - удаляем из управляемих
+2025-11-12 20:04:39 | INFO     | trading.signal_handler:_on_rsi_exit:494 - RSI TP выход обратного вызова для FLUXUSDT: причина=tracking_stopped, инфо={'reason': 'tracker_finished'}
+2025-11-12 20:04:39 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for FLUXUSDT
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1536 - ===== ОБНАРУЖЕНА НОВАЯ РУЧНАЯ ПОЗИЦИЯ =====
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1537 - Монета: FLUXUSDT
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1538 - Направление: SHORT
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1539 - Размер: 563.0
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1540 - Цена входа: 0.177400
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1541 - Плечо: 10x
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1542 - Position Key: FLUXUSDT_0
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1543 - =====
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1554 - Получаю свечу для FLUXUSDT на TF 1m (API: 1)
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1563 - Получена свеча для FLUXUSDT
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1564 -    TF: 1m
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1565 -    High: 0.17724000
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1566 -    Low: 0.17684000
+2025-11-12 20:04:48 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 20:04:48 | WARNING  | utils.logger:external_position_detect:156 - External position detected
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для FLUXUSDT:
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 20:04:48 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 20:04:48 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 20:03:00 12.11.2025
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.17724000
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.17684000
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.17724000
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.17724000
+2025-11-12 20:04:49 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-12 20:04:49 | ERROR    | trading.signal_handler:_external_trade_monitor_loop:1618 - ПОМИЛКА: SL для SHORT (0.17724000) <= ціни входу (0.17740000)
+2025-11-12 20:04:49 | WARNING  | trading.signal_handler:_external_trade_monitor_loop:1622 - Використовую резервний SL: 0.17829000
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1624 - Встановлюю SL для FLUXUSDT на екстремумі свічки...
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:set_stop_loss:1873 -  Стоп-лосс встановлено для FLUXUSDT: 0.17829000
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1628 - SL ВСТАНОВЛЕНО НА ЕКСТРЕМУМІ СВІЧКИ:
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1629 -    Свічка (TF 1m): H=0.17724000 L=0.17684000
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1630 -    Екстремум (SHORT): 0.17724000
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1631 -    Стоп: 0.17829000
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 20:04:49 | INFO     | utils.logger:rsi_settings_from_db:324 - RSI settings from DB
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1677 - RSI настройки з БД для FLUXUSDT:
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1678 -    - RSI Low (SHORT exit): 40.0
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1679 -    - RSI High (LONG exit): 60.0
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1680 -    - RSI Length: 14
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1681 -    - RSI Interval: 1
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1687 - Запуск RSI Take-Profit для FLUXUSDT:
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1688 -    - Напрямок: SHORT
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1689 -    - Поточний RSI: 68.92
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1696 -    - Поріг закриття (RSI Low): 40.0
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1697 -    - Закриється при RSI <= 40.0
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1702 - ЗАПУСКАЮ RSI трекер для FLUXUSDT...
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1711 -    - RSI інтервал: 1 (60s)
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1712 -    - Опитування кожні: 30s)
+2025-11-12 20:04:49 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1727 - RSI трекер ЗАПУЩЕНО для FLUXUSDT
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для FLUXUSDT:
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 20:04:50 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для FLUXUSDT:
+2025-11-12 20:04:50 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: SHORT
+2025-11-12 20:04:50 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-12 20:04:50 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-12 20:04:50 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-12 20:04:50 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-12 20:04:50 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 20:03:00 12.11.2025
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.17724000
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.17684000
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.17724000
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 20:04:50 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.17724000
+2025-11-12 20:04:55 | INFO     | trading.take_profit:track_position_rsi:561 - DRIFTUSDT SHORT: RSI=59.60 (чекаємо <= 40.0, залишилось 19.60)
+2025-11-12 20:06:24 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=64.67 (чекаємо <= 40.0, залишилось 24.67)
+2025-11-12 20:07:57 | WARNING  | trading.take_profit:track_position_rsi:538 - RSI TAKE-PROFIT: DRIFTUSDT SHORT
+2025-11-12 20:07:57 | WARNING  | trading.take_profit:track_position_rsi:539 -    - Поточний RSI: 39.02
+2025-11-12 20:07:57 | WARNING  | trading.take_profit:track_position_rsi:540 -    - Поріг RSI Low: 40.0
+2025-11-12 20:07:57 | WARNING  | trading.take_profit:track_position_rsi:541 -    - Умова: RSI 39.02 <= 40.0
+2025-11-12 20:07:57 | INFO     | utils.logger:rsi_auto_close:134 - Auto-close by RSI
+2025-11-12 20:07:58 | INFO     | trading.take_profit:close_position:268 - Position closed for DRIFTUSDT due to RSI condition
+2025-11-12 20:07:58 | INFO     | trading.signal_handler:_on_rsi_exit_external:1705 - RSI TP для ЗОВНІШНЬОЇ позиції DRIFTUSDT: причина=take_profit, контекст={'rsi': np.float64(39.01996210796309), 'success': True, 'method': 'market_order', 'rsi_threshold': 40.0}
+2025-11-12 20:07:58 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for DRIFTUSDT
+2025-11-12 20:07:58 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1509 - Внешняя позиция DRIFTUSDT_0 закрита - удаляем из управляемих
+2025-11-12 20:09:05 | INFO     | trading.take_profit:track_position_rsi:561 - FLUXUSDT SHORT: RSI=60.91 (чекаємо <= 40.0, залишилось 20.91)
+2025-11-12 20:09:20 | INFO     | __main__:signal_handler:918 - Отримано сигнал 2, зупинка...
+2025-11-12 20:09:20 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1784 - External trade monitor loop отменен
+2025-11-12 20:09:20 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1787 - External trade monitor loop завершен
+2025-11-12 20:09:20 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-12 20:09:20 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-12 20:09:20 | INFO     | trading.take_profit:track_position_rsi:572 - RSI tracker cancelled for FLUXUSDT
+2025-11-12 20:09:20 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for FLUXUSDT
+2025-11-12 20:09:20 | INFO     | trading.take_profit:track_position_rsi:572 - RSI tracker cancelled for FLUXUSDT
+2025-11-12 20:09:20 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for FLUXUSDT
+2025-11-12 20:09:20 | INFO     | trading.take_profit:track_position_rsi:572 - RSI tracker cancelled for FLUXUSDT
+2025-11-12 20:09:20 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for FLUXUSDT
+2025-11-12 20:09:20 | INFO     | __main__:main:821 - Клиент Telegram отменен, graceful shutdown...
+2025-11-12 20:09:20 | INFO     | __main__:main:826 - Начинается graceful shutdown...
+2025-11-12 20:09:20 | INFO     | __main__:main:833 - Закрытие SignalHandler...
+2025-11-12 20:09:20 | INFO     | __main__:main:840 - Закрытие TakeProfit...
+2025-11-12 20:09:20 | INFO     | telegram_bot:start_bot:951 - Aiogram polling cancelled
+2025-11-12 20:09:20 | INFO     | telegram_bot:start_bot:963 -  Aiogram bot stopped
+2025-11-12 20:09:25 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-12 20:09:25 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-12 20:09:25 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-12 20:09:26 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 20:09:26 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 20:09:27 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -21
+2025-11-12 20:09:27 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-12 20:09:27 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: FLUXUSDT, Направление: LONG, Цена: 0,16586
+2025-11-12 20:09:28 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: ZORAUSDT, Направление: LONG, Цена: 0,055748
+2025-11-12 20:09:28 | INFO     | analysis.signals:show_rsi_for_pairs:159 - 📊 ═══════════ ПОТОЧНИЙ RSI ═══════════
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 20:09:28 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 20:09:28 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BTCUSDT: RSI=42.93 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-12 20:09:29 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    ETHUSDT: RSI=59.30 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-12 20:09:29 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BNBUSDT: RSI=57.02 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-12 20:09:29 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    SOLUSDT: RSI=47.52 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-12 20:09:29 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    XRPUSDT: RSI=50.39 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-12 20:09:29 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-12 20:09:29 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-12 20:09:29 | INFO     | analysis.signals:show_rsi_for_pairs:189 - 📊 ══════════════════════════════════════
+2025-11-12 20:09:29 | INFO     | trading.signal_handler:start_external_trade_monitor:1400 - External trade monitor started
+2025-11-12 20:09:30 | INFO     | __main__:main:814 - Бот для настроек запущен
+2025-11-12 20:09:30 | DEBUG    | trading.signal_handler:_get_pybit_session:1437 - PyBit session created successfully (recv_window=20000)
+2025-11-12 21:31:28 | INFO     | __main__:handler_event:406 - 📥 Получено сообщение 1049 из целевого канала
+2025-11-12 21:31:28 | INFO     | __main__:handler_event:530 -  Ціна з каналу: 0.09248
+2025-11-12 21:31:28 | INFO     | __main__:handler_event:540 -  Валидный сигнал: PARTIUSDT @ 0.09248 (short)
+2025-11-12 21:31:28 | INFO     | __main__:handler_event:541 - 📍 Точная цена для ордера: 0.09248
+2025-11-12 21:31:28 | INFO     | __main__:handler_event:542 -  ID каналу: -1003193138774
+2025-11-12 21:31:28 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 21:31:28 | INFO     | __main__:handler_event:546 -  Стратегия для канала -1003193138774: Quantum Gravity2
+2025-11-12 21:31:28 | INFO     | utils.logger:trade_signal:33 - Trade signal received
+2025-11-12 21:31:28 | INFO     | utils.logger:signal_from_channel:39 - Signal from channel
+2025-11-12 21:31:29 | INFO     | __main__:handler_event:578 -  IGNORE_PINBAR=True: SHORT ордер буде на LOW свічки: 0.08710000
+2025-11-12 21:31:29 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-12 21:31:29 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 1824.30 USDT
+2025-11-12 21:31:29 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-12 21:31:29 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 1824.30 USDT
+2025-11-12 21:31:30 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:place_signal_limit_order:1335 - Стратегия для PARTIUSDT: Quantum Gravity2
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:place_signal_limit_order:1336 -    - Канал: -1003193138774
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:place_signal_limit_order:1337 -    - Точна цена з каналу: 0.0871
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:place_signal_limit_order:1338 -    - Направлення: SHORT
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:place_signal_limit_order:1349 - Запуск задачі моніторингу для PARTIUSDT використовуючи Quantum Gravity2
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1805 - Запуск монітора з стратегією: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1818 - Strategy додана в settings: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 21:31:30 | INFO     | analysis.signals:monitor_and_trade:314 -    - Смещение стоп-лосса: ВЫКЛЮЧЕНО (стоп на экстремуме свечи)
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:place_signal_limit_order:1360 - Завдання моніторингу запущено з Quantum Gravity2
+2025-11-12 21:31:30 | INFO     | __main__:handler_event:649 - 🛰 Запущен мониторинг уровня для PARTIUSDT — стратегия: Quantum Gravity2
+2025-11-12 21:31:30 | DEBUG    | trading.signal_handler:start_external_trade_monitor:1396 - External trade monitor already running
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 21:31:30 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 21:31:31 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:349 - 📊 RSI PARTIUSDT: 73.23
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:354 - ⚙ Настройки для PARTIUSDT:
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:355 -    - Целевой уровень: 0.0871
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:356 -    - Направление: short
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:357 -    - RSI (з БД): період=14, high=60.0, low=40.0, interval=1
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:358 -    - Таймфрейм: 1m (API: 1)
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:359 -    - Pinbar body ratio: 2.5
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:360 -    - Таймаут пинбара: 10м
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:361 -    - Таймаут уровня: 5м
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:362 -    - IGNORE_PINBAR: True
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:380 -  Стратегія отримана з settings: Quantum Gravity2
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:387 -  Стратегия: Quantum Gravity2
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:388 -    - ID каналу: -1003193138774
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:389 -    - Направление сигнала з каналу: short
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:390 -    - Направление трейда (після стратегії): long
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:391 -    - Ожидание уровня: False
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:392 -    - Требуется откат: True
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:393 -    - Зона поиска: {'search_after_consolidation': True, 'wait_for_rsi': True, 'rsi_condition': 'oversold', 'rsi_threshold': 'low', 'trade_direction': 'long', 'entry_on': 'high', 'stop_on': 'low', 'invalidate_on': 'low'}
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:395 - 📍 ЛОГІКА СТРАТЕГІЇ:
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:407 -    ═══ СТРАТЕГІЯ 2: QUANTUM GRAVITY2 ═══
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:408 -    📌 Торгівля з RSI екстремумами (з БД)
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:416 -    📊 Сигнал з каналу: SHORT (опір)
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:417 -    ✓ Чекаємо RSI ПЕРЕПРОДАНОСТІ (RSI <= 40.0 з БД)
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:418 -    ✓ Ставимо лімітку на HIGH свічки
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:419 -    ✓ Відкриваємо LONG позицію
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:420 -    🔄 Логіка: Опір + перепроданість = LONG на HIGH
+2025-11-12 21:31:31 | INFO     | analysis.signals:monitor_and_trade:425 -    - Таймаут лимитного ордера: 3м
+2025-11-12 21:31:31 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 21:31:32 | INFO     | analysis.signals:monitor_and_trade:447 -  Стартова ціна для PARTIUSDT: 0.08886000
+2025-11-12 21:31:32 | INFO     | analysis.signals:monitor_and_trade:448 -  Цільовий рівень: 0.08710000
+2025-11-12 21:31:32 | INFO     | analysis.signals:monitor_and_trade:449 - 📍 Відстань до цілі: 0.00176000
+2025-11-12 21:31:33 | INFO     | analysis.signals:monitor_and_trade:541 - ⏳ GRAVITY2: Чекаємо перепроданості для LONG
+2025-11-12 21:31:33 | INFO     | analysis.signals:monitor_and_trade:542 -    Сигнал: ОПІР
+2025-11-12 21:31:33 | INFO     | analysis.signals:monitor_and_trade:543 -    RSI: 73.07 (потрібно <= 40.0)
+2025-11-12 21:31:33 | INFO     | analysis.signals:monitor_and_trade:544 -    Відстань: 33.07 до перепроданості
+2025-11-12 21:32:04 | INFO     | __main__:handler_event:406 - 📥 Получено сообщение 1050 из целевого канала
+2025-11-12 21:32:04 | INFO     | __main__:handler_event:530 -  Ціна з каналу: 0.3511
+2025-11-12 21:32:04 | INFO     | __main__:handler_event:540 -  Валидный сигнал: APEUSDT @ 0.3511 (long)
+2025-11-12 21:32:04 | INFO     | __main__:handler_event:541 - 📍 Точная цена для ордера: 0.3511
+2025-11-12 21:32:04 | INFO     | __main__:handler_event:542 -  ID каналу: -1003193138774
+2025-11-12 21:32:04 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 21:32:04 | INFO     | __main__:handler_event:546 -  Стратегия для канала -1003193138774: Quantum Gravity2
+2025-11-12 21:32:04 | INFO     | utils.logger:trade_signal:33 - Trade signal received
+2025-11-12 21:32:04 | INFO     | utils.logger:signal_from_channel:39 - Signal from channel
+2025-11-12 21:32:04 | INFO     | __main__:handler_event:575 -  IGNORE_PINBAR=True: LONG ордер буде на HIGH свічки: 0.36690000
+2025-11-12 21:32:05 | DEBUG    | trading.signal_handler:get_usdt_balance:857 - USDT balance (suppressed INFO): wallet=1824.30 available=1824.30 equity=1824.30
+2025-11-12 21:32:05 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 21:32:05 | INFO     | trading.signal_handler:place_signal_limit_order:1335 - Стратегия для APEUSDT: Quantum Gravity2
+2025-11-12 21:32:05 | INFO     | trading.signal_handler:place_signal_limit_order:1336 -    - Канал: -1003193138774
+2025-11-12 21:32:05 | INFO     | trading.signal_handler:place_signal_limit_order:1337 -    - Точна цена з каналу: 0.3669
+2025-11-12 21:32:05 | INFO     | trading.signal_handler:place_signal_limit_order:1338 -    - Направлення: LONG
+2025-11-12 21:32:05 | INFO     | trading.signal_handler:place_signal_limit_order:1349 - Запуск задачі моніторингу для APEUSDT використовуючи Quantum Gravity2
+2025-11-12 21:32:05 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1805 - Запуск монітора з стратегією: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 21:32:05 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1818 - Strategy додана в settings: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 21:32:05 | INFO     | analysis.signals:monitor_and_trade:314 -    - Смещение стоп-лосса: ВЫКЛЮЧЕНО (стоп на экстремуме свечи)
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:place_signal_limit_order:1360 - Завдання моніторингу запущено з Quantum Gravity2
+2025-11-12 21:32:06 | INFO     | __main__:handler_event:649 - 🛰 Запущен мониторинг уровня для APEUSDT — стратегия: Quantum Gravity2
+2025-11-12 21:32:06 | DEBUG    | trading.signal_handler:start_external_trade_monitor:1396 - External trade monitor already running
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 21:32:06 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 21:32:06 | INFO     | __main__:handler_event:406 - 📥 Получено сообщение 832 из целевого канала
+2025-11-12 21:32:06 | INFO     | __main__:handler_event:530 -  Ціна з каналу: 0.09248
+2025-11-12 21:32:06 | INFO     | __main__:handler_event:540 -  Валидный сигнал: PARTIUSDT @ 0.09248 (short)
+2025-11-12 21:32:06 | INFO     | __main__:handler_event:541 - 📍 Точная цена для ордера: 0.09248
+2025-11-12 21:32:06 | INFO     | __main__:handler_event:542 -  ID каналу: -1002990245762
+2025-11-12 21:32:06 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Premium2 для каналу -1002990245762
+2025-11-12 21:32:06 | INFO     | __main__:handler_event:546 -  Стратегия для канала -1002990245762: Quantum Premium2
+2025-11-12 21:32:06 | INFO     | utils.logger:trade_signal:33 - Trade signal received
+2025-11-12 21:32:06 | INFO     | utils.logger:signal_from_channel:39 - Signal from channel
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:349 - 📊 RSI APEUSDT: 26.44
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:354 - ⚙ Настройки для APEUSDT:
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:355 -    - Целевой уровень: 0.3669
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:356 -    - Направление: long
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:357 -    - RSI (з БД): період=14, high=60.0, low=40.0, interval=1
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:358 -    - Таймфрейм: 1m (API: 1)
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:359 -    - Pinbar body ratio: 2.5
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:360 -    - Таймаут пинбара: 10м
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:361 -    - Таймаут уровня: 5м
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:362 -    - IGNORE_PINBAR: True
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:380 -  Стратегія отримана з settings: Quantum Gravity2
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:387 -  Стратегия: Quantum Gravity2
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:388 -    - ID каналу: -1003193138774
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:389 -    - Направление сигнала з каналу: long
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:390 -    - Направление трейда (після стратегії): short
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:391 -    - Ожидание уровня: False
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:392 -    - Требуется откат: True
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:393 -    - Зона поиска: {'search_after_consolidation': True, 'wait_for_rsi': True, 'rsi_condition': 'overbought', 'rsi_threshold': 'high', 'trade_direction': 'short', 'entry_on': 'low', 'stop_on': 'high', 'invalidate_on': 'high'}
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:395 - 📍 ЛОГІКА СТРАТЕГІЇ:
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:407 -    ═══ СТРАТЕГІЯ 2: QUANTUM GRAVITY2 ═══
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:408 -    📌 Торгівля з RSI екстремумами (з БД)
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:410 -    📊 Сигнал з каналу: LONG (підтримка)
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:411 -    ✓ Чекаємо RSI ПЕРЕКУПЛЕНОСТІ (RSI >= 60.0 з БД)
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:412 -    ✓ Ставимо лімітку на LOW свічки
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:413 -    ✓ Відкриваємо SHORT позицію
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:414 -    🔄 Логіка: Підтримка + перекупленість = SHORT на LOW
+2025-11-12 21:32:06 | INFO     | analysis.signals:monitor_and_trade:425 -    - Таймаут лимитного ордера: 3м
+2025-11-12 21:32:06 | INFO     | __main__:handler_event:578 -  IGNORE_PINBAR=True: SHORT ордер буде на LOW свічки: 0.08692000
+2025-11-12 21:32:06 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 21:32:07 | DEBUG    | trading.signal_handler:get_usdt_balance:857 - USDT balance (suppressed INFO): wallet=1824.30 available=1824.30 equity=1824.30
+2025-11-12 21:32:07 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Premium2 для каналу -1002990245762
+2025-11-12 21:32:07 | INFO     | trading.signal_handler:place_signal_limit_order:1335 - Стратегия для PARTIUSDT: Quantum Premium2
+2025-11-12 21:32:07 | INFO     | trading.signal_handler:place_signal_limit_order:1336 -    - Канал: -1002990245762
+2025-11-12 21:32:07 | INFO     | trading.signal_handler:place_signal_limit_order:1337 -    - Точна цена з каналу: 0.08692
+2025-11-12 21:32:07 | INFO     | trading.signal_handler:place_signal_limit_order:1338 -    - Направлення: SHORT
+2025-11-12 21:32:07 | INFO     | trading.signal_handler:place_signal_limit_order:1349 - Запуск задачі моніторингу для PARTIUSDT використовуючи Quantum Premium2
+2025-11-12 21:32:07 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1805 - Запуск монітора з стратегією: Quantum Premium2 (channel: -1002990245762)
+2025-11-12 21:32:07 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1818 - Strategy додана в settings: Quantum Premium2 (channel: -1002990245762)
+2025-11-12 21:32:07 | INFO     | analysis.signals:monitor_and_trade:314 -    - Смещение стоп-лосса: ВЫКЛЮЧЕНО (стоп на экстремуме свечи)
+2025-11-12 21:32:07 | INFO     | analysis.signals:monitor_and_trade:447 -  Стартова ціна для APEUSDT: 0.36470000
+2025-11-12 21:32:07 | INFO     | analysis.signals:monitor_and_trade:448 -  Цільовий рівень: 0.36690000
+2025-11-12 21:32:07 | INFO     | analysis.signals:monitor_and_trade:449 - 📍 Відстань до цілі: 0.00220000
+2025-11-12 21:32:07 | INFO     | trading.signal_handler:place_signal_limit_order:1360 - Завдання моніторингу запущено з Quantum Premium2
+2025-11-12 21:32:07 | INFO     | __main__:handler_event:649 - 🛰 Запущен мониторинг уровня для PARTIUSDT — стратегия: Quantum Premium2
+2025-11-12 21:32:07 | DEBUG    | trading.signal_handler:start_external_trade_monitor:1396 - External trade monitor already running
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 21:32:08 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:349 - 📊 RSI PARTIUSDT: 80.36
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:354 - ⚙ Настройки для PARTIUSDT:
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:355 -    - Целевой уровень: 0.08692
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:356 -    - Направление: short
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:357 -    - RSI (з БД): період=14, high=60.0, low=40.0, interval=1
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:358 -    - Таймфрейм: 1m (API: 1)
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:359 -    - Pinbar body ratio: 2.5
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:360 -    - Таймаут пинбара: 10м
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:361 -    - Таймаут уровня: 5м
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:362 -    - IGNORE_PINBAR: True
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:380 -  Стратегія отримана з settings: Quantum Premium2
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:387 -  Стратегия: Quantum Premium2
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:388 -    - ID каналу: -1002990245762
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:389 -    - Направление сигнала з каналу: short
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:390 -    - Направление трейда (після стратегії): short
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:391 -    - Ожидание уровня: True
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:392 -    - Требуется откат: False
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:393 -    - Зона поиска: {'search_after_touch': True, 'wait_for_extremum': True, 'extremum_type': 'new_high', 'analyze_n_candles': True, 'trade_direction': 'short', 'entry_on': 'low', 'stop_on': 'high', 'invalidate_on': 'high', 'check_rsi_or_divergence': True, 'rsi_condition': 'overbought', 'rsi_threshold': 'high', 'allow_divergence': True}
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:395 - 📍 ЛОГІКА СТРАТЕГІЇ:
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:397 -    ═══ СТРАТЕГІЯ 1: QUANTUM PREMIUM2 ═══
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:398 -    📌 Торгівля ВІД РІВНЯ з пінбаром
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:399 -    ✓ Чекаємо торкання рівня 0.08692000
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:400 -    ✓ Після торкання аналізуємо N свічок (з timeframe)
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:404 -    ✓ SHORT (опір): пінбар оновлює МАКСИМУМ → вхід на LOW
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:405 -    ✓ Торгуємо у ВІДСКОК: SHORT сигнал → SHORT угода
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:425 -    - Таймаут лимитного ордера: 3м
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:525 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:526 -    Сигнал: ПІДТРИМКА
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:527 -    RSI: 26.96 (потрібно >= 60.0)
+2025-11-12 21:32:08 | INFO     | analysis.signals:monitor_and_trade:528 -    Відстань: 33.04 до перекупленості
+2025-11-12 21:32:08 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 21:32:09 | INFO     | analysis.signals:monitor_and_trade:447 -  Стартова ціна для PARTIUSDT: 0.09209000
+2025-11-12 21:32:09 | INFO     | analysis.signals:monitor_and_trade:448 -  Цільовий рівень: 0.08692000
+2025-11-12 21:32:09 | INFO     | analysis.signals:monitor_and_trade:449 - 📍 Відстань до цілі: 0.00517000
+2025-11-12 21:32:09 | INFO     | analysis.signals:monitor_and_trade:494 -  Рівень торкнувся PARTIUSDT @ 0.086920 (поточна: 0.092540)
+2025-11-12 21:32:21 | INFO     | __main__:handler_event:406 - 📥 Получено сообщение 1051 из целевого канала
+2025-11-12 21:32:21 | INFO     | __main__:handler_event:530 -  Ціна з каналу: 0.2191
+2025-11-12 21:32:21 | INFO     | __main__:handler_event:540 -  Валидный сигнал: ERAUSDT @ 0.2191 (long)
+2025-11-12 21:32:21 | INFO     | __main__:handler_event:541 - 📍 Точная цена для ордера: 0.2191
+2025-11-12 21:32:21 | INFO     | __main__:handler_event:542 -  ID каналу: -1003193138774
+2025-11-12 21:32:21 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 21:32:21 | INFO     | __main__:handler_event:546 -  Стратегия для канала -1003193138774: Quantum Gravity2
+2025-11-12 21:32:21 | INFO     | utils.logger:trade_signal:33 - Trade signal received
+2025-11-12 21:32:21 | INFO     | utils.logger:signal_from_channel:39 - Signal from channel
+2025-11-12 21:32:22 | INFO     | __main__:handler_event:575 -  IGNORE_PINBAR=True: LONG ордер буде на HIGH свічки: 0.23020000
+2025-11-12 21:32:22 | DEBUG    | trading.signal_handler:get_usdt_balance:857 - USDT balance (suppressed INFO): wallet=1824.30 available=1824.30 equity=1824.30
+2025-11-12 21:32:22 | INFO     | trading.strategies:get_strategy_for_channel:161 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-11-12 21:32:22 | INFO     | trading.signal_handler:place_signal_limit_order:1335 - Стратегия для ERAUSDT: Quantum Gravity2
+2025-11-12 21:32:22 | INFO     | trading.signal_handler:place_signal_limit_order:1336 -    - Канал: -1003193138774
+2025-11-12 21:32:22 | INFO     | trading.signal_handler:place_signal_limit_order:1337 -    - Точна цена з каналу: 0.2302
+2025-11-12 21:32:22 | INFO     | trading.signal_handler:place_signal_limit_order:1338 -    - Направлення: LONG
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:place_signal_limit_order:1349 - Запуск задачі моніторингу для ERAUSDT використовуючи Quantum Gravity2
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1805 - Запуск монітора з стратегією: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_start_monitor_pinbar_task:1818 - Strategy додана в settings: Quantum Gravity2 (channel: -1003193138774)
+2025-11-12 21:32:23 | INFO     | analysis.signals:monitor_and_trade:314 -    - Смещение стоп-лосса: ВЫКЛЮЧЕНО (стоп на экстремуме свечи)
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:place_signal_limit_order:1360 - Завдання моніторингу запущено з Quantum Gravity2
+2025-11-12 21:32:23 | INFO     | __main__:handler_event:649 - 🛰 Запущен мониторинг уровня для ERAUSDT — стратегия: Quantum Gravity2
+2025-11-12 21:32:23 | DEBUG    | trading.signal_handler:start_external_trade_monitor:1396 - External trade monitor already running
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 21:32:23 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:349 - 📊 RSI ERAUSDT: 23.53
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:354 - ⚙ Настройки для ERAUSDT:
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:355 -    - Целевой уровень: 0.2302
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:356 -    - Направление: long
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:357 -    - RSI (з БД): період=14, high=60.0, low=40.0, interval=1
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:358 -    - Таймфрейм: 1m (API: 1)
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:359 -    - Pinbar body ratio: 2.5
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:360 -    - Таймаут пинбара: 10м
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:361 -    - Таймаут уровня: 5м
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:362 -    - IGNORE_PINBAR: True
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:380 -  Стратегія отримана з settings: Quantum Gravity2
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:387 -  Стратегия: Quantum Gravity2
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:388 -    - ID каналу: -1003193138774
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:389 -    - Направление сигнала з каналу: long
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:390 -    - Направление трейда (після стратегії): short
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:391 -    - Ожидание уровня: False
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:392 -    - Требуется откат: True
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:393 -    - Зона поиска: {'search_after_consolidation': True, 'wait_for_rsi': True, 'rsi_condition': 'overbought', 'rsi_threshold': 'high', 'trade_direction': 'short', 'entry_on': 'low', 'stop_on': 'high', 'invalidate_on': 'high'}
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:395 - 📍 ЛОГІКА СТРАТЕГІЇ:
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:407 -    ═══ СТРАТЕГІЯ 2: QUANTUM GRAVITY2 ═══
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:408 -    📌 Торгівля з RSI екстремумами (з БД)
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:410 -    📊 Сигнал з каналу: LONG (підтримка)
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:411 -    ✓ Чекаємо RSI ПЕРЕКУПЛЕНОСТІ (RSI >= 60.0 з БД)
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:412 -    ✓ Ставимо лімітку на LOW свічки
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:413 -    ✓ Відкриваємо SHORT позицію
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:414 -    🔄 Логіка: Підтримка + перекупленість = SHORT на LOW
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:425 -    - Таймаут лимитного ордера: 3м
+2025-11-12 21:32:24 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:447 -  Стартова ціна для ERAUSDT: 0.22830000
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:448 -  Цільовий рівень: 0.23020000
+2025-11-12 21:32:24 | INFO     | analysis.signals:monitor_and_trade:449 - 📍 Відстань до цілі: 0.00190000
+2025-11-12 21:32:25 | INFO     | analysis.signals:monitor_and_trade:525 - ⏳ GRAVITY2: Чекаємо перекупленості для SHORT
+2025-11-12 21:32:25 | INFO     | analysis.signals:monitor_and_trade:526 -    Сигнал: ПІДТРИМКА
+2025-11-12 21:32:25 | INFO     | analysis.signals:monitor_and_trade:527 -    RSI: 25.03 (потрібно >= 60.0)
+2025-11-12 21:32:25 | INFO     | analysis.signals:monitor_and_trade:528 -    Відстань: 34.97 до перекупленості
+2025-11-12 21:33:00 | INFO     | analysis.signals:monitor_and_trade:875 - 🚀 IGNORE_PINBAR + PREMIUM2: Відкриття на екстремумі свічки
+2025-11-12 21:33:00 | INFO     | analysis.signals:monitor_and_trade:876 -    Стратегія: Quantum Premium2
+2025-11-12 21:33:00 | INFO     | analysis.signals:monitor_and_trade:877 -    Сигнал з каналу: short
+2025-11-12 21:33:00 | INFO     | analysis.signals:monitor_and_trade:878 -    Направлення угоди: short
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 21:33:00 | INFO     | analysis.signals:monitor_and_trade:898 - 📊 Сигнальна свічка: H=0.09392000 L=0.09017000
+2025-11-12 21:33:00 | INFO     | analysis.signals:monitor_and_trade:916 - 📉 PREMIUM2 SHORT (опір)
+2025-11-12 21:33:00 | INFO     | analysis.signals:monitor_and_trade:917 -    Вхід трохи нижче LOW свічки: 0.09016000 (LOW - 0.01%)
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для PARTIUSDT:
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-12 21:33:00 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: SHORT
+2025-11-12 21:33:01 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 21:32:00 12.11.2025
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 0.09392000
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 0.09017000
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2114 - ✅ SHORT: SL = HIGH сигнальної свічки + буфер
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 0.09392000
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 0.09392000
+2025-11-12 21:33:01 | INFO     | analysis.signals:monitor_and_trade:957 - 📝 Розміщення лімітного ордера (IGNORE_PINBAR + PREMIUM2)...
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 1824.30 USDT
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-12 21:33:01 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 1824.30 USDT
+2025-11-12 21:33:01 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-12 21:33:02 | INFO     | utils.logger:limit_order_placed:58 - Limit order placed
+2025-11-12 21:33:02 | INFO     | trading.signal_handler:place_limit_order:1089 - SL буде встановлений після відкриття: 0.09392000 (4.17%)
+2025-11-12 21:33:02 | INFO     | analysis.signals:monitor_and_trade:970 - ✅ Ордер розміщено: PARTIUSDT @ 0.09016000
+2025-11-12 21:33:02 | INFO     | trading.signal_handler:start_external_trade_monitor:1400 - External trade monitor started
+2025-11-12 21:33:02 | ERROR    | trading.signal_handler:_monitor_limit_order_lifetime:341 - Помилка моніторингу часу життя лімітки для PARTIUSDT: '<=' not supported between instances of 'str' and 'int'
+2025-11-12 21:33:02 | INFO     | trading.signal_handler:stop_external_trade_monitor:1414 - External trade monitor stopped
+2025-11-12 21:33:02 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-12 21:33:02 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-12 21:33:02 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-12 21:33:02 | INFO     | analysis.signals:monitor_and_trade:1132 - Моніторинг завершено: PARTIUSDT
+2025-11-12 21:33:02 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-12 21:33:02 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-12 21:33:02 | INFO     | analysis.signals:monitor_and_trade:1132 - Моніторинг завершено: PARTIUSDT
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_watch_position_exit:433 - НЕГАЙНЕ встановлення SL для PARTIUSDT...
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_watch_position_exit:434 -    Позиція виявлена: entry=0.09331000
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_watch_position_exit:435 -    Встановлюємо SL: 0.09392000
+2025-11-12 21:33:03 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:set_stop_loss:1873 -  Стоп-лосс встановлено для PARTIUSDT: 0.09392000
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_watch_position_exit:447 - SL встановлено ОДРАЗУ: 0.09392000
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-12 21:33:03 | INFO     | trading.signal_handler:_watch_position_exit:496 - Запуск RSI TP трекера для PARTIUSDT: dir=short, high=60.0, low=40.0, period=14, interval=1
+2025-11-12 21:33:04 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для PARTIUSDT:
+2025-11-12 21:33:04 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: SHORT
+2025-11-12 21:33:04 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-12 21:33:04 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-12 21:33:04 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-12 21:33:04 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-12 21:33:04 | INFO     | trading.take_profit:track_position_rsi:479 - Position closed for PARTIUSDT
+2025-11-12 21:33:04 | INFO     | trading.signal_handler:_on_rsi_exit:494 - RSI TP выход обратного вызова для PARTIUSDT: причина=position_closed, инфо={'reason': 'missing_position'}
+2025-11-12 21:33:04 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for PARTIUSDT
+2025-11-12 21:33:07 | DEBUG    | trading.signal_handler:_get_latest_close_order:547 - Не знайдено інформацію про закритий ордер для PARTIUSDT
+2025-11-12 21:33:08 | DEBUG    | trading.signal_handler:_get_latest_close_order:547 - Не знайдено інформацію про закритий ордер для PARTIUSDT
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_determine_exit_reason:1926 -  Нет close_order для PARTIUSDT, но RSI трекер был активен - это RSI take-profit
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_watch_position_exit:521 - Причина закриття PARTIUSDT: take_profit
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:571 - Обработка закрытия PARTIUSDT:
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:572 -    - Причина: take_profit
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:573 -    - Направление: short
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:574 -    - Источник: monitor_quantum_premium2_ignore_pinbar
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:575 -    - Цена входа: 0.090160
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:576 -    - Цена закрытия: 0.093410
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:577 -    - Стоп-лосс: 0.093920
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:578 -    - Тейк-профіт: N/A
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:636 -    - Попытки: 0/5
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:664 - Позиция по PARTIUSDT (short) закрыта по тейк-профиту
+2025-11-12 21:33:08 | WARNING  | utils.logger:reentry_blocked:93 - Re-entry blocked
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:719 - Повторний вхід ЗАБОРОНЕНИЙ для PARTIUSDT:
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:720 -    - Причина закриття: take_profit
+2025-11-12 21:33:08 | INFO     | trading.signal_handler:_handle_position_exit:721 -    - Кількість спроб: 0/5
+2025-11-12 21:33:08 | WARNING  | trading.signal_handler:__del__:745 - SignalHandler собран сборщиком мусора с открытой сессией aiohttp; вызовите await close() явно.
+2025-11-12 21:41:13 | INFO     | analysis.signals:monitor_and_trade:519 - ✅ GRAVITY2: RSI ПЕРЕКУПЛЕНІСТЬ для SHORT
+2025-11-12 21:41:13 | INFO     | analysis.signals:monitor_and_trade:520 -    Сигнал з каналу: LONG (підтримка)
+2025-11-12 21:41:13 | INFO     | analysis.signals:monitor_and_trade:521 -    Відкриваємо: SHORT позицію
+2025-11-12 21:41:13 | INFO     | analysis.signals:monitor_and_trade:522 -    RSI: 60.69 >= 60.0 (поріг перекупленості)
+2025-11-12 21:41:13 | INFO     | analysis.signals:monitor_and_trade:523 -    Вхід буде на LOW свічки

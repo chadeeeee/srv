@@ -262,6 +262,111 @@ class SignalHandler:
             self._active_monitors -= 1
         if self._active_monitors == 0:
             await self._close_session()
+    
+    async def _monitor_limit_order_lifetime(self, pair, order_id, check_interval=10):
+        """
+        Моніторинг часу життя лімітного ордера.
+        Якщо ордер не виконався протягом вказаного часу, він скасовується.
+        """
+        try:
+            settings = get_settings()
+            lifetime_minutes = settings.get('limit_order_lifetime', 5)
+            
+            if lifetime_minutes <= 0:
+                logger.info(f"Моніторинг часу життя лімітки вимкнено для {pair}")
+                return
+            
+            lifetime_seconds = lifetime_minutes * 60
+            meta = self._position_meta.get(order_id)
+            
+            if not meta:
+                logger.warning(f"Немає метаданих для ордера {order_id}, пропускаємо моніторинг часу життя")
+                return
+            
+            created_at = meta.get('created_at', time.time())
+            logger.info(f"Запущено моніторинг часу життя лімітки для {pair}: {lifetime_minutes} хв (order_id: {order_id})")
+            
+            while True:
+                await asyncio.sleep(check_interval)
+                
+                current_meta = self._position_meta.get(order_id)
+                if not current_meta:
+                    logger.info(f"Ордер {order_id} для {pair} більше не існує в метаданих")
+                    return
+                
+                try:
+                    position = await self._take_profit_helper.get_position(pair)
+                    if position and float(position.get("size", 0) or 0) > 0:
+                        logger.info(f"Лімітний ордер {order_id} для {pair} виконався - позиція відкрита")
+                        return
+                except Exception as e:
+                    logger.error(f"Помилка перевірки позиції для {pair}: {e}")
+                
+                elapsed = time.time() - created_at
+                if elapsed >= lifetime_seconds:
+                    logger.warning(f"ТАЙМАУТ! Лімітний ордер {order_id} для {pair} не виконався за {lifetime_minutes} хв. Скасовуємо...")
+                    
+                    try:
+                        cancel_result = await self._cancel_order(pair, order_id)
+                        if cancel_result:
+                            logger.info(f"Лімітний ордер {order_id} для {pair} успішно скасовано")
+                            try:
+                                await notify_user(
+                                    f"Лімітка скасована по таймауту\n"
+                                    f"━━━━━━━━━━━━━━━━━━\n"
+                                    f"Монета: {pair}\n"
+                                    f"Напрямок: {current_meta.get('direction', 'N/A').upper()}\n"
+                                    f"Ціна входу: {current_meta.get('entry_price', 0):.8f}\n"
+                                    f"Час життя: {lifetime_minutes} хв\n"
+                                    f"Причина: не виконалась протягом {lifetime_minutes} хвилин"
+                                )
+                            except Exception:
+                                pass
+                        else:
+                            logger.error(f"Не вдалося скасувати лімітний ордер {order_id} для {pair}")
+                    except Exception as e:
+                        logger.error(f"Помилка скасування ордера {order_id} для {pair}: {e}")
+                    
+                    if order_id in self._position_meta:
+                        del self._position_meta[order_id]
+                    if pair in self._pair_to_order:
+                        del self._pair_to_order[pair]
+                    
+                    return
+                
+        except asyncio.CancelledError:
+            logger.info(f"Моніторинг часу життя лімітки для {pair} скасовано")
+            return
+        except Exception as e:
+            logger.error(f"Помилка моніторингу часу життя лімітки для {pair}: {e}")
+            return
+    
+    async def _cancel_order(self, pair, order_id):
+        """
+        Скасування ордера через Bybit API
+        """
+        try:
+            params = {
+                "category": "linear",
+                "symbol": pair,
+                "orderId": order_id
+            }
+            
+            result = await self._signed_request("POST", "/v5/order/cancel", params)
+            
+            if result and result.get("retCode") == 0:
+                logger.info(f"Ордер {order_id} для {pair} успішно скасовано")
+                return True
+            else:
+                ret_code = result.get("retCode") if result else "N/A"
+                ret_msg = result.get("retMsg", "Невідома помилка") if result else "Немає відповіді"
+                logger.error(f"Не вдалося скасувати ордер {order_id} для {pair}: {ret_msg} (код {ret_code})")
+                return False
+                
+        except Exception as e:
+            logger.error(f"Помилка скасування ордера {order_id} для {pair}: {e}")
+            return False
+    
     async def _watch_position_exit(self, pair, poll_interval=3):
         order_id = self._pair_to_order.get(pair)
         if not order_id:
@@ -997,12 +1102,14 @@ class SignalHandler:
                     "order_value": order_value,
                     "quantity_asset": quantity_asset,
                     "created_at": time.time(),
-                    "retry_count": meta.get("retry_count", 0)
+                    "retry_count": meta.get("retry_count", 0),
+                    "limit_order_id": order_id
                 })
                 self._position_meta[order_id] = meta
                 self._pair_to_order[pair] = order_id
                 self._active_monitors += 1
                 asyncio.create_task(self._watch_position_exit(pair))
+                asyncio.create_task(self._monitor_limit_order_lifetime(pair, order_id))
             return result["result"]
         else:
             if not result:
@@ -1014,6 +1121,150 @@ class SignalHandler:
             else:
                 logger.error(f"Не вдалося розмістити лімітний ордер для {pair}: Невідомий формат відповіді - {result}")
         return None
+    
+    async def place_market_order(self, pair, direction, quantity_usdt, stop_loss=None, take_profit=None, metadata=None):
+        """
+        ✅ NOWA FUNKCJA: Otwiera zlecenie rynkowe (Market Order)
+        Używane przez logikę trigger w strategii Gravity2 SHORT
+        """
+        if await self._is_drawdown_blocked():
+            logger.warning(f"Пропускаємо ринкове замовлення для {pair}: захист по просадці")
+            return None
+        
+        # Sprawdź czy pozycja już istnieje
+        position = await self._take_profit_helper.get_position(pair)
+        size = 0.0
+        if position:
+            size = float(position.get("size", 0) or 0)
+        if size > 0:
+            logger.info(f"Позиція по {pair} вже відкрита (розмір {size}), пропускаємо відкриття нової.")
+            return None
+        
+        specs = await self._get_symbol_specs(pair)
+        price_step = specs.get("price_step", 0.0)
+        
+        # Pobierz aktualną cenę rynkową
+        current_price = await self.get_real_time_price(pair)
+        if not current_price:
+            logger.error(f"Не вдалося отримати поточну ціну для {pair}")
+            return None
+        
+        stop_loss_float = float(stop_loss) if stop_loss is not None else None
+        take_profit_float = float(take_profit) if take_profit is not None else None
+        
+        # Walidacja stop loss
+        if stop_loss_float is not None:
+            if direction == "long":
+                if stop_loss_float >= current_price:
+                    logger.warning(f"⚠ Стоп-лосс {stop_loss_float} >= поточної ціни {current_price} для LONG. Коригуємо...")
+                    stop_loss_float = current_price * 0.993
+            else:
+                if stop_loss_float <= current_price:
+                    logger.warning(f"⚠ Стоп-лосс {stop_loss_float} <= поточної ціни {current_price} для SHORT. Коригуємо...")
+                    stop_loss_float = current_price * 1.007
+        
+        # Kwantyzacja stop loss i take profit
+        if stop_loss_float is not None:
+            sl_rounding = ROUND_DOWN if direction == "long" else ROUND_UP
+            stop_loss_float = self._quantize_price(stop_loss_float, price_step, sl_rounding)
+        
+        if take_profit_float is not None:
+            tp_rounding = ROUND_UP if direction == "long" else ROUND_DOWN
+            take_profit_float = self._quantize_price(take_profit_float, price_step, tp_rounding)
+        
+        # Oblicz wielkość pozycji
+        quantity_usdt_value = float(quantity_usdt)
+        margin_usdt = quantity_usdt_value
+        leverage = 10
+        notional_usdt = margin_usdt * leverage
+        quantity_asset = self._quantize(notional_usdt / current_price, specs["qty_step"])
+        if quantity_asset < specs["min_qty"]:
+            quantity_asset = specs["min_qty"]
+        
+        order_value = quantity_asset * current_price
+        
+        # Parametry zlecenia rynkowego
+        params = {
+            "category": "linear",
+            "symbol": pair,
+            "side": "Buy" if direction == "long" else "Sell",
+            "orderType": "Market",
+            "qty": format(quantity_asset, 'f'),
+            "reduceOnly": False,
+            "positionIdx": 0
+        }
+        
+        logger.info(f"🚀 MARKET ORDER: {pair} {direction.upper()}")
+        logger.info(f"   Ціна: ~{current_price:.8f} (ринкова)")
+        logger.info(f"   Розмір: {quantity_asset} ({order_value:.2f} USDT @ {leverage}x)")
+        if stop_loss_float:
+            logger.info(f"   Stop Loss: {stop_loss_float:.8f}")
+        if take_profit_float:
+            logger.info(f"   Take Profit: {take_profit_float:.8f}")
+        
+        result = await self._signed_request("POST", "/v5/order/create", params)
+        
+        if result and result.get("retCode") == 0:
+            logger.info(f"✅ РИНКОВЕ ЗАМОВЛЕННЯ розміщено: {pair} {direction.upper()}")
+            
+            order_id = result["result"].get("orderId")
+            if order_id:
+                meta = dict(metadata or {})
+                meta.update({
+                    "pair": pair,
+                    "direction": direction,
+                    "entry_price": current_price,  # Przybliżona cena
+                    "stop_loss": stop_loss_float,
+                    "take_profit": take_profit_float,
+                    "order_value": order_value,
+                    "quantity_asset": quantity_asset,
+                    "created_at": time.time(),
+                    "retry_count": meta.get("retry_count", 0),
+                    "market_order_id": order_id,
+                    "order_type": "market"
+                })
+                
+                self._position_meta[order_id] = meta
+                self._pair_to_order[pair] = order_id
+                self._bot_owned_positions.add(pair)
+                self._bot_owned_order_ids.add(order_id)
+                
+                # Uruchom monitoring pozycji
+                self._active_monitors += 1
+                asyncio.create_task(self._watch_position_exit(pair))
+                
+                # Powiadomienie Telegram
+                try:
+                    msg = (
+                        f"🚀 MARKET ORDER OTWARTE\n"
+                        f"━━━━━━━━━━━━━━━━━━\n"
+                        f"Монета: {pair}\n"
+                        f"Напрямок: {direction.upper()}\n"
+                        f"Ціна: ~{current_price:.8f}\n"
+                    )
+                    if stop_loss_float:
+                        msg += f"Stop Loss: {stop_loss_float:.8f}\n"
+                    if take_profit_float:
+                        msg += f"Take Profit: {take_profit_float:.8f}\n"
+                    msg += f"Тип: TRIGGER (Gravity2)"
+                    
+                    await notify_user(msg)
+                except Exception as e:
+                    logger.error(f"Помилка відправки повідомлення: {e}")
+            
+            return result["result"]
+        else:
+            if not result:
+                logger.error(f"❌ Не вдалося розмістити ринкове замовлення для {pair}: Немає відповіді від API")
+            elif result.get("retCode") != 0:
+                ret_code = result.get("retCode")
+                ret_msg = result.get("retMsg", "Невідома помилка")
+                logger.error(f"❌ Не вдалося розмістити ринкове замовлення для {pair}: {ret_msg} (код {ret_code})")
+            else:
+                logger.error(f"❌ Не вдалося розмістити ринкове замовлення для {pair}: Невідомий формат відповіді")
+        
+        return None
+    
     async def _wait_and_place_limit(self, pair, direction, target_price, quantity_usdt, stop_loss_price, take_profit_price, metadata, timeout_minutes=60, poll_interval=1.0):
         try:
             deadline = time.time() + max(60, int(timeout_minutes) * 60)

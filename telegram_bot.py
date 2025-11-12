@@ -35,6 +35,7 @@ class SettingsStates(StatesGroup):
     waiting_for_pause_after_losses = State()
     waiting_for_max_equity_drawdown = State()
     waiting_for_pinbar_body_ratio = State()
+    waiting_for_limit_order_lifetime = State()
 
 def main_menu_keyboard():
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -140,6 +141,7 @@ def security_menu_keyboard(settings):
     settings.get('max_losses_in_row')
     pause_after_losses = settings.get('pause_after_losses')
     settings.get('max_equity_drawdown')
+    limit_order_lifetime = settings.get('limit_order_lifetime', 5)
     bot_active = is_bot_active()
     dd_protection = is_drawdown_protection_active()
     bot_status = "Включены" if bot_active else "Отключены"
@@ -149,18 +151,23 @@ def security_menu_keyboard(settings):
         f"<b>Настройки Безопасности:</b>\n\n"
         f"Макс. просадка (%): <code>{_format_value(max_drawdown, 'drawdown')}</code>\n"
         f"Лимит свечей до отмены: <code>{_format_value(limit_candles, 'candles')}</code>\n"
+        f"Жизнь лимитки (мин): <code>{_format_value(limit_order_lifetime, 'limit_order_lifetime')}</code>\n"
         f"Смещение стоп-лосса: <code>{_format_value(stop_loss_offset, 'stop_loss_offset')}</code>\n"
         f"Смещение входа (%): <code>{_format_value(entry_offset, 'entry_offset')}</code>\n"
         f"Таймаут ожидания пинбара (мин): <code>{_format_value(pinbar_timeout, 'pinbar_timeout')}</code>\n"
         f"Пауза после убытков (мин): <code>{_format_value(pause_after_losses, 'pause_after_losses')}</code>\n"
         f"Новые сделки: <code>{bot_status}</code>\n"
         f"<i>Для включения новых сделок напишите START в канал</i>\n\n"
-        f"<b> Смещение стоп-лосса:</b>\n"
+        f"<b>Жизнь лимитки:</b>\n"
+        f"• Количество минут, в течение которых лимитный ордер может оставаться открытым\n"
+        f"• Если лимитка не исполнилась за это время, она автоматически отменяется\n"
+        f"• Например, 5 = лимитка будет отменена через 5 минут, если не исполнилась\n\n"
+        f"<b>📍 Смещение стоп-лосса:</b>\n"
         f"• 0 или Отключено = стоп точно на экстремуме свечи\n"
         f"• 0.0001 = 0.01% от цены\n"
         f"• 0.001 = 0.1% от цены\n"
         f"• 0.01 = 1% от цены\n\n"
-        f"<b> Смещение входа:</b>\n"
+        f"<b>🎯 Смещение входа:</b>\n"
         f"• 0 = вход точно на HIGH/LOW свечи\n"
         f"• 0.01 = 0.01% за экстремум (рекомендовано)\n"
         f"• 0.05 = 0.05% за экстремум\n"
@@ -170,6 +177,7 @@ def security_menu_keyboard(settings):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Макс. просадка (%)", callback_data="security_drawdown")],
         [InlineKeyboardButton(text="Лимит свечей", callback_data="security_candles")],
+        [InlineKeyboardButton(text="Жизнь лимитки (мин)", callback_data="security_limit_order_lifetime")],
         [InlineKeyboardButton(text="Таймаут ожидания пинбара (мин)", callback_data="security_pinbar_timeout")],
         [InlineKeyboardButton(text="Смещение стоп-лосса", callback_data="security_stop_loss_offset")],
         [InlineKeyboardButton(text="🎯 Смещение входа (%)", callback_data="security_entry_offset")],
@@ -312,6 +320,7 @@ def init_bot():
         dp.message.register(process_pause_after_losses_input, SettingsStates.waiting_for_pause_after_losses)
         dp.message.register(process_max_equity_drawdown_input, SettingsStates.waiting_for_max_equity_drawdown)
         dp.message.register(process_pinbar_body_ratio_input, SettingsStates.waiting_for_pinbar_body_ratio)
+        dp.message.register(process_limit_order_lifetime_input, SettingsStates.waiting_for_limit_order_lifetime)
     except Exception as e:
         logger.error(f"Error registering aiogram handlers: {e}")
     return bot, dp
@@ -580,6 +589,15 @@ async def process_security_setting(callback: CallbackQuery, state: FSMContext):
             reply_markup=keyboard
         )
         await state.set_state(SettingsStates.waiting_for_limit_candles)
+    elif callback.data == "security_limit_order_lifetime":
+        keyboard = input_keyboard("back_security")
+        await callback.message.edit_text(
+            "Введите время жизни лимитного ордера в минутах (например, 5):\n\n"
+            "Если лимитка не исполнилась за это время, она будет автоматически отменена.\n"
+            "Рекомендуется: 3-10 минут",
+            reply_markup=keyboard
+        )
+        await state.set_state(SettingsStates.waiting_for_limit_order_lifetime)
     elif callback.data == "security_pinbar_timeout":
         keyboard = input_keyboard("back_security")
         await callback.message.edit_text(
@@ -743,6 +761,22 @@ async def process_max_equity_drawdown_input(message: Message, state: FSMContext)
     except ValueError:
         await message.answer(" Неверное значение. Введите число.")
 
+async def process_limit_order_lifetime_input(message: Message, state: FSMContext):
+    try:
+        value = int(message.text)
+        if value < 1:
+            await message.answer("Значение должно быть больше 0")
+            return
+        update_setting('limit_order_lifetime', value)
+        await message.answer(f"Время жизни лимитного ордера установлено: {value} минут\n\n"
+                           f"Лимитки будут автоматически отменяться через {value} минут, если не исполнятся.")
+        settings = get_settings()
+        text, keyboard = security_menu_keyboard(settings)
+        await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
+        await state.clear()
+    except ValueError:
+        await message.answer("Неверное значение. Введите целое число минут (например, 5).")
+
 async def process_position_setting(callback: CallbackQuery, state: FSMContext):
     keyboard = input_keyboard("back_main")
     await callback.message.edit_text(
@@ -855,6 +889,7 @@ async def process_disable_setting(callback: CallbackQuery, state: FSMContext):
         'SettingsStates:waiting_for_max_losses_in_row': ('max_losses_in_row', 'back_security'),
         'SettingsStates:waiting_for_pause_after_losses': ('pause_after_losses', 'back_security'),
         'SettingsStates:waiting_for_max_equity_drawdown': ('max_equity_drawdown', 'back_security'),
+        'SettingsStates:waiting_for_limit_order_lifetime': ('limit_order_lifetime', 'back_security'),
     }
     if current_state in field_map:
         field, back_callback = field_map[current_state]

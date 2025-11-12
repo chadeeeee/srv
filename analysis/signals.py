@@ -570,6 +570,193 @@ async def monitor_and_trade(pair, target, direction, settings):
                 should_search = consolidated
             
             if should_search:
+                # ✅ NOWA LOGIKA: Trigger dla Gravity2 SHORT
+                # Sprawdź czy strategia używa trigger logic
+                use_trigger = strategy.use_trigger_logic(trade_direction)
+                
+                if use_trigger and settings.get('trigger_wait_enabled', False):
+                    logger.info(f"🎯 TRIGGER LOGIC: Gravity2 {trade_direction.upper()}")
+                    logger.info(f"   Стратегія: {strategy.name}")
+                    logger.info(f"   Сигнал з каналу: {direction}")
+                    logger.info(f"   Направлення угоди: {trade_direction}")
+                    
+                    try:
+                        # Pobierz ustawienia trigger
+                        trigger_wait_seconds = int(settings.get('trigger_wait_seconds', 3))
+                        trigger_timeout_minutes = int(settings.get('trigger_timeout_minutes', 60))
+                        trigger_candle_check = settings.get('trigger_candle_check_enabled', True)
+                        
+                        logger.info(f"   Налаштування trigger:")
+                        logger.info(f"      - Очікування після активації: {trigger_wait_seconds}s")
+                        logger.info(f"      - Таймаут: {trigger_timeout_minutes}m")
+                        logger.info(f"      - Перевірка виходу за свічку: {trigger_candle_check}")
+                        
+                        # Pobierz świecę sygnałową (ostatnia zamknięta)
+                        tf_display = settings.get('timeframe', '1m')
+                        tf_api = signal_handler._parse_timeframe_for_api(tf_display)
+                        
+                        current_candles = await signal_handler.get_klines(pair, tf_api, limit=3)
+                        
+                        if not current_candles or len(current_candles) < 2:
+                            logger.error(f"❌ Не вдалося отримати свічки для {pair}")
+                            break
+                        
+                        signal_candle = current_candles[-2]  # Ostatnia zamknięta świeca
+                        candle_high = float(signal_candle[2])
+                        candle_low = float(signal_candle[3])
+                        
+                        logger.info(f"📊 Сигнальна свічка (TF {tf_display}):")
+                        logger.info(f"      HIGH: {candle_high:.8f}")
+                        logger.info(f"      LOW: {candle_low:.8f}")
+                        
+                        # Określ cenę trigger
+                        # Dla SHORT: trigger na LOW świecy (cena musi spaść do LOW)
+                        # Dla LONG: trigger na HIGH świecy (cena musi wzrosnąć do HIGH)
+                        if trade_direction == 'short':
+                            trigger_price = candle_low
+                            logger.info(f"🎯 TRIGGER dla SHORT: {trigger_price:.8f} (LOW свічки)")
+                        else:
+                            trigger_price = candle_high
+                            logger.info(f"🎯 TRIGGER dla LONG: {trigger_price:.8f} (HIGH свічки)")
+                        
+                        # Monitoruj cenę i czekaj na aktywację triggera
+                        logger.info(f"👀 Очікування активації trigger для {pair}...")
+                        
+                        trigger_activated = False
+                        trigger_start_time = time.time()
+                        trigger_timeout = trigger_timeout_minutes * 60
+                        
+                        while time.time() - trigger_start_time < trigger_timeout:
+                            if not _active_monitors.get(pair, False):
+                                logger.info(f"⛔ Моніторинг зупинено для {pair}")
+                                break
+                            
+                            current_price = await signal_handler.get_real_time_price(pair)
+                            if current_price is None:
+                                await asyncio.sleep(1)
+                                continue
+                            
+                            # Sprawdź czy trigger został aktywowany
+                            if trade_direction == 'short' and current_price <= trigger_price:
+                                trigger_activated = True
+                                logger.info(f"✅ TRIGGER AKTYWOWANY dla SHORT!")
+                                logger.info(f"   Поточна ціна: {current_price:.8f}")
+                                logger.info(f"   Trigger: {trigger_price:.8f}")
+                                break
+                            elif trade_direction == 'long' and current_price >= trigger_price:
+                                trigger_activated = True
+                                logger.info(f"✅ TRIGGER AKTYWOWANY dla LONG!")
+                                logger.info(f"   Поточна ціна: {current_price:.8f}")
+                                logger.info(f"   Trigger: {trigger_price:.8f}")
+                                break
+                            
+                            await asyncio.sleep(0.5)  # Szybkie odpytywanie
+                        
+                        if not trigger_activated:
+                            logger.warning(f"⏱ Таймаут trigger для {pair} ({trigger_timeout_minutes}m)")
+                            break
+                        
+                        # Czekaj określony czas po aktywacji
+                        if trigger_wait_seconds > 0:
+                            logger.info(f"⏳ Очікування {trigger_wait_seconds}s після активації trigger...")
+                            await asyncio.sleep(trigger_wait_seconds)
+                        
+                        # Sprawdź czy cena pozostaje poza świecą sygnałową
+                        if trigger_candle_check:
+                            final_price = await signal_handler.get_real_time_price(pair)
+                            if final_price is None:
+                                logger.error(f"❌ Не вдалося отримати фінальну ціну для {pair}")
+                                break
+                            
+                            # Dla SHORT: cena powinna być poniżej LOW świecy
+                            # Dla LONG: cena powinna być powyżej HIGH świecy
+                            if trade_direction == 'short':
+                                if final_price > candle_low:
+                                    logger.warning(f"❌ Ціна повернулась у діапазон свічки!")
+                                    logger.warning(f"   Поточна: {final_price:.8f} > LOW: {candle_low:.8f}")
+                                    logger.warning(f"   Пропускаємо відкриття позиції")
+                                    break
+                                else:
+                                    logger.info(f"✅ Ціна залишається за межами свічки: {final_price:.8f} <= {candle_low:.8f}")
+                            else:  # long
+                                if final_price < candle_high:
+                                    logger.warning(f"❌ Ціна повернулась у діапазон свічки!")
+                                    logger.warning(f"   Поточна: {final_price:.8f} < HIGH: {candle_high:.8f}")
+                                    logger.warning(f"   Пропускаємо відкриття позиції")
+                                    break
+                                else:
+                                    logger.info(f"✅ Ціна залишається за межами свічки: {final_price:.8f} >= {candle_high:.8f}")
+                        
+                        # Wszystkie warunki spełnione - otwórz zlecenie rynkowe
+                        logger.info(f"🚀 Відкриття MARKET ORDER для {pair}")
+                        
+                        # Oblicz stop loss na podstawie ekstremum świecy sygnałowej
+                        extremum_data = await signal_handler.get_candle_extremum_from_db_timeframe(
+                            pair, 
+                            trade_direction,
+                            pinbar_candle_index=None
+                        )
+                        
+                        if not extremum_data:
+                            logger.error(f"❌ Не вдалося отримати дані екстремума для {pair}")
+                            break
+                        
+                        stop_loss_price = extremum_data["stop_price"]
+                        
+                        # Walidacja stop loss
+                        market_price = await signal_handler.get_real_time_price(pair)
+                        if trade_direction == 'long' and stop_loss_price >= market_price:
+                            logger.error(f"❌ КРИТИЧНО: SL >= Market Price для LONG!")
+                            logger.error(f"   Market: {market_price:.8f}, SL: {stop_loss_price:.8f}")
+                            break
+                        if trade_direction == 'short' and stop_loss_price <= market_price:
+                            logger.error(f"❌ КРИТИЧНО: SL <= Market Price для SHORT!")
+                            logger.error(f"   Market: {market_price:.8f}, SL: {stop_loss_price:.8f}")
+                            break
+                        
+                        qty_usdt = await risk_manager.calculate_position_size(pair, market_price)
+                        if not qty_usdt or qty_usdt < 10:
+                            qty_usdt = 10
+                        
+                        metadata = {
+                            "source": f"trigger_{strategy.name.lower().replace(' ', '_')}",
+                            "signal_level": float(target),
+                            "trigger_price": trigger_price,
+                            "direction": trade_direction,
+                            "timeframe": timeframe,
+                            "strategy": strategy.name,
+                            "trigger_logic": True,
+                            "signal_direction": direction,
+                            "candle_high": candle_high,
+                            "candle_low": candle_low
+                        }
+                        
+                        logger.info(f"📝 Розміщення MARKET ORDER (TRIGGER)...")
+                        
+                        result = await signal_handler.place_market_order(
+                            pair=pair,
+                            direction=trade_direction,
+                            quantity_usdt=qty_usdt,
+                            stop_loss=stop_loss_price,
+                            take_profit=None,
+                            metadata=metadata
+                        )
+                        
+                        if result:
+                            logger.info(f"✅ Market order розміщено: {pair}")
+                            await signal_handler.start_external_trade_monitor()
+                        else:
+                            logger.error(f"❌ Не вдалося розмістити market order для {pair}")
+                        
+                    except Exception as e:
+                        logger.error(f"❌ Помилка trigger logic для {pair}: {e}")
+                        import traceback
+                        logger.error(traceback.format_exc())
+                    finally:
+                        _active_monitors[pair] = False
+                    
+                    break  # Zakończ monitoring po trigger logic
+                
                 # CHECK: If IGNORE_PINBAR is enabled and strategy requires pullback (GRAVITY2)
                 if ignore_pinbar and requires_pullback:
                     logger.info(f"🚀 IGNORE_PINBAR + GRAVITY2: Відкриття на екстремумі свічки")

@@ -41,6 +41,7 @@ SETTING_COLUMNS = (
     'max_equity_drawdown',
     'losses_in_row',
     'pause_until',
+    'limit_order_lifetime',
 )
 ALLOWED_FIELDS = set(SETTING_COLUMNS) - {'id'}
 
@@ -76,6 +77,7 @@ _settings_store = {
     "strategy_list": set(s.strip() for s in (CONFIG.get("STRATEGY","Quantum") or "Quantum").split(",") if s.strip()),
     "equity_peak": 0.0,
     "dd_stop_active": False,
+    "limit_order_lifetime": CONFIG.get("LIMIT_ORDER_LIFETIME", 5),
 }
 _db_ready = False
 
@@ -149,7 +151,7 @@ def init_db():
                     'pinbar_tail_percent','pinbar_body_percent','pinbar_opposite_percent',
                     'position_size_percent','limit_timeout','max_losses_in_row','pause_after_losses',
                     'max_equity_drawdown','losses_in_row','pause_until','bot_was_active_before_panika',
-                    'timestamp_offset','body_tail_ratio','pinbar_size']:
+                    'timestamp_offset','body_tail_ratio','pinbar_size','limit_order_lifetime']:
             cur.execute(f"ALTER TABLE settings ADD COLUMN IF NOT EXISTS {col} TEXT")
         
         cur.execute("CREATE TABLE IF NOT EXISTS blacklist (symbol TEXT PRIMARY KEY)")

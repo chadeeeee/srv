@@ -22,19 +22,15 @@ class BaseStrategy:
     
     def requires_pullback(self) -> bool:
         raise NotImplementedError
+    
+    def use_trigger_logic(self, trade_direction: str) -> bool:
+        """
+        Określa czy strategia używa logiki trigger dla danego kierunku.
+        Trigger = obserwacja ceny i opóźnione otwarcie zlecenia.
+        """
+        return False
 
 class QuantumPremium2Strategy(BaseStrategy):
-    """
-    Стратегія 1: Торгівля від рівня з пінбаром
-    
-    Логіка:
-    1. Після повідомлення "чекаємо на дотик рівня" - чекаємо торкання
-    2. Від свічки, що торкнулась рівня, починаємо пошук пінбара
-    3. Аналізуємо тільки N свічок (з налаштувань timeframe)
-    4. Для LONG (підтримка): пінбар повинен оновити мінімум після торкання
-    5. Для SHORT (опір): пінбар повинен оновити максимум після торкання
-    6. Відкриваємо позицію в напрямку сигналу з каналу
-    """
     def __init__(self, channel_id: int):
         super().__init__("Quantum Premium2", channel_id)
     
@@ -47,7 +43,8 @@ class QuantumPremium2Strategy(BaseStrategy):
         return signal_direction
     
     def needs_reversal_signal(self) -> bool:
-        return False
+        """✅ НОВИНКА: Потрібна перевірка RSI або дивергенції"""
+        return True
     
     def requires_pullback(self) -> bool:
         """Не потрібен відкат, працюємо від рівня"""
@@ -55,51 +52,48 @@ class QuantumPremium2Strategy(BaseStrategy):
     
     def get_pinbar_search_zone(self, level: float, direction: str) -> dict:
         """
-        Параметри пошуку пінбара:
-        - search_after_touch: починаємо пошук після торкання рівня
-        - wait_for_extremum: чекаємо оновлення екстремуму
-        - analyze_n_candles: аналізуємо N свічок після торкання
+        Зона пошуку пінбара після торкання рівня
+        
+        direction - напрямок сигналу:
+        - "long" (підтримка) → пінбар має оновити LOW → вхід на HIGH
+        - "short" (опір) → пінбар має оновити HIGH → вхід на LOW
         """
         if direction == "long":
-            # LONG (підтримка): пінбар оновлює мінімум, входимо на HIGH
+            # Сигнал LONG (підтримка)
             return {
                 "search_after_touch": True,
                 "wait_for_extremum": True,
-                "extremum_type": "new_low",  # Оновлює мінімум
+                "extremum_type": "new_low",
+                "analyze_n_candles": True,
                 "trade_direction": "long",
                 "entry_on": "high",
                 "stop_on": "low",
                 "invalidate_on": "low",
-                "analyze_n_candles": True  # Аналізуємо точну кількість з налаштувань
+                # ✅ НОВИНКА: Додаємо перевірку RSI або дивергенції
+                "check_rsi_or_divergence": True,
+                "rsi_condition": "oversold",      # RSI < rsi_low
+                "rsi_threshold": "low",
+                "allow_divergence": True          # Або дивергенція
             }
         else:
-            # SHORT (опір): пінбар оновлює максимум, входимо на LOW
+            # Сигнал SHORT (опір)
             return {
                 "search_after_touch": True,
                 "wait_for_extremum": True,
-                "extremum_type": "new_high",  # Оновлює максимум
+                "extremum_type": "new_high",
+                "analyze_n_candles": True,
                 "trade_direction": "short",
                 "entry_on": "low",
                 "stop_on": "high",
                 "invalidate_on": "high",
-                "analyze_n_candles": True  # Аналізуємо точну кількість з налаштувань
+                # ✅ НОВИНКА: Додаємо перевірку RSI або дивергенції
+                "check_rsi_or_divergence": True,
+                "rsi_condition": "overbought",    # RSI > rsi_high
+                "rsi_threshold": "high",
+                "allow_divergence": True          # Або дивергенція
             }
 
 class QuantumGravity2Strategy(BaseStrategy):
-    """
-    Стратегія 2: Торгівля з відкатом та RSI
-    
-    Логіка:
-    1. Сигнал ПІДТРИМКИ (LONG з каналу):
-       - Чекаємо зону ПЕРЕКУПЛЕНОСТІ (RSI > rsi_high)
-       - Відкриваємо SHORT на LOW свічки
-    
-    2. Сигнал ОПОРУ (SHORT з каналу):
-       - Чекаємо зону ПЕРЕПРОДАНОСТІ (RSI < rsi_low)
-       - Відкриваємо LONG на HIGH свічки
-    
-    ВАЖЛИВО: Напрямок угоди протилежний сигналу!
-    """
     def __init__(self, channel_id: int):
         super().__init__("Quantum Gravity2", channel_id)
     
@@ -108,11 +102,6 @@ class QuantumGravity2Strategy(BaseStrategy):
         return False
     
     def get_entry_direction(self, signal_direction: str) -> str:
-        """
-        КРИТИЧНО: Інвертуємо напрямок!
-        - Сигнал LONG (підтримка) → відкриваємо SHORT (на перекупленості)
-        - Сигнал SHORT (опір) → відкриваємо LONG (на перепроданості)
-        """
         return "short" if signal_direction == "long" else "long"
     
     def needs_reversal_signal(self) -> bool:
@@ -123,14 +112,18 @@ class QuantumGravity2Strategy(BaseStrategy):
         """Потрібен відкат до екстремальної зони RSI"""
         return True
     
+    def use_trigger_logic(self, trade_direction: str) -> bool:
+        """
+        ✅ NOWA LOGIKA: Trigger tylko dla SHORT
+        Bot obserwuje cenę i otwiera zlecenie gdy:
+        1. Cena osiągnie poziom trigger (low świecy)
+        2. Po aktywacji czeka N sekund
+        3. Sprawdza że cena pozostaje poza świecą
+        4. Otwiera zlecenie rynkowe
+        """
+        return trade_direction == "short"
+    
     def get_pinbar_search_zone(self, level: float, direction: str) -> dict:
-        """
-        Параметри для пошуку точки входу на основі RSI:
-        
-        direction - це напрямок СИГНАЛУ з каналу:
-        - "long" (підтримка) → чекаємо RSI > rsi_high → відкриваємо SHORT на LOW
-        - "short" (опір) → чекаємо RSI < rsi_low → відкриваємо LONG на HIGH
-        """
         if direction == "long":
             # Сигнал LONG (підтримка) → відкриваємо SHORT
             return {
@@ -157,12 +150,6 @@ class QuantumGravity2Strategy(BaseStrategy):
             }
 
 def get_strategy_for_channel(channel_id: int) -> BaseStrategy:
-    """
-    Отримати стратегію для каналу
-    
-    -1002990245762 → Quantum Premium2 (торгівля від рівня) - Стратегія 1
-    -1003193138774 → Quantum Gravity2 (торгівля на пробій) - Стратегія 2
-    """
     CHANNEL_STRATEGIES = {
         -1002990245762: QuantumPremium2Strategy,   # Strategy 1: trade FROM level
         -1003193138774: QuantumGravity2Strategy,   # Strategy 2: trade THROUGH level
