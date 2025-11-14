@@ -570,7 +570,119 @@ async def monitor_and_trade(pair, target, direction, settings):
                 should_search = consolidated
             
             if should_search:
-                # ✅ NOWA LOGIKA: Trigger dla Gravity2 SHORT
+                # ✅ КРИТИЧНО: Gravity2 SHORT/LONG - одразу ставимо MARKET ORDER
+                # Коли consolidated=True (RSI досяг екстремуму), відкриваємо позицію негайно
+                
+                if requires_pullback and consolidated:
+                    logger.info(f"🚀 GRAVITY2: Умови виконані - відкриваємо MARKET ORDER")
+                    logger.info(f"   Стратегія: {strategy.name}")
+                    logger.info(f"   Сигнал з каналу: {direction}")
+                    logger.info(f"   Направлення угоди: {trade_direction}")
+                    
+                    try:
+                        tf_display = settings.get('timeframe', '1m')
+                        tf_api = signal_handler._parse_timeframe_for_api(tf_display)
+                        
+                        current_candles = await signal_handler.get_klines(pair, tf_api, limit=3)
+                        
+                        if not current_candles or len(current_candles) < 2:
+                            logger.error(f"❌ Не вдалося отримати свічки для {pair}")
+                            break
+                        
+                        last_closed = current_candles[-2]
+                        c_high = float(last_closed[2])
+                        c_low = float(last_closed[3])
+                        
+                        logger.info(f"📊 Остання закрита свічка (TF {tf_display}):")
+                        logger.info(f"   HIGH: {c_high:.8f}")
+                        logger.info(f"   LOW: {c_low:.8f}")
+                        
+                        # Розраховуємо stop loss на основі екстремума свічки
+                        extremum_data = await signal_handler.get_candle_extremum_from_db_timeframe(
+                            pair, 
+                            trade_direction,
+                            pinbar_candle_index=None
+                        )
+                        
+                        if not extremum_data:
+                            logger.error(f"❌ Не вдалося отримати дані екстремума для {pair}")
+                            break
+                        
+                        stop_loss_price = extremum_data["stop_price"]
+                        candle_high = extremum_data["candle_high"]
+                        candle_low = extremum_data["candle_low"]
+                        tf_display = extremum_data["timeframe"]
+                        
+                        logger.info(f"📏 Розрахований Stop Loss:")
+                        logger.info(f"   Свічка: H={candle_high:.8f} L={candle_low:.8f}")
+                        logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
+                        
+                        # Валідація stop loss
+                        current_market_price = await signal_handler.get_real_time_price(pair)
+                        if trade_direction == 'long' and stop_loss_price >= current_market_price:
+                            logger.error(f"❌ КРИТИЧНО: SL >= Market Price для LONG!")
+                            logger.error(f"   Market: {current_market_price:.8f}, SL: {stop_loss_price:.8f}")
+                            break
+                        if trade_direction == 'short' and stop_loss_price <= current_market_price:
+                            logger.error(f"❌ КРИТИЧНО: SL <= Market Price для SHORT!")
+                            logger.error(f"   Market: {current_market_price:.8f}, SL: {stop_loss_price:.8f}")
+                            break
+                        
+                        # Розраховуємо розмір позиції
+                        qty_usdt = await risk_manager.calculate_position_size(pair, current_market_price)
+                        if not qty_usdt or qty_usdt < 10:
+                            qty_usdt = 10
+                        
+                        logger.info(f"💰 Розмір позиції: {qty_usdt} USDT")
+                        
+                        # Метадані для відстеження
+                        metadata = {
+                            "source": f"gravity2_{trade_direction}",
+                            "signal_level": float(target),
+                            "direction": trade_direction,
+                            "timeframe": timeframe,
+                            "strategy": strategy.name,
+                            "signal_direction": direction,
+                            "candle_high": candle_high,
+                            "candle_low": candle_low,
+                            "rsi_value": _last_rsi_val
+                        }
+                        
+                        logger.info(f"📝 Розміщення MARKET ORDER для Gravity2...")
+                        logger.info(f"   Напрямок: {trade_direction.upper()}")
+                        logger.info(f"   Поточна ціна: {current_market_price:.8f}")
+                        logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
+                        logger.info(f"   RSI: {_last_rsi_val:.2f}")
+                        
+                        # КРИТИЧНО: Ставимо MARKET ORDER
+                        result = await signal_handler.place_market_order(
+                            pair=pair,
+                            direction=trade_direction,
+                            quantity_usdt=qty_usdt,
+                            stop_loss=stop_loss_price,
+                            take_profit=None,
+                            metadata=metadata
+                        )
+                        
+                        if result:
+                            logger.info(f"✅ MARKET ORDER розміщено для {pair}")
+                            logger.info(f"   Стратегія: Gravity2")
+                            logger.info(f"   Напрямок: {trade_direction.upper()}")
+                            logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
+                            await signal_handler.start_external_trade_monitor()
+                        else:
+                            logger.error(f"❌ Не вдалося розмістити market order для {pair}")
+                        
+                    except Exception as e:
+                        logger.error(f"❌ Помилка відкриття Gravity2 позиції для {pair}: {e}")
+                        import traceback
+                        logger.error(traceback.format_exc())
+                    finally:
+                        _active_monitors[pair] = False
+                    
+                    break  # Завершуємо моніторинг після відкриття позиції
+                
+                # ✅ TRIGGER LOGIC: Для інших випадків (якщо потрібно)
                 # Sprawdź czy strategia używa trigger logic
                 use_trigger = strategy.use_trigger_logic(trade_direction)
                 
@@ -756,119 +868,6 @@ async def monitor_and_trade(pair, target, direction, settings):
                         _active_monitors[pair] = False
                     
                     break  # Zakończ monitoring po trigger logic
-                
-                # CHECK: If IGNORE_PINBAR is enabled and strategy requires pullback (GRAVITY2)
-                if ignore_pinbar and requires_pullback:
-                    logger.info(f"🚀 IGNORE_PINBAR + GRAVITY2: Відкриття на екстремумі свічки")
-                    logger.info(f"   Стратегія: {strategy.name}")
-                    logger.info(f"   Сигнал з каналу: {direction}")
-                    logger.info(f"   Направлення угоди: {trade_direction}")
-                    
-                    try:
-                        await signal_handler._get_rsi_settings_db()
-                        tf_display = settings.get('timeframe', '1m')
-                        tf_api = signal_handler._parse_timeframe_for_api(tf_display)
-                        
-                        current_candles = await signal_handler.get_klines(pair, tf_api, limit=3)
-                        
-                        if not current_candles or len(current_candles) < 2:
-                            logger.error(f"❌ Не вдалося отримати свічки для {pair}")
-                            break
-                        
-                        last_closed = current_candles[-2]
-                        c_high = float(last_closed[2])
-                        c_low = float(last_closed[3])
-                        
-                        specs = await signal_handler._get_symbol_specs(pair)
-                        price_step = specs.get("price_step", 0.0)
-                        
-                        logger.info(f"📊 Сигнальна свічка: H={c_high:.8f} L={c_low:.8f}")
-                        
-                        # ВИПРАВЛЕНО: GRAVITY2 логіка на основі СИГНАЛУ з каналу
-                        # Сигнал "поддержка" (LONG) → чекаємо перекупленість → відкриваємо SHORT на LOW
-                        # Сигнал "сопротивление" (SHORT) → чекаємо перепроданість → відкриваємо LONG на HIGH
-                        
-                        if direction == 'long':
-                            # Сигнал "поддержка" → перекупленість → SHORT на LOW
-                            entry_price = signal_handler._quantize_price(c_low, price_step, ROUND_DOWN)
-                            logger.info(f"📉 GRAVITY2: Сигнал ПІДТРИМКА (long)")
-                            logger.info(f"   ✓ Знайдено RSI перекупленість (> {rsi_high})")
-                            logger.info(f"   → Відкриваємо SHORT позицію")
-                            logger.info(f"   → Вхід на LOW свічки: {entry_price:.8f}")
-                        else:
-                            # Сигнал "сопротивление" → перепроданість → LONG на HIGH
-                            entry_price = signal_handler._quantize_price(c_high, price_step, ROUND_UP)
-                            logger.info(f"📈 GRAVITY2: Сигнал ОПІР (short)")
-                            logger.info(f"   ✓ Знайдено RSI перепроданість (< {rsi_low})")
-                            logger.info(f"   → Відкриваємо LONG позицію")
-                            logger.info(f"   → Вхід на HIGH свічки: {entry_price:.8f}")
-                        
-                        # ВИПРАВЛЕНО: Для IGNORE_PINBAR використовуємо fallback (без індексу пін-бара)
-                        extremum_data = await signal_handler.get_candle_extremum_from_db_timeframe(
-                            pair, 
-                            trade_direction,
-                            pinbar_candle_index=None
-                        )
-                        
-                        if not extremum_data:
-                            logger.error(f"❌ Не вдалося отримати дані екстремума для {pair}")
-                            break
-                        
-                        stop_loss_price = extremum_data["stop_price"]
-                        
-                        # Validate stop loss
-                        if trade_direction == 'long' and stop_loss_price >= entry_price:
-                            logger.error(f"❌ КРИТИЧНО: SL >= Entry для LONG!")
-                            logger.error(f"   Entry: {entry_price:.8f}, SL: {stop_loss_price:.8f}")
-                            break
-                        if trade_direction == 'short' and stop_loss_price <= entry_price:
-                            logger.error(f"❌ КРИТИЧНО: SL <= Entry для SHORT!")
-                            logger.error(f"   Entry: {entry_price:.8f}, SL: {stop_loss_price:.8f}")
-                            break
-
-                        qty_usdt = await risk_manager.calculate_position_size(pair, entry_price)
-                        if not qty_usdt or qty_usdt < 10:
-                            qty_usdt = 10
-
-                        metadata = {
-                            "source": f"monitor_{strategy.name.lower().replace(' ', '_')}_ignore_pinbar",
-                            "signal_level": float(target),
-                            "actual_entry": entry_price,
-                            "direction": trade_direction,
-                            "timeframe": timeframe,
-                            "strategy": strategy.name,
-                            "ignore_pinbar": True,
-                            "signal_direction": direction,
-                            "candle_high": c_high,
-                            "candle_low": c_low
-                        }
-
-                        logger.info(f"📝 Розміщення лімітного ордера (IGNORE_PINBAR + GRAVITY2)...")
-                        
-                        result = await signal_handler.place_limit_order(
-                            pair=pair,
-                            direction=trade_direction,
-                            price=entry_price,
-                            quantity_usdt=qty_usdt,
-                            stop_loss=stop_loss_price,
-                            take_profit=None,
-                            metadata=metadata
-                        )
-                        
-                        if result:
-                            logger.info(f"✅ Ордер розміщено: {pair} @ {entry_price:.8f}")
-                            await signal_handler.start_external_trade_monitor()
-                        else:
-                            logger.error(f"❌ Не вдалося розмістити ордер для {pair}")
-                            
-                    except Exception as e:
-                        logger.error(f"❌ Помилка розміщення ордера: {pair} - {e}")
-                        import traceback
-                        logger.error(traceback.format_exc())
-                    finally:
-                        _active_monitors[pair] = False
-                    
-                    break
                 
                 # ЯКЩО IGNORE_PINBAR ТА PREMIUM2 (wait_for_level)
                 if ignore_pinbar and wait_for_level:

@@ -1,0 +1,228 @@
+2025-11-14 17:41:50 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-14 17:41:50 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-14 17:41:51 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-14 17:41:51 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-14 17:41:51 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-14 17:41:52 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -5742
+2025-11-14 17:41:53 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-14 17:41:53 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: ZENUSDT, Направление: SHORT, Цена: 13,767
+2025-11-14 17:41:53 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: GOATUSDT, Направление: LONG, Цена: 0,04037
+2025-11-14 17:41:53 | INFO     | analysis.signals:show_rsi_for_pairs:159 - 📊 ═══════════ ПОТОЧНИЙ RSI ═══════════
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-14 17:41:54 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-14 17:41:54 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BTCUSDT: RSI=52.03 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:41:54 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    ETHUSDT: RSI=51.15 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:41:55 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BNBUSDT: RSI=51.70 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:41:55 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    SOLUSDT: RSI=53.40 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:41:55 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    XRPUSDT: RSI=54.29 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:41:55 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-14 17:41:55 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-14 17:41:55 | INFO     | analysis.signals:show_rsi_for_pairs:189 - 📊 ══════════════════════════════════════
+2025-11-14 17:41:55 | INFO     | trading.signal_handler:start_external_trade_monitor:1400 - External trade monitor started
+2025-11-14 17:41:55 | INFO     | __main__:main:814 - Бот для настроек запущен
+2025-11-14 17:41:55 | DEBUG    | trading.signal_handler:_get_pybit_session:1437 - PyBit session created successfully (recv_window=20000)
+2025-11-14 17:41:59 | INFO     | __main__:signal_handler:918 - Отримано сигнал 2, зупинка...
+2025-11-14 17:41:59 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-14 17:41:59 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-14 17:41:59 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1784 - External trade monitor loop отменен
+2025-11-14 17:41:59 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1787 - External trade monitor loop завершен
+2025-11-14 17:41:59 | INFO     | __main__:main:821 - Клиент Telegram отменен, graceful shutdown...
+2025-11-14 17:41:59 | INFO     | __main__:main:826 - Начинается graceful shutdown...
+2025-11-14 17:41:59 | INFO     | __main__:main:833 - Закрытие SignalHandler...
+2025-11-14 17:41:59 | INFO     | __main__:main:840 - Закрытие TakeProfit...
+2025-11-14 17:41:59 | INFO     | telegram_bot:start_bot:951 - Aiogram polling cancelled
+2025-11-14 17:41:59 | INFO     | telegram_bot:start_bot:963 -  Aiogram bot stopped
+2025-11-14 17:42:06 | INFO     | __main__:main:346 -  Використовуємо сесію: bybit_strategy_session
+2025-11-14 17:42:06 | INFO     | __main__:main:363 -  Слухаємо канали: [-1003193138774, -1002990245762]
+2025-11-14 17:42:07 | INFO     | __main__:monitor_bybit_positions:85 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-11-14 17:42:07 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-14 17:42:07 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-14 17:42:08 | DEBUG    | trading.risk_manager:sync_time:34 - Time offset updated: -100
+2025-11-14 17:42:09 | INFO     | __main__:main:385 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-11-14 17:42:09 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1003193138774: Монета: ZENUSDT, Направление: SHORT, Цена: 13,767
+2025-11-14 17:42:09 | INFO     | __main__:get_last_message_from_channel:67 - Последнее сообщение из -1002990245762: Монета: GOATUSDT, Направление: LONG, Цена: 0,04037
+2025-11-14 17:42:09 | INFO     | analysis.signals:show_rsi_for_pairs:159 - 📊 ═══════════ ПОТОЧНИЙ RSI ═══════════
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_init_db:98 - Подключение к базе данных установлено
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-14 17:42:10 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-14 17:42:10 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BTCUSDT: RSI=56.84 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:42:10 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    ETHUSDT: RSI=55.97 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:42:11 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    BNBUSDT: RSI=55.11 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:42:11 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    SOLUSDT: RSI=59.47 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:42:11 | INFO     | analysis.signals:show_rsi_for_pairs:181 -    XRPUSDT: RSI=59.29 ⚪ НЕЙТРАЛЬНА ЗОНА
+2025-11-14 17:42:11 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-14 17:42:11 | INFO     | trading.signal_handler:close:242 - Database connection closed
+2025-11-14 17:42:11 | INFO     | analysis.signals:show_rsi_for_pairs:189 - 📊 ══════════════════════════════════════
+2025-11-14 17:42:11 | INFO     | trading.signal_handler:start_external_trade_monitor:1400 - External trade monitor started
+2025-11-14 17:42:11 | INFO     | __main__:main:814 - Бот для настроек запущен
+2025-11-14 17:42:11 | DEBUG    | trading.signal_handler:_get_pybit_session:1437 - PyBit session created successfully (recv_window=20000)
+2025-11-14 17:42:12 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1536 - ===== ОБНАРУЖЕНА НОВАЯ РУЧНАЯ ПОЗИЦИЯ =====
+2025-11-14 17:42:12 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1537 - Монета: NMRUSDT
+2025-11-14 17:42:12 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1538 - Направление: LONG
+2025-11-14 17:42:12 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1539 - Размер: 9.3
+2025-11-14 17:42:12 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1540 - Цена входа: 10.701000
+2025-11-14 17:42:12 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1541 - Плечо: 10x
+2025-11-14 17:42:12 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1542 - Position Key: NMRUSDT_0
+2025-11-14 17:42:12 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1543 - =====
+2025-11-14 17:42:12 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1554 - Получаю свечу для NMRUSDT на TF 1m (API: 1)
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1563 - Получена свеча для NMRUSDT
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1564 -    TF: 1m
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1565 -    High: 10.71100000
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1566 -    Low: 10.67500000
+2025-11-14 17:42:13 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-14 17:42:13 | WARNING  | utils.logger:external_position_detect:156 - External position detected
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1586 - Позиція вже має SL: 10.647
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-14 17:42:13 | INFO     | utils.logger:rsi_settings_from_db:324 - RSI settings from DB
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1677 - RSI настройки з БД для NMRUSDT:
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1678 -    - RSI Low (SHORT exit): 40.0
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1679 -    - RSI High (LONG exit): 60.0
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1680 -    - RSI Length: 14
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1681 -    - RSI Interval: 1
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1687 - Запуск RSI Take-Profit для NMRUSDT:
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1688 -    - Напрямок: LONG
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1689 -    - Поточний RSI: 42.32
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1691 -    - Поріг закриття (RSI High): 60.0
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1692 -    - Закриється при RSI >= 60.0
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1702 - ЗАПУСКАЮ RSI трекер для NMRUSDT...
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1711 -    - RSI інтервал: 1 (60s)
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1712 -    - Опитування кожні: 30s)
+2025-11-14 17:42:13 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1727 - RSI трекер ЗАПУЩЕНО для NMRUSDT
+2025-11-14 17:42:13 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для NMRUSDT:
+2025-11-14 17:42:13 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: LONG
+2025-11-14 17:42:13 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-14 17:42:13 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-14 17:42:13 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-14 17:42:13 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-14 17:42:13 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1536 - ===== ОБНАРУЖЕНА НОВАЯ РУЧНАЯ ПОЗИЦИЯ =====
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1537 - Монета: LTCUSDT
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1538 - Направление: LONG
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1539 - Размер: 1.0
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1540 - Цена входа: 99.400000
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1541 - Плечо: 10x
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1542 - Position Key: LTCUSDT_0
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1543 - =====
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1554 - Получаю свечу для LTCUSDT на TF 1m (API: 1)
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1563 - Получена свеча для LTCUSDT
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1564 -    TF: 1m
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1565 -    High: 96.61000000
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1566 -    Low: 96.35000000
+2025-11-14 17:42:14 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-14 17:42:14 | WARNING  | utils.logger:external_position_detect:156 - External position detected
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для LTCUSDT:
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: LONG
+2025-11-14 17:42:14 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 17:41:00 14.11.2025
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 96.61000000
+2025-11-14 17:42:14 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 96.35000000
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2111 - ✅ LONG: SL = LOW сигнальної свічки - буфер
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 96.35000000
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 96.35000000
+2025-11-14 17:42:15 | DEBUG    | utils.logger:candle_high_low_info:171 - Candle High/Low
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1624 - Встановлюю SL для LTCUSDT на екстремумі свічки...
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:set_stop_loss:1873 -  Стоп-лосс встановлено для LTCUSDT: 96.35000000
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1628 - SL ВСТАНОВЛЕНО НА ЕКСТРЕМУМІ СВІЧКИ:
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1629 -    Свічка (TF 1m): H=96.61000000 L=96.35000000
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1630 -    Екстремум (LONG): 96.35000000
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1631 -    Стоп: 96.35000000
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:124 - Читаю RSI настройки з БД...
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:130 - Сирі дані з БД: row=<Record rsi_low=40 rsi_high=60 rsi_period=14 rsi_interval='1'>
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:131 -    row[0] (rsi_low) = 40
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:132 -    row[1] (rsi_high) = 60
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:133 -    row[2] (rsi_period) = 14
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:134 -    row[3] (rsi_interval) = 1
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:142 - RSI настройки з БД отримано:
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:143 -    rsi_low (SHORT exit): 40.0
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:144 -    rsi_high (LONG exit): 60.0
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:145 -    rsi_period: 14
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_get_rsi_settings_db:146 -    rsi_interval: 1
+2025-11-14 17:42:15 | INFO     | utils.logger:rsi_settings_from_db:324 - RSI settings from DB
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1677 - RSI настройки з БД для LTCUSDT:
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1678 -    - RSI Low (SHORT exit): 40.0
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1679 -    - RSI High (LONG exit): 60.0
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1680 -    - RSI Length: 14
+2025-11-14 17:42:15 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1681 -    - RSI Interval: 1
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1687 - Запуск RSI Take-Profit для LTCUSDT:
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1688 -    - Напрямок: LONG
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1689 -    - Поточний RSI: 56.59
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1691 -    - Поріг закриття (RSI High): 60.0
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1692 -    - Закриється при RSI >= 60.0
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1702 - ЗАПУСКАЮ RSI трекер для LTCUSDT...
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1711 -    - RSI інтервал: 1 (60s)
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1712 -    - Опитування кожні: 30s)
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1727 - RSI трекер ЗАПУЩЕНО для LTCUSDT
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2046 - Отримую екстремум для LTCUSDT:
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2047 -    - TF: 1m
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2048 -    - Напрямок: LONG
+2025-11-14 17:42:16 | INFO     | trading.take_profit:track_position_rsi:455 - RSI TP трекер для LTCUSDT:
+2025-11-14 17:42:16 | INFO     | trading.take_profit:track_position_rsi:456 -    - Направлення: LONG
+2025-11-14 17:42:16 | INFO     | trading.take_profit:track_position_rsi:457 -    - RSI High (для закриття LONG): 60.0
+2025-11-14 17:42:16 | INFO     | trading.take_profit:track_position_rsi:458 -    - RSI Low (для закриття SHORT): 40.0
+2025-11-14 17:42:16 | INFO     | trading.take_profit:track_position_rsi:459 -    - RSI Period: 14
+2025-11-14 17:42:16 | INFO     | trading.take_profit:track_position_rsi:460 -    - RSI Interval: 1
+2025-11-14 17:42:16 | WARNING  | trading.signal_handler:get_candle_extremum_from_db_timeframe:2071 - ⚠️ Індекс пін-бара не передано, використовую FALLBACK (остання закрита свічка)
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2081 - 📊 Сигнальна свічка (TF 1m):
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2082 -    - ЧАС: 17:41:00 14.11.2025
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2083 -    - HIGH: 96.61000000
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2084 -    - LOW: 96.35000000
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2111 - ✅ LONG: SL = LOW сигнальної свічки - буфер
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2116 -    - Екстремум сигнальної свічки: 96.35000000
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2117 -    - Буфер: 0.00000000
+2025-11-14 17:42:16 | INFO     | trading.signal_handler:get_candle_extremum_from_db_timeframe:2118 -    - Фінальний стоп: 96.35000000
+2025-11-14 17:42:47 | WARNING  | trading.take_profit:track_position_rsi:519 - RSI TAKE-PROFIT: LTCUSDT LONG
+2025-11-14 17:42:47 | WARNING  | trading.take_profit:track_position_rsi:520 -    - Поточний RSI: 61.10
+2025-11-14 17:42:47 | WARNING  | trading.take_profit:track_position_rsi:521 -    - Поріг RSI High: 60.0
+2025-11-14 17:42:47 | WARNING  | trading.take_profit:track_position_rsi:522 -    - Умова: RSI 61.10 >= 60.0
+2025-11-14 17:42:47 | INFO     | utils.logger:rsi_auto_close:134 - Auto-close by RSI
+2025-11-14 17:42:47 | INFO     | trading.take_profit:close_position:268 - Position closed for LTCUSDT due to RSI condition
+2025-11-14 17:42:47 | INFO     | trading.signal_handler:_on_rsi_exit_external:1705 - RSI TP для ЗОВНІШНЬОЇ позиції LTCUSDT: причина=take_profit, контекст={'rsi': np.float64(61.09895589271369), 'success': True, 'method': 'market_order', 'rsi_threshold': 60.0}
+2025-11-14 17:42:47 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for LTCUSDT
+2025-11-14 17:42:48 | INFO     | trading.signal_handler:_external_trade_monitor_loop:1509 - Внешняя позиция LTCUSDT_0 закрита - удаляем из управляемих
+2025-11-14 17:46:49 | INFO     | trading.take_profit:track_position_rsi:559 - NMRUSDT LONG: RSI=46.52 (чекаємо >= 60.0, залишилось 13.48)
+2025-11-14 17:51:56 | INFO     | trading.take_profit:track_position_rsi:559 - NMRUSDT LONG: RSI=55.33 (чекаємо >= 60.0, залишилось 4.67)
+2025-11-14 17:56:12 | INFO     | __main__:signal_handler:918 - Отримано сигнал 2, зупинка...
+2025-11-14 17:56:12 | INFO     | trading.take_profit:track_position_rsi:572 - RSI tracker cancelled for NMRUSDT
+2025-11-14 17:56:12 | DEBUG    | trading.take_profit:track_position_rsi:580 - RSI tracker finished for NMRUSDT
+2025-11-14 17:56:12 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1784 - External trade monitor loop отменен
+2025-11-14 17:56:12 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:1787 - External trade monitor loop завершен
+2025-11-14 17:56:12 | INFO     | __main__:monitor_bybit_positions:320 - monitor_bybit_positions cancelled
+2025-11-14 17:56:12 | INFO     | __main__:monitor_bybit_positions:322 - monitor_bybit_positions завершено
+2025-11-14 17:56:12 | INFO     | __main__:main:821 - Клиент Telegram отменен, graceful shutdown...
+2025-11-14 17:56:12 | INFO     | __main__:main:826 - Начинается graceful shutdown...
+2025-11-14 17:56:12 | INFO     | __main__:main:833 - Закрытие SignalHandler...
+2025-11-14 17:56:12 | INFO     | __main__:main:840 - Закрытие TakeProfit...
+2025-11-14 17:56:12 | INFO     | telegram_bot:start_bot:951 - Aiogram polling cancelled
+2025-11-14 17:56:12 | INFO     | telegram_bot:start_bot:963 -  Aiogram bot stopped
