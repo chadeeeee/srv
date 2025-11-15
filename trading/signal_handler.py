@@ -1122,16 +1122,22 @@ class SignalHandler:
                 logger.error(f"Не вдалося розмістити лімітний ордер для {pair}: Невідомий формат відповіді - {result}")
         return None
     
-    async def place_market_order(self, pair, direction, quantity_usdt, stop_loss=None, take_profit=None, metadata=None):
+    async def place_trigger_order(self, pair, direction, trigger_price, quantity_usdt, stop_loss=None, take_profit=None, metadata=None):
         """
-        ✅ NOWA FUNKCJA: Otwiera zlecenie rynkowe (Market Order)
-        Używane przez logikę trigger w strategii Gravity2 SHORT
+        ✅ Розміщує TRIGGER ORDER (Conditional Order) на Bybit
+        Ордер спрацює коли ціна досягне trigger_price
+        
+        Параметри:
+        - triggerPrice: ціна активації ордеру
+        - triggerDirection: 1 (при зростанні) або 2 (при падінні)
+        - orderFilter: "StopOrder" для умовних ордерів
+        - orderType: "Market" - після активації виконується як ринковий
         """
         if await self._is_drawdown_blocked():
-            logger.warning(f"Пропускаємо ринкове замовлення для {pair}: захист по просадці")
+            logger.warning(f"Пропускаємо trigger order для {pair}: захист по просадці")
             return None
         
-        # Sprawdź czy pozycja już istnieje
+        # Перевірка чи позиція вже існує
         position = await self._take_profit_helper.get_position(pair)
         size = 0.0
         if position:
@@ -1143,27 +1149,57 @@ class SignalHandler:
         specs = await self._get_symbol_specs(pair)
         price_step = specs.get("price_step", 0.0)
         
-        # Pobierz aktualną cenę rynkową
+        # Отримуємо поточну ціну для розрахунків
         current_price = await self.get_real_time_price(pair)
         if not current_price:
             logger.error(f"Не вдалося отримати поточну ціну для {pair}")
             return None
         
+        # Квантизуємо trigger price
+        trigger_price_float = float(trigger_price)
+        trigger_price_quantized = self._quantize_price(trigger_price_float, price_step, ROUND_DOWN)
+        
+        # ✅ КРИТИЧНО: Визначаємо triggerDirection на основі ВІДНОСНОГО ПОЛОЖЕННЯ trigger до поточної ціни
+        # 
+        # triggerDirection=1: ціна зросла ДО trigger (trigger ВИЩЕ поточної)
+        # triggerDirection=2: ціна впала ДО trigger (trigger НИЖЧЕ поточної)
+        #
+        # Для SHORT в Gravity2: 
+        #   - trigger на LOW свічки (НИЖЧЕ поточної)
+        #   - чекаємо ПАДІННЯ ціни до LOW
+        #   - triggerDirection = 2
+        #
+        # Для LONG (якщо використовуємо):
+        #   - trigger на HIGH свічки (ВИЩЕ поточної) 
+        #   - чекаємо ЗРОСТАННЯ ціни до HIGH
+        #   - triggerDirection = 1
+        
+        if trigger_price_quantized < current_price:
+            # Trigger НИЖЧЕ поточної ціни → чекаємо ПАДІННЯ
+            trigger_direction = 2
+            logger.info(f"📉 Trigger НИЖЧЕ поточної: спрацює при ПАДІННІ до {trigger_price_quantized:.8f}")
+        else:
+            # Trigger ВИЩЕ поточної ціни → чекаємо ЗРОСТАННЯ
+            trigger_direction = 1
+            logger.info(f"📈 Trigger ВИЩЕ поточної: спрацює при ЗРОСТАННІ до {trigger_price_quantized:.8f}")
+        
+        logger.info(f"   � {direction.upper()}: поточна {current_price:.8f} → trigger {trigger_price_quantized:.8f}")
+        
         stop_loss_float = float(stop_loss) if stop_loss is not None else None
         take_profit_float = float(take_profit) if take_profit is not None else None
         
-        # Walidacja stop loss
+        # Валідація stop loss відносно trigger price
         if stop_loss_float is not None:
             if direction == "long":
-                if stop_loss_float >= current_price:
-                    logger.warning(f"⚠ Стоп-лосс {stop_loss_float} >= поточної ціни {current_price} для LONG. Коригуємо...")
-                    stop_loss_float = current_price * 0.993
+                if stop_loss_float >= trigger_price_quantized:
+                    logger.warning(f"⚠ Стоп-лосс {stop_loss_float} >= trigger ціни {trigger_price_quantized} для LONG. Коригуємо...")
+                    stop_loss_float = trigger_price_quantized * 0.993
             else:
-                if stop_loss_float <= current_price:
-                    logger.warning(f"⚠ Стоп-лосс {stop_loss_float} <= поточної ціни {current_price} для SHORT. Коригуємо...")
-                    stop_loss_float = current_price * 1.007
+                if stop_loss_float <= trigger_price_quantized:
+                    logger.warning(f"⚠ Стоп-лосс {stop_loss_float} <= trigger ціни {trigger_price_quantized} для SHORT. Коригуємо...")
+                    stop_loss_float = trigger_price_quantized * 1.007
         
-        # Kwantyzacja stop loss i take profit
+        # Квантизація stop loss і take profit
         if stop_loss_float is not None:
             sl_rounding = ROUND_DOWN if direction == "long" else ROUND_UP
             stop_loss_float = self._quantize_price(stop_loss_float, price_step, sl_rounding)
@@ -1172,30 +1208,36 @@ class SignalHandler:
             tp_rounding = ROUND_UP if direction == "long" else ROUND_DOWN
             take_profit_float = self._quantize_price(take_profit_float, price_step, tp_rounding)
         
-        # Oblicz wielkość pozycji
+        # Розрахунок розміру позиції (використовуємо trigger price для розрахунків)
         quantity_usdt_value = float(quantity_usdt)
         margin_usdt = quantity_usdt_value
         leverage = 10
         notional_usdt = margin_usdt * leverage
-        quantity_asset = self._quantize(notional_usdt / current_price, specs["qty_step"])
+        quantity_asset = self._quantize(notional_usdt / trigger_price_quantized, specs["qty_step"])
         if quantity_asset < specs["min_qty"]:
             quantity_asset = specs["min_qty"]
         
-        order_value = quantity_asset * current_price
+        order_value = quantity_asset * trigger_price_quantized
         
-        # Parametry zlecenia rynkowego
+        # Параметри TRIGGER ORDER згідно з Bybit API документацією
         params = {
             "category": "linear",
             "symbol": pair,
             "side": "Buy" if direction == "long" else "Sell",
-            "orderType": "Market",
+            "orderType": "Market",  # Після активації виконується як Market
             "qty": format(quantity_asset, 'f'),
+            "triggerPrice": format(trigger_price_quantized, 'f'),
+            "triggerDirection": trigger_direction,
+            "triggerBy": "LastPrice",  # Тригер по LastPrice
+            "orderFilter": "StopOrder",  # КРИТИЧНО: Conditional order
             "reduceOnly": False,
             "positionIdx": 0
         }
         
-        logger.info(f"🚀 MARKET ORDER: {pair} {direction.upper()}")
-        logger.info(f"   Ціна: ~{current_price:.8f} (ринкова)")
+        logger.info(f"🎯 TRIGGER ORDER: {pair} {direction.upper()}")
+        logger.info(f"   Поточна ціна: {current_price:.8f}")
+        logger.info(f"   Trigger ціна: {trigger_price_quantized:.8f}")
+        logger.info(f"   Trigger direction: {trigger_direction} ({'зростання' if trigger_direction == 1 else 'падіння'})")
         logger.info(f"   Розмір: {quantity_asset} ({order_value:.2f} USDT @ {leverage}x)")
         if stop_loss_float:
             logger.info(f"   Stop Loss: {stop_loss_float:.8f}")
@@ -1205,7 +1247,7 @@ class SignalHandler:
         result = await self._signed_request("POST", "/v5/order/create", params)
         
         if result and result.get("retCode") == 0:
-            logger.info(f"✅ РИНКОВЕ ЗАМОВЛЕННЯ розміщено: {pair} {direction.upper()}")
+            logger.info(f"✅ TRIGGER ORDER розміщено: {pair} {direction.upper()}")
             
             order_id = result["result"].get("orderId")
             if order_id:
@@ -1213,15 +1255,17 @@ class SignalHandler:
                 meta.update({
                     "pair": pair,
                     "direction": direction,
-                    "entry_price": current_price,  # Przybliżona cena
+                    "trigger_price": trigger_price_quantized,
+                    "entry_price": trigger_price_quantized,  # Очікувана ціна входу
                     "stop_loss": stop_loss_float,
                     "take_profit": take_profit_float,
                     "order_value": order_value,
                     "quantity_asset": quantity_asset,
                     "created_at": time.time(),
                     "retry_count": meta.get("retry_count", 0),
-                    "market_order_id": order_id,
-                    "order_type": "market"
+                    "trigger_order_id": order_id,
+                    "order_type": "trigger",
+                    "trigger_direction": trigger_direction
                 })
                 
                 self._position_meta[order_id] = meta
@@ -1229,24 +1273,25 @@ class SignalHandler:
                 self._bot_owned_positions.add(pair)
                 self._bot_owned_order_ids.add(order_id)
                 
-                # Uruchom monitoring pozycji
+                # Запускаємо моніторинг trigger order
                 self._active_monitors += 1
-                asyncio.create_task(self._watch_position_exit(pair))
+                asyncio.create_task(self._watch_trigger_order(pair, order_id))
                 
-                # Powiadomienie Telegram
+                # Повідомлення Telegram
                 try:
                     msg = (
-                        f"🚀 MARKET ORDER OTWARTE\n"
+                        f"🎯 TRIGGER ORDER РОЗМІЩЕНО\n"
                         f"━━━━━━━━━━━━━━━━━━\n"
                         f"Монета: {pair}\n"
                         f"Напрямок: {direction.upper()}\n"
-                        f"Ціна: ~{current_price:.8f}\n"
+                        f"Поточна ціна: {current_price:.8f}\n"
+                        f"Trigger: {trigger_price_quantized:.8f}\n"
                     )
                     if stop_loss_float:
                         msg += f"Stop Loss: {stop_loss_float:.8f}\n"
                     if take_profit_float:
                         msg += f"Take Profit: {take_profit_float:.8f}\n"
-                    msg += f"Тип: TRIGGER (Gravity2)"
+                    msg += f"Тип: Conditional (Gravity2)"
                     
                     await notify_user(msg)
                 except Exception as e:
@@ -1255,16 +1300,180 @@ class SignalHandler:
             return result["result"]
         else:
             if not result:
-                logger.error(f"❌ Не вдалося розмістити ринкове замовлення для {pair}: Немає відповіді від API")
+                logger.error(f"❌ Не вдалося розмістити trigger order для {pair}: Немає відповіді від API")
             elif result.get("retCode") != 0:
                 ret_code = result.get("retCode")
                 ret_msg = result.get("retMsg", "Невідома помилка")
-                logger.error(f"❌ Не вдалося розмістити ринкове замовлення для {pair}: {ret_msg} (код {ret_code})")
+                logger.error(f"❌ Не вдалося розмістити trigger order для {pair}: {ret_msg} (код {ret_code})")
             else:
-                logger.error(f"❌ Не вдалося розмістити ринкове замовлення для {pair}: Невідомий формат відповіді")
+                logger.error(f"❌ Не вдалося розмістити trigger order для {pair}: Невідомий формат відповіді")
         
         return None
     
+    async def _watch_trigger_order(self, pair, order_id, poll_interval=5):
+        """
+        Моніторинг trigger order до його активації та подальше відстеження позиції
+        """
+        try:
+            meta = self._position_meta.get(order_id)
+            if not meta:
+                logger.error(f"Немає метаданих для trigger order {order_id}")
+                return
+            
+            trigger_price = meta.get("trigger_price")
+            direction = meta.get("direction")
+            
+            logger.info(f"📡 Моніторинг trigger order для {pair}")
+            logger.info(f"   Order ID: {order_id}")
+            logger.info(f"   Trigger: {trigger_price:.8f}")
+            logger.info(f"   Direction: {direction.upper()}")
+            
+            # Етап 1: Чекаємо активації trigger order
+            while True:
+                await asyncio.sleep(poll_interval)
+                
+                if not meta or meta.get("finalized"):
+                    logger.info(f"Моніторинг trigger order {pair} завершено")
+                    return
+                
+                try:
+                    # Перевіряємо статус ордера
+                    params = {
+                        "category": "linear",
+                        "symbol": pair,
+                        "orderId": order_id
+                    }
+                    
+                    result = await self._signed_request("GET", "/v5/order/realtime", params)
+                    
+                    if not result or result.get("retCode") != 0:
+                        logger.warning(f"Не вдалося отримати статус trigger order {order_id}")
+                        continue
+                    
+                    orders = result.get("result", {}).get("list", [])
+                    if not orders:
+                        # Ордер зник зі списку активних - можливо виконаний або скасований
+                        logger.info(f"🔍 Trigger order {order_id} не знайдено в активних - перевіряємо позицію...")
+                        
+                        # Перевіряємо чи відкрилась позиція
+                        position = await self._take_profit_helper.get_position(pair)
+                        if position and float(position.get("size", 0) or 0) > 0:
+                            logger.info(f"✅ Trigger order {pair} АКТИВОВАНО - позиція відкрита!")
+                            
+                            # Оновлюємо метадані
+                            actual_entry = float(position.get("avgPrice", 0) or 0)
+                            meta["entry_price"] = actual_entry
+                            meta["trigger_activated"] = True
+                            meta["activated_at"] = time.time()
+                            
+                            logger.info(f"   Фактична ціна входу: {actual_entry:.8f}")
+                            
+                            # Встановлюємо SL негайно
+                            stop_loss = meta.get("stop_loss")
+                            if stop_loss:
+                                logger.info(f"🛡 Встановлення SL: {stop_loss:.8f}")
+                                for attempt in range(MAX_SL_ATTEMPTS):
+                                    if attempt > 0:
+                                        await asyncio.sleep(1)
+                                    success = await self.set_stop_loss(pair, stop_loss, direction)
+                                    if success:
+                                        meta["sl_set"] = True
+                                        logger.info(f"✅ SL встановлено після активації trigger")
+                                        break
+                            
+                            # Повідомлення про відкриття позиції
+                            try:
+                                msg = (
+                                    f"✅ TRIGGER АКТИВОВАНО\n"
+                                    f"━━━━━━━━━━━━━━━━━━\n"
+                                    f"Монета: {pair}\n"
+                                    f"Напрямок: {direction.upper()}\n"
+                                    f"Trigger: {trigger_price:.8f}\n"
+                                    f"Вхід: {actual_entry:.8f}\n"
+                                )
+                                if stop_loss:
+                                    msg += f"Stop Loss: {stop_loss:.8f}\n"
+                                msg += f"Статус: Позиція відкрита"
+                                
+                                await notify_user(msg)
+                            except Exception as e:
+                                logger.error(f"Помилка відправки повідомлення: {e}")
+                            
+                            # Запускаємо RSI трекер
+                            try:
+                                rsi_cfg = await self._get_rsi_settings_db()
+                                rsi_low = float(rsi_cfg.get("rsi_low", 30))
+                                rsi_high = float(rsi_cfg.get("rsi_high", 70))
+                                rsi_period = int(rsi_cfg.get("rsi_period", 14))
+                                rsi_interval = '1'
+                                
+                                async def _on_rsi_exit(sym, dirn, reason, context):
+                                    logger.info(f"RSI TP для trigger order {sym}: {reason}")
+                                
+                                logger.info(f"🎯 Запуск RSI трекера для {pair}")
+                                asyncio.create_task(
+                                    self._take_profit_helper.track_position_rsi(
+                                        pair,
+                                        direction,
+                                        on_exit=_on_rsi_exit,
+                                        rsi_high_override=rsi_high,
+                                        rsi_low_override=rsi_low,
+                                        rsi_period_override=rsi_period,
+                                        rsi_interval_override=rsi_interval,
+                                        poll_seconds=max(15, int(self._interval_to_seconds(rsi_interval) // 2))
+                                    )
+                                )
+                                meta["rsi_tracker_started"] = True
+                            except Exception as e:
+                                logger.error(f"Помилка запуску RSI трекера: {e}")
+                            
+                            # Переключаємось на моніторинг позиції
+                            asyncio.create_task(self._watch_position_exit(pair))
+                            return
+                        else:
+                            # Ордер скасовано або відхилено
+                            logger.warning(f"⚠ Trigger order {order_id} для {pair} не активовано - статус невідомий")
+                            meta["finalized"] = True
+                            return
+                    else:
+                        order = orders[0]
+                        order_status = order.get("orderStatus")
+                        
+                        logger.debug(f"Trigger order {pair} статус: {order_status}")
+                        
+                        if order_status in ["New", "Untriggered"]:
+                            # Ордер ще чекає активації
+                            current_price = await self.get_real_time_price(pair)
+                            if current_price:
+                                if direction == "long":
+                                    distance = current_price - trigger_price
+                                    logger.debug(f"LONG trigger: поточна {current_price:.8f}, trigger {trigger_price:.8f}, відстань: {distance:.8f}")
+                                else:
+                                    distance = trigger_price - current_price
+                                    logger.debug(f"SHORT trigger: поточна {current_price:.8f}, trigger {trigger_price:.8f}, відстань: {distance:.8f}")
+                            continue
+                        elif order_status in ["Filled", "PartiallyFilled"]:
+                            # Trigger активовано і виконано
+                            logger.info(f"✅ Trigger order {pair} виконано зі статусом {order_status}")
+                            continue
+                        elif order_status in ["Cancelled", "Rejected"]:
+                            logger.warning(f"⚠ Trigger order {pair} скасовано зі статусом {order_status}")
+                            meta["finalized"] = True
+                            return
+                
+                except Exception as e:
+                    logger.error(f"Помилка моніторингу trigger order {pair}: {e}")
+                    await asyncio.sleep(poll_interval)
+        
+        except asyncio.CancelledError:
+            logger.info(f"Моніторинг trigger order {pair} скасовано")
+        except Exception as e:
+            logger.error(f"Критична помилка моніторингу trigger order {pair}: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
+        finally:
+            self._active_monitors -= 1
+
     async def _wait_and_place_limit(self, pair, direction, target_price, quantity_usdt, stop_loss_price, take_profit_price, metadata, timeout_minutes=60, poll_interval=1.0):
         try:
             deadline = time.time() + max(60, int(timeout_minutes) * 60)

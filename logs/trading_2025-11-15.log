@@ -1,0 +1,1802 @@
+2025-11-15 10:57:18 | INFO     | __main__:main:146 - 
+🚀 ЗАПУСК ТЕСТІВ TRIGGER ORDER
+2025-11-15 10:57:18 | INFO     | __main__:main:147 - Середовище: TESTNET
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:98 - 
+============================================================
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:99 - ТЕСТ ВАЛІДАЦІЇ TRIGGER ORDER ПАРАМЕТРІВ
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:100 - ============================================================
+2025-11-15 10:57:19 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:110 - 
+📊 Поточна ціна ETHUSDT: 3141.82
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:113 - 
+🧪 ТЕСТ 1: LONG Trigger Order
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:114 -    Для LONG: trigger спрацює при ПАДІННІ ціни
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:119 -    Поточна: 3141.82
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:120 -    Trigger: 3135.54 (triggerDirection=2, падіння)
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:121 -    Stop Loss: 3119.86
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:124 - 
+🧪 ТЕСТ 2: SHORT Trigger Order
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:125 -    Для SHORT: trigger спрацює при ЗРОСТАННІ ціни
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:130 -    Поточна: 3141.82
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:131 -    Trigger: 3148.10 (triggerDirection=1, зростання)
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:132 -    Stop Loss: 3163.84
+2025-11-15 10:57:19 | INFO     | __main__:test_trigger_validation:134 - 
+✅ Валідація параметрів успішна
+2025-11-15 10:57:19 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 10:59:38 | INFO     | __main__:main:154 - 
+🚀 ЗАПУСК ТЕСТІВ TRIGGER ORDER
+2025-11-15 10:59:38 | INFO     | __main__:main:155 - Середовище: TESTNET
+2025-11-15 10:59:38 | INFO     | __main__:test_trigger_validation:104 - 
+============================================================
+2025-11-15 10:59:38 | INFO     | __main__:test_trigger_validation:105 - ТЕСТ ВАЛІДАЦІЇ TRIGGER ORDER ПАРАМЕТРІВ
+2025-11-15 10:59:38 | INFO     | __main__:test_trigger_validation:106 - ============================================================
+2025-11-15 10:59:39 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:116 - 
+📊 Поточна ціна ETHUSDT: 3143.02
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:119 - 
+🧪 ТЕСТ 1: SHORT Trigger Order ✅ (ВИКОРИСТОВУЄТЬСЯ)
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:120 -    Для SHORT: trigger на LOW свічки (НИЖЧЕ поточної)
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:125 -    Поточна: 3143.02
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:126 -    Trigger: 3136.73 (triggerDirection=2, при падінні)
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:127 -    Stop Loss: 3158.74
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:128 -    💡 Trigger активується коли ціна ВПАДЕ до LOW свічки
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:131 - 
+🧪 ТЕСТ 2: LONG (використовується LIMIT ORDER, не trigger)
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:132 -    Для LONG: звичайний limit на поточній ціні
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:137 -    Поточна: 3143.02
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:138 -    Entry (limit): 3143.02
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:139 -    Stop Loss: 3127.30
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:140 -    💡 Виконується ОДРАЗУ без trigger
+2025-11-15 10:59:39 | INFO     | __main__:test_trigger_validation:142 - 
+✅ Валідація параметрів успішна
+2025-11-15 10:59:39 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 10:59:41 | INFO     | __main__:main:164 - 
+⚠ УВАГА: Зараз буде розміщено РЕАЛЬНИЙ тестовий trigger order
+2025-11-15 10:59:41 | INFO     | __main__:main:165 -    💡 Ордер буде на TESTNET (не реальні гроші)
+2025-11-15 10:59:41 | INFO     | __main__:main:166 -    Натисніть Ctrl+C щоб скасувати або чекайте 3 секунди...
+2025-11-15 10:59:45 | INFO     | __main__:test_trigger_order:16 - ============================================================
+2025-11-15 10:59:45 | INFO     | __main__:test_trigger_order:17 - ТЕСТ TRIGGER ORDER ФУНКЦІОНАЛЬНОСТІ
+2025-11-15 10:59:45 | INFO     | __main__:test_trigger_order:18 - ============================================================
+2025-11-15 10:59:45 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:30 - 📊 Поточна ціна BTCUSDT: 95891.20
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:37 - 🎯 Параметри тесту:
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:38 -    Напрямок: SHORT
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:39 -    Поточна ціна: 95891.20
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:40 -    Trigger ціна: 95699.42 (-0.2% НИЖЧЕ поточної)
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:41 -    Stop Loss: 96370.66 (+0.5% ВИЩЕ поточної)
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:42 -    ⚡ Trigger спрацює коли ціна ВПАДЕ до 95699.42
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:43 -    Розмір: 10 USDT
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:51 - 
+📝 Розміщення TEST TRIGGER ORDER...
+2025-11-15 10:59:46 | INFO     | __main__:test_trigger_order:52 -    (Це ТЕСТОВИЙ ордер на testnet)
+2025-11-15 10:59:46 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-15 10:59:46 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 1853.01 USDT
+2025-11-15 10:59:46 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-15 10:59:46 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 1853.01 USDT
+2025-11-15 10:59:46 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:place_trigger_order:1180 - 📉 Trigger НИЖЧЕ поточної: спрацює при ПАДІННІ до 95699.40000000
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:place_trigger_order:1186 -    � SHORT: поточна 95883.90000000 → trigger 95699.40000000
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:place_trigger_order:1237 - 🎯 TRIGGER ORDER: BTCUSDT SHORT
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:place_trigger_order:1238 -    Поточна ціна: 95883.90000000
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:place_trigger_order:1239 -    Trigger ціна: 95699.40000000
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:place_trigger_order:1240 -    Trigger direction: 2 (падіння)
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:place_trigger_order:1241 -    Розмір: 0.001 (95.70 USDT @ 10x)
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:place_trigger_order:1243 -    Stop Loss: 96370.70000000
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:place_trigger_order:1250 - ✅ TRIGGER ORDER розміщено: BTCUSDT SHORT
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:_watch_trigger_order:1326 - 📡 Моніторинг trigger order для BTCUSDT
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:_watch_trigger_order:1327 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:_watch_trigger_order:1328 -    Trigger: 95699.40000000
+2025-11-15 10:59:47 | INFO     | trading.signal_handler:_watch_trigger_order:1329 -    Direction: SHORT
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:66 - 
+✅ TRIGGER ORDER УСПІШНО РОЗМІЩЕНО!
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:67 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:68 -    Link ID: 
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:69 - 
+📡 Тепер чекаємо активації trigger...
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:70 -    ⚡ Trigger спрацює коли ціна BTCUSDT ВПАДЕ до 95699.42
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:71 -    📊 Поточна ціна: 95891.20
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:72 -    📉 Trigger price: 95699.42
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:73 -    🛑 Stop Loss: 96370.66
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:74 - 
+   💡 Логіка: SHORT входить при ПАДІННІ ціни до LOW свічки
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:77 - 
+📊 Система автоматично моніторить:
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:78 -    1. Статус trigger order
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:79 -    2. Активацію при досягненні trigger price
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:80 -    3. Відкриття позиції
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:81 -    4. Встановлення Stop Loss
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:82 -    5. Запуск RSI Take-Profit трекера
+2025-11-15 10:59:48 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:94 - 
+============================================================
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:95 - ТЕСТ ЗАВЕРШЕНО
+2025-11-15 10:59:48 | INFO     | __main__:test_trigger_order:96 - ============================================================
+2025-11-15 10:59:48 | INFO     | trading.signal_handler:_watch_trigger_order:1469 - Моніторинг trigger order BTCUSDT скасовано
+2025-11-15 11:00:37 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:00:37 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:00:37 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:00:37 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:00:38 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:30 - 
+   Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:31 -    Symbol: BTCUSDT
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:32 -    Side: Sell
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:33 -    Type: Market
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:34 -    Status: Untriggered
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:35 -    Qty: 0.001
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:36 -    Price: 0
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:37 -    Trigger Price: 95699.4
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:38 -    Order Filter: None
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:39 -    Stop Order Type: Stop
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:00:38 | INFO     | __main__:check_orders:60 -    ⚠ Немає історії
+2025-11-15 11:00:38 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:02:00 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:02:00 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:02:00 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:02:00 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:02:00 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:30 - 
+   Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:31 -    Symbol: BTCUSDT
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:32 -    Side: Buy
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:33 -    Type: Market
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:34 -    Status: Untriggered
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:35 -    Qty: 0.001
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:36 -    Price: 0
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:37 -    Trigger Price: 95876.9
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:38 -    Order Filter: None
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:39 -    Stop Order Type: StopLoss
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:53 - 
+   Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:54 -    Symbol: BTCUSDT
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:55 -    Side: Sell
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:56 -    Status: Filled
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:57 -    Trigger Price: 95699.4
+2025-11-15 11:02:01 | INFO     | __main__:check_orders:58 -    Reject Reason: EC_NoError
+2025-11-15 11:02:01 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:02:22 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:30 - 
+   Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:31 -    Symbol: BTCUSDT
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:32 -    Side: Buy
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:33 -    Type: Market
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:34 -    Status: Untriggered
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:35 -    Qty: 0.001
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:36 -    Price: 0
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:37 -    Trigger Price: 95876.9
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:38 -    Order Filter: None
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:39 -    Stop Order Type: StopLoss
+2025-11-15 11:02:22 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:02:23 | INFO     | __main__:check_orders:53 - 
+   Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:02:23 | INFO     | __main__:check_orders:54 -    Symbol: BTCUSDT
+2025-11-15 11:02:23 | INFO     | __main__:check_orders:55 -    Side: Sell
+2025-11-15 11:02:23 | INFO     | __main__:check_orders:56 -    Status: Filled
+2025-11-15 11:02:23 | INFO     | __main__:check_orders:57 -    Trigger Price: 95699.4
+2025-11-15 11:02:23 | INFO     | __main__:check_orders:58 -    Reject Reason: EC_NoError
+2025-11-15 11:02:23 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:04:58 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:04:58 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:04:58 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:04:58 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:04:58 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:53 - 
+   Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:54 -    Symbol: BTCUSDT
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:55 -    Side: Buy
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:56 -    Status: Filled
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:57 -    Trigger Price: 
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:58 -    Reject Reason: EC_NoError
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:53 - 
+   Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:54 -    Symbol: BTCUSDT
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:55 -    Side: Buy
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:56 -    Status: Deactivated
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:57 -    Trigger Price: 95876.9
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:58 -    Reject Reason: EC_NoError
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:53 - 
+   Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:54 -    Symbol: BTCUSDT
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:55 -    Side: Sell
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:56 -    Status: Filled
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:57 -    Trigger Price: 95699.4
+2025-11-15 11:04:59 | INFO     | __main__:check_orders:58 -    Reject Reason: EC_NoError
+2025-11-15 11:04:59 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:05:38 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:53 - 
+   Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:54 -    Symbol: BTCUSDT
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:55 -    Side: Buy
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:56 -    Status: Filled
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:57 -    Trigger Price: 
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:58 -    Reject Reason: EC_NoError
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:53 - 
+   Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:54 -    Symbol: BTCUSDT
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:55 -    Side: Buy
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:56 -    Status: Deactivated
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:57 -    Trigger Price: 95876.9
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:58 -    Reject Reason: EC_NoError
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:53 - 
+   Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:54 -    Symbol: BTCUSDT
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:55 -    Side: Sell
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:56 -    Status: Filled
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:57 -    Trigger Price: 95699.4
+2025-11-15 11:05:38 | INFO     | __main__:check_orders:58 -    Reject Reason: EC_NoError
+2025-11-15 11:05:38 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:06:13 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:06:13 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:06:13 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:06:13 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:06:13 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:06:13 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:06:13 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:06:14 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:06:14 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:09:37 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:09:37 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:09:37 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:09:37 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:09:38 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:09:38 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:09:38 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:10:19 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:10:19 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:10:20 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:19:11 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:19:11 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:19:11 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:19:11 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:19:11 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:19:12 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:19:12 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:19:43 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:19:44 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:19:49 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:19:50 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-15 11:19:50 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 1852.89 USDT
+2025-11-15 11:19:50 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-15 11:19:50 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 1852.89 USDT
+2025-11-15 11:19:50 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:place_trigger_order:1180 - 📉 Trigger НИЖЧЕ поточної: спрацює при ПАДІННІ до 95725.60000000
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:place_trigger_order:1186 -    � SHORT: поточна 95917.50000000 → trigger 95725.60000000
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:place_trigger_order:1237 - 🎯 TRIGGER ORDER: BTCUSDT SHORT
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:place_trigger_order:1238 -    Поточна ціна: 95917.50000000
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:place_trigger_order:1239 -    Trigger ціна: 95725.60000000
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:place_trigger_order:1240 -    Trigger direction: 2 (падіння)
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:place_trigger_order:1241 -    Розмір: 0.001 (95.73 USDT @ 10x)
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:place_trigger_order:1243 -    Stop Loss: 96397.10000000
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:place_trigger_order:1250 - ✅ TRIGGER ORDER розміщено: BTCUSDT SHORT
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:_watch_trigger_order:1326 - 📡 Моніторинг trigger order для BTCUSDT
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:_watch_trigger_order:1327 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:_watch_trigger_order:1328 -    Trigger: 95725.60000000
+2025-11-15 11:19:51 | INFO     | trading.signal_handler:_watch_trigger_order:1329 -    Direction: SHORT
+2025-11-15 11:19:52 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:19:52 | INFO     | trading.signal_handler:_watch_trigger_order:1469 - Моніторинг trigger order BTCUSDT скасовано
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:20:02 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:30 - 
+   Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:31 -    Symbol: BTCUSDT
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:32 -    Side: Sell
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:33 -    Type: Market
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:34 -    Status: Untriggered
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:35 -    Qty: 0.001
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:36 -    Price: 0
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:37 -    Trigger Price: 95725.6
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:38 -    Order Filter: None
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:39 -    Stop Order Type: Stop
+2025-11-15 11:20:02 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:20:03 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:20:03 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:26:16 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:26:16 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:26:16 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:26:16 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:26:17 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:54 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:61 -    Trigger Price: 95725.6
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:66 -    Created: 1763198388468
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:67 -    Updated: 1763198767222
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:26:17 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:26:17 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:26:31 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:26:31 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:26:31 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:26:31 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:26:32 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:54 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:61 -    Trigger Price: 95725.6
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:66 -    Created: 1763198388468
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:67 -    Updated: 1763198767222
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:26:32 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:26:32 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:27:03 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:27:03 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:27:03 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:27:03 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:27:04 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:54 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:61 -    Trigger Price: 95725.6
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:66 -    Created: 1763198388468
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:67 -    Updated: 1763198767222
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:27:04 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:27:04 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:31:11 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:31:12 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:31:17 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:31:18 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-15 11:31:18 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 1852.89 USDT
+2025-11-15 11:31:18 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-15 11:31:18 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 1852.89 USDT
+2025-11-15 11:31:18 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-15 11:31:19 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:31:43 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:31:43 | INFO     | __main__:place_short_trigger:20 - 💰 Поточна ціна BTCUSDT: 95884.0
+2025-11-15 11:31:43 | INFO     | __main__:place_short_trigger:26 - 🎯 Trigger: 95692.23
+2025-11-15 11:31:43 | INFO     | __main__:place_short_trigger:27 - 🛡 Stop Loss: 96363.42
+2025-11-15 11:31:43 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-15 11:31:43 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 1852.89 USDT
+2025-11-15 11:31:43 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-15 11:31:43 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 1852.89 USDT
+2025-11-15 11:31:43 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-15 11:31:44 | INFO     | trading.signal_handler:place_trigger_order:1180 - 📉 Trigger НИЖЧЕ поточної: спрацює при ПАДІННІ до 95692.20000000
+2025-11-15 11:31:44 | INFO     | trading.signal_handler:place_trigger_order:1186 -    � SHORT: поточна 95884.10000000 → trigger 95692.20000000
+2025-11-15 11:31:44 | INFO     | trading.signal_handler:place_trigger_order:1237 - 🎯 TRIGGER ORDER: BTCUSDT SHORT
+2025-11-15 11:31:44 | INFO     | trading.signal_handler:place_trigger_order:1238 -    Поточна ціна: 95884.10000000
+2025-11-15 11:31:44 | INFO     | trading.signal_handler:place_trigger_order:1239 -    Trigger ціна: 95692.20000000
+2025-11-15 11:31:44 | INFO     | trading.signal_handler:place_trigger_order:1240 -    Trigger direction: 2 (падіння)
+2025-11-15 11:31:44 | INFO     | trading.signal_handler:place_trigger_order:1241 -    Розмір: 0.001 (95.69 USDT @ 10x)
+2025-11-15 11:31:44 | INFO     | trading.signal_handler:place_trigger_order:1243 -    Stop Loss: 96363.50000000
+2025-11-15 11:31:44 | INFO     | trading.signal_handler:place_trigger_order:1250 - ✅ TRIGGER ORDER розміщено: BTCUSDT SHORT
+2025-11-15 11:31:45 | INFO     | trading.signal_handler:_watch_trigger_order:1326 - 📡 Моніторинг trigger order для BTCUSDT
+2025-11-15 11:31:45 | INFO     | trading.signal_handler:_watch_trigger_order:1327 -    Order ID: 4f493a01-6ae3-47f6-b67b-036bff4a0c34
+2025-11-15 11:31:45 | INFO     | trading.signal_handler:_watch_trigger_order:1328 -    Trigger: 95692.20000000
+2025-11-15 11:31:45 | INFO     | trading.signal_handler:_watch_trigger_order:1329 -    Direction: SHORT
+2025-11-15 11:31:45 | SUCCESS  | __main__:place_short_trigger:48 - ✅ Trigger order розміщено!
+2025-11-15 11:31:45 | SUCCESS  | __main__:place_short_trigger:49 - 📝 Order ID: 4f493a01-6ae3-47f6-b67b-036bff4a0c34
+2025-11-15 11:31:45 | INFO     | __main__:place_short_trigger:50 - ⏳ Ордер залишається активним на біржі
+2025-11-15 11:31:45 | INFO     | __main__:place_short_trigger:51 - 📊 Перевірити статус: python check_orders.py
+2025-11-15 11:31:45 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:31:45 | INFO     | trading.signal_handler:_watch_trigger_order:1469 - Моніторинг trigger order BTCUSDT скасовано
+2025-11-15 11:31:53 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:31:53 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:31:53 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:31:53 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:31:53 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:30 - 
+   Order ID: 4f493a01-6ae3-47f6-b67b-036bff4a0c34
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:31 -    Symbol: BTCUSDT
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:32 -    Side: Sell
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:33 -    Type: Market
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:34 -    Status: Untriggered
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:35 -    Qty: 0.001
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:36 -    Price: 0
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:37 -    Trigger Price: 95692.2
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:38 -    Order Filter: None
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:39 -    Stop Order Type: Stop
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:54 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:61 -    Trigger Price: 95725.6
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:66 -    Created: 1763198388468
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:67 -    Updated: 1763198767222
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:31:54 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:31:54 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:32:35 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:30 - 
+   Order ID: 4f493a01-6ae3-47f6-b67b-036bff4a0c34
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:31 -    Symbol: BTCUSDT
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:32 -    Side: Sell
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:33 -    Type: Market
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:34 -    Status: Untriggered
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:35 -    Qty: 0.001
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:36 -    Price: 0
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:37 -    Trigger Price: 95692.2
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:38 -    Order Filter: None
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:39 -    Stop Order Type: Stop
+2025-11-15 11:32:35 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:54 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:61 -    Trigger Price: 95725.6
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:66 -    Created: 1763198388468
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:67 -    Updated: 1763198767222
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:32:36 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:32:36 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:33:10 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:33:10 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:33:10 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:33:10 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:33:11 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:30 - 
+   Order ID: 4f493a01-6ae3-47f6-b67b-036bff4a0c34
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:31 -    Symbol: BTCUSDT
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:32 -    Side: Sell
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:33 -    Type: Market
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:34 -    Status: Untriggered
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:35 -    Qty: 0.001
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:36 -    Price: 0
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:37 -    Trigger Price: 95692.2
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:38 -    Order Filter: None
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:39 -    Stop Order Type: Stop
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:54 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:61 -    Trigger Price: 95725.6
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:66 -    Created: 1763198388468
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:67 -    Updated: 1763198767222
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:33:11 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:33:11 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:33:27 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:33:27 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:33:27 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:33:27 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:33:27 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:30 - 
+   Order ID: 4f493a01-6ae3-47f6-b67b-036bff4a0c34
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:31 -    Symbol: BTCUSDT
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:32 -    Side: Sell
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:33 -    Type: Market
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:34 -    Status: Untriggered
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:35 -    Qty: 0.001
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:36 -    Price: 0
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:37 -    Trigger Price: 95692.2
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:38 -    Order Filter: None
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:39 -    Stop Order Type: Stop
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:54 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:61 -    Trigger Price: 95725.6
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:66 -    Created: 1763198388468
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:67 -    Updated: 1763198767222
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:33:28 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:33:28 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:35:50 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:30 - 
+   Order ID: 4f493a01-6ae3-47f6-b67b-036bff4a0c34
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:31 -    Symbol: BTCUSDT
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:32 -    Side: Sell
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:33 -    Type: Market
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:34 -    Status: Untriggered
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:35 -    Qty: 0.001
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:36 -    Price: 0
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:37 -    Trigger Price: 95692.2
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:38 -    Order Filter: None
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:39 -    Stop Order Type: Stop
+2025-11-15 11:35:50 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:54 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:61 -    Trigger Price: 95725.6
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:66 -    Created: 1763198388468
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:67 -    Updated: 1763198767222
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:35:51 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:35:51 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:36:04 | INFO     | __main__:check_orders:12 - ============================================================
+2025-11-15 11:36:04 | INFO     | __main__:check_orders:13 - ПЕРЕВІРКА АКТИВНИХ ОРДЕРІВ
+2025-11-15 11:36:04 | INFO     | __main__:check_orders:14 - ============================================================
+2025-11-15 11:36:04 | INFO     | __main__:check_orders:23 - 
+📋 Активні ордери (realtime):
+2025-11-15 11:36:04 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:41 -    ⚠ Немає активних ордерів
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:46 - 
+📜 Історія ордерів:
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:54 -    Order ID: 4f493a01-6ae3-47f6-b67b-036bff4a0c34
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:61 -    Trigger Price: 95692.2
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:66 -    Created: 1763199101999
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:67 -    Updated: 1763199357405
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:54 -    Order ID: af302da6-35ae-43ce-9f00-af061400a37e
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:61 -    Trigger Price: 95725.6
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:66 -    Created: 1763198388468
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:67 -    Updated: 1763198767222
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:54 -    Order ID: 30d8dc60-8288-46d7-8027-c465a5dd98d8
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:60 -    Price: 96626.9
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:61 -    Trigger Price: 
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:62 -    Trigger By: 
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:64 -    Stop Order Type: 
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:66 -    Created: 1763197367014
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:54 -    Order ID: 209d5d16-18b0-4a61-ad3d-f998fd3ea432
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:56 -    Side: Buy
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:58 -    Status: Deactivated
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:60 -    Price: 0
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:61 -    Trigger Price: 95876.9
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:64 -    Stop Order Type: StopLoss
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:66 -    Created: 1763197303205
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:67 -    Updated: 1763197367014
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:53 - 
+   ═══ ОРДЕР ═══
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:54 -    Order ID: 9b616f0e-fc35-42ab-abc9-8669deb55e85
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:55 -    Symbol: BTCUSDT
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:56 -    Side: Sell
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:57 -    Order Type: Market
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:58 -    Status: Filled
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:59 -    Qty: 0.001
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:60 -    Price: 94753.5
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:61 -    Trigger Price: 95699.4
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:62 -    Trigger By: LastPrice
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:63 -    Order Filter: None
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:64 -    Stop Order Type: Stop
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:65 -    Reject Reason: EC_NoError
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:66 -    Created: 1763197184444
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:67 -    Updated: 1763197295903
+2025-11-15 11:36:05 | INFO     | __main__:check_orders:74 - 
+📊 Поточні позиції:
+2025-11-15 11:36:05 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:36:34 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:36:34 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:36:40 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:36:40 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-15 11:36:40 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 1852.89 USDT
+2025-11-15 11:36:40 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-15 11:36:40 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 1852.89 USDT
+2025-11-15 11:36:40 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-15 11:36:41 | INFO     | trading.signal_handler:place_trigger_order:1180 - 📉 Trigger НИЖЧЕ поточної: спрацює при ПАДІННІ до 3150.33000000
+2025-11-15 11:36:41 | INFO     | trading.signal_handler:place_trigger_order:1186 -    � SHORT: поточна 3156.96000000 → trigger 3150.33000000
+2025-11-15 11:36:41 | INFO     | trading.signal_handler:place_trigger_order:1237 - 🎯 TRIGGER ORDER: ETHUSDT SHORT
+2025-11-15 11:36:41 | INFO     | trading.signal_handler:place_trigger_order:1238 -    Поточна ціна: 3156.96000000
+2025-11-15 11:36:41 | INFO     | trading.signal_handler:place_trigger_order:1239 -    Trigger ціна: 3150.33000000
+2025-11-15 11:36:41 | INFO     | trading.signal_handler:place_trigger_order:1240 -    Trigger direction: 2 (падіння)
+2025-11-15 11:36:41 | INFO     | trading.signal_handler:place_trigger_order:1241 -    Розмір: 0.03 (94.51 USDT @ 10x)
+2025-11-15 11:36:41 | INFO     | trading.signal_handler:place_trigger_order:1243 -    Stop Loss: 3172.44000000
+2025-11-15 11:36:41 | INFO     | trading.signal_handler:place_trigger_order:1250 - ✅ TRIGGER ORDER розміщено: ETHUSDT SHORT
+2025-11-15 11:36:42 | INFO     | trading.signal_handler:_watch_trigger_order:1326 - 📡 Моніторинг trigger order для ETHUSDT
+2025-11-15 11:36:42 | INFO     | trading.signal_handler:_watch_trigger_order:1327 -    Order ID: bbce89dd-0dce-48bb-83d6-d2239fbbc38b
+2025-11-15 11:36:42 | INFO     | trading.signal_handler:_watch_trigger_order:1328 -    Trigger: 3150.33000000
+2025-11-15 11:36:42 | INFO     | trading.signal_handler:_watch_trigger_order:1329 -    Direction: SHORT
+2025-11-15 11:36:42 | INFO     | __main__:test_trigger_order:50 - ✅ Trigger order розміщено і залишається активним
+2025-11-15 11:36:42 | INFO     | __main__:test_trigger_order:51 - ⏳ Натисніть Ctrl+C для завершення (ордер залишиться активним)
+2025-11-15 11:36:47 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:36:47 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3157.52000000, trigger 3150.33000000, відстань: -7.19000000
+2025-11-15 11:36:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:36:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3156.00000000, trigger 3150.33000000, відстань: -5.67000000
+2025-11-15 11:36:58 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:36:58 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3156.19000000, trigger 3150.33000000, відстань: -5.86000000
+2025-11-15 11:37:03 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:04 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3155.32000000, trigger 3150.33000000, відстань: -4.99000000
+2025-11-15 11:37:09 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:09 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3156.65000000, trigger 3150.33000000, відстань: -6.32000000
+2025-11-15 11:37:14 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:14 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3157.60000000, trigger 3150.33000000, відстань: -7.27000000
+2025-11-15 11:37:20 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:20 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3157.92000000, trigger 3150.33000000, відстань: -7.59000000
+2025-11-15 11:37:25 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:25 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.55000000, trigger 3150.33000000, відстань: -8.22000000
+2025-11-15 11:37:31 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:31 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.55000000, trigger 3150.33000000, відстань: -8.22000000
+2025-11-15 11:37:36 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:36 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.55000000, trigger 3150.33000000, відстань: -8.22000000
+2025-11-15 11:37:41 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:42 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3157.75000000, trigger 3150.33000000, відстань: -7.42000000
+2025-11-15 11:37:47 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:47 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.41000000, trigger 3150.33000000, відстань: -8.08000000
+2025-11-15 11:37:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.94000000, trigger 3150.33000000, відстань: -8.61000000
+2025-11-15 11:37:58 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:37:58 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.72000000, trigger 3150.33000000, відстань: -9.39000000
+2025-11-15 11:38:03 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:03 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.16000000, trigger 3150.33000000, відстань: -8.83000000
+2025-11-15 11:38:09 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:09 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.87000000, trigger 3150.33000000, відстань: -8.54000000
+2025-11-15 11:38:14 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:14 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.58000000, trigger 3150.33000000, відстань: -9.25000000
+2025-11-15 11:38:19 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:20 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.05000000, trigger 3150.33000000, відстань: -8.72000000
+2025-11-15 11:38:25 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:25 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.05000000, trigger 3150.33000000, відстань: -8.72000000
+2025-11-15 11:38:30 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:30 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.88000000, trigger 3150.33000000, відстань: -8.55000000
+2025-11-15 11:38:36 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:36 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.33000000, trigger 3150.33000000, відстань: -8.00000000
+2025-11-15 11:38:41 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:41 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.50000000, trigger 3150.33000000, відстань: -8.17000000
+2025-11-15 11:38:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:47 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.79000000, trigger 3150.33000000, відстань: -8.46000000
+2025-11-15 11:38:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.80000000, trigger 3150.33000000, відстань: -8.47000000
+2025-11-15 11:38:57 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:38:58 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.79000000, trigger 3150.33000000, відстань: -8.46000000
+2025-11-15 11:39:03 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:03 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.04000000, trigger 3150.33000000, відстань: -8.71000000
+2025-11-15 11:39:08 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:08 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.52000000, trigger 3150.33000000, відстань: -9.19000000
+2025-11-15 11:39:14 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:14 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.76000000, trigger 3150.33000000, відстань: -9.43000000
+2025-11-15 11:39:19 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:19 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.55000000, trigger 3150.33000000, відстань: -10.22000000
+2025-11-15 11:39:24 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:25 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.55000000, trigger 3150.33000000, відстань: -10.22000000
+2025-11-15 11:39:30 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:30 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.56000000, trigger 3150.33000000, відстань: -10.23000000
+2025-11-15 11:39:35 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:35 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.89000000, trigger 3150.33000000, відстань: -10.56000000
+2025-11-15 11:39:41 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:41 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.56000000, trigger 3150.33000000, відстань: -10.23000000
+2025-11-15 11:39:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.57000000, trigger 3150.33000000, відстань: -10.24000000
+2025-11-15 11:39:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.37000000, trigger 3150.33000000, відстань: -10.04000000
+2025-11-15 11:39:57 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:39:57 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.23000000, trigger 3150.33000000, відстань: -9.90000000
+2025-11-15 11:40:02 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:03 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.86000000, trigger 3150.33000000, відстань: -9.53000000
+2025-11-15 11:40:08 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:08 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.80000000, trigger 3150.33000000, відстань: -10.47000000
+2025-11-15 11:40:13 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:13 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.79000000, trigger 3150.33000000, відстань: -10.46000000
+2025-11-15 11:40:19 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:19 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.21000000, trigger 3150.33000000, відстань: -9.88000000
+2025-11-15 11:40:24 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:24 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.78000000, trigger 3150.33000000, відстань: -9.45000000
+2025-11-15 11:40:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:30 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.20000000, trigger 3150.33000000, відстань: -7.87000000
+2025-11-15 11:40:35 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:35 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.20000000, trigger 3150.33000000, відстань: -7.87000000
+2025-11-15 11:40:40 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:41 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.36000000, trigger 3150.33000000, відстань: -8.03000000
+2025-11-15 11:40:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.41000000, trigger 3150.33000000, відстань: -8.08000000
+2025-11-15 11:40:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.80000000, trigger 3150.33000000, відстань: -8.47000000
+2025-11-15 11:40:57 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:40:57 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.80000000, trigger 3150.33000000, відстань: -8.47000000
+2025-11-15 11:41:02 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:02 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.19000000, trigger 3150.33000000, відстань: -8.86000000
+2025-11-15 11:41:07 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:08 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.14000000, trigger 3150.33000000, відстань: -8.81000000
+2025-11-15 11:41:13 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:13 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.97000000, trigger 3150.33000000, відстань: -9.64000000
+2025-11-15 11:41:19 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:19 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.46000000, trigger 3150.33000000, відстань: -10.13000000
+2025-11-15 11:41:24 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:24 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.78000000, trigger 3150.33000000, відстань: -10.45000000
+2025-11-15 11:41:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:30 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.47000000, trigger 3150.33000000, відстань: -10.14000000
+2025-11-15 11:41:35 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:35 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.04000000, trigger 3150.33000000, відстань: -9.71000000
+2025-11-15 11:41:40 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:40 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.11000000, trigger 3150.33000000, відстань: -9.78000000
+2025-11-15 11:41:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.38000000, trigger 3150.33000000, відстань: -9.05000000
+2025-11-15 11:41:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.14000000, trigger 3150.33000000, відстань: -9.81000000
+2025-11-15 11:41:57 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:41:57 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.22000000, trigger 3150.33000000, відстань: -9.89000000
+2025-11-15 11:42:02 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:02 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.21000000, trigger 3150.33000000, відстань: -9.88000000
+2025-11-15 11:42:07 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:08 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.59000000, trigger 3150.33000000, відстань: -10.26000000
+2025-11-15 11:42:13 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:13 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.89000000, trigger 3150.33000000, відстань: -10.56000000
+2025-11-15 11:42:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.89000000, trigger 3150.33000000, відстань: -10.56000000
+2025-11-15 11:42:24 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:24 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.76000000, trigger 3150.33000000, відстань: -10.43000000
+2025-11-15 11:42:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3161.44000000, trigger 3150.33000000, відстань: -11.11000000
+2025-11-15 11:42:35 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:35 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.80000000, trigger 3150.33000000, відстань: -10.47000000
+2025-11-15 11:42:40 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:40 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3161.34000000, trigger 3150.33000000, відстань: -11.01000000
+2025-11-15 11:42:45 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3161.06000000, trigger 3150.33000000, відстань: -10.73000000
+2025-11-15 11:42:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3161.04000000, trigger 3150.33000000, відстань: -10.71000000
+2025-11-15 11:42:56 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:42:56 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.80000000, trigger 3150.33000000, відстань: -10.47000000
+2025-11-15 11:43:02 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:02 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.94000000, trigger 3150.33000000, відстань: -10.61000000
+2025-11-15 11:43:07 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:07 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3161.41000000, trigger 3150.33000000, відстань: -11.08000000
+2025-11-15 11:43:13 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:13 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.50000000, trigger 3150.33000000, відстань: -10.17000000
+2025-11-15 11:43:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.16000000, trigger 3150.33000000, відстань: -9.83000000
+2025-11-15 11:43:23 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:24 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.89000000, trigger 3150.33000000, відстань: -9.56000000
+2025-11-15 11:43:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.12000000, trigger 3150.33000000, відстань: -9.79000000
+2025-11-15 11:43:34 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:34 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.12000000, trigger 3150.33000000, відстань: -9.79000000
+2025-11-15 11:43:40 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:40 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.66000000, trigger 3150.33000000, відстань: -10.33000000
+2025-11-15 11:43:45 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:45 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.66000000, trigger 3150.33000000, відстань: -10.33000000
+2025-11-15 11:43:50 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.67000000, trigger 3150.33000000, відстань: -10.34000000
+2025-11-15 11:43:56 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:43:56 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.80000000, trigger 3150.33000000, відстань: -10.47000000
+2025-11-15 11:44:01 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:01 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.79000000, trigger 3150.33000000, відстань: -10.46000000
+2025-11-15 11:44:07 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:07 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3161.21000000, trigger 3150.33000000, відстань: -10.88000000
+2025-11-15 11:44:12 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:12 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3162.41000000, trigger 3150.33000000, відстань: -12.08000000
+2025-11-15 11:44:17 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3161.62000000, trigger 3150.33000000, відстань: -11.29000000
+2025-11-15 11:44:23 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:23 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3161.30000000, trigger 3150.33000000, відстань: -10.97000000
+2025-11-15 11:44:28 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.79000000, trigger 3150.33000000, відстань: -10.46000000
+2025-11-15 11:44:34 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:34 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.21000000, trigger 3150.33000000, відстань: -9.88000000
+2025-11-15 11:44:39 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:39 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.16000000, trigger 3150.33000000, відстань: -9.83000000
+2025-11-15 11:44:45 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:45 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.15000000, trigger 3150.33000000, відстань: -9.82000000
+2025-11-15 11:44:50 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:50 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.16000000, trigger 3150.33000000, відстань: -9.83000000
+2025-11-15 11:44:55 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:44:56 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.16000000, trigger 3150.33000000, відстань: -9.83000000
+2025-11-15 11:45:01 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:01 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.64000000, trigger 3150.33000000, відстань: -10.31000000
+2025-11-15 11:45:06 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:06 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.13000000, trigger 3150.33000000, відстань: -9.80000000
+2025-11-15 11:45:12 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:12 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.31000000, trigger 3150.33000000, відстань: -8.98000000
+2025-11-15 11:45:17 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:17 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.82000000, trigger 3150.33000000, відстань: -8.49000000
+2025-11-15 11:45:22 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:23 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.69000000, trigger 3150.33000000, відстань: -8.36000000
+2025-11-15 11:45:28 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:28 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.66000000, trigger 3150.33000000, відстань: -8.33000000
+2025-11-15 11:45:33 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:34 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.00000000, trigger 3150.33000000, відстань: -8.67000000
+2025-11-15 11:45:39 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:39 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.16000000, trigger 3150.33000000, відстань: -8.83000000
+2025-11-15 11:45:44 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:44 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.33000000, trigger 3150.33000000, відстань: -9.00000000
+2025-11-15 11:45:50 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:50 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.94000000, trigger 3150.33000000, відстань: -9.61000000
+2025-11-15 11:45:55 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:45:55 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3160.04000000, trigger 3150.33000000, відстань: -9.71000000
+2025-11-15 11:46:00 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:01 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.34000000, trigger 3150.33000000, відстань: -9.01000000
+2025-11-15 11:46:06 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:06 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.88000000, trigger 3150.33000000, відстань: -8.55000000
+2025-11-15 11:46:11 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:11 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3159.00000000, trigger 3150.33000000, відстань: -8.67000000
+2025-11-15 11:46:17 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:17 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.48000000, trigger 3150.33000000, відстань: -8.15000000
+2025-11-15 11:46:22 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:22 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.49000000, trigger 3150.33000000, відстань: -8.16000000
+2025-11-15 11:46:28 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:28 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3158.00000000, trigger 3150.33000000, відстань: -7.67000000
+2025-11-15 11:46:33 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:33 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3156.49000000, trigger 3150.33000000, відстань: -6.16000000
+2025-11-15 11:46:38 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:39 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3156.08000000, trigger 3150.33000000, відстань: -5.75000000
+2025-11-15 11:46:44 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:44 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3156.40000000, trigger 3150.33000000, відстань: -6.07000000
+2025-11-15 11:46:49 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:49 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3155.76000000, trigger 3150.33000000, відстань: -5.43000000
+2025-11-15 11:46:55 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:46:55 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3156.24000000, trigger 3150.33000000, відстань: -5.91000000
+2025-11-15 11:47:00 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:00 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3156.27000000, trigger 3150.33000000, відстань: -5.94000000
+2025-11-15 11:47:05 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:06 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3155.60000000, trigger 3150.33000000, відстань: -5.27000000
+2025-11-15 11:47:11 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:11 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3155.01000000, trigger 3150.33000000, відстань: -4.68000000
+2025-11-15 11:47:16 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:16 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.86000000, trigger 3150.33000000, відстань: -4.53000000
+2025-11-15 11:47:22 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:22 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.30000000, trigger 3150.33000000, відстань: -3.97000000
+2025-11-15 11:47:27 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:27 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.14000000, trigger 3150.33000000, відстань: -3.81000000
+2025-11-15 11:47:33 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:33 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.94000000, trigger 3150.33000000, відстань: -4.61000000
+2025-11-15 11:47:38 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:38 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.46000000, trigger 3150.33000000, відстань: -4.13000000
+2025-11-15 11:47:43 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:44 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.65000000, trigger 3150.33000000, відстань: -3.32000000
+2025-11-15 11:47:49 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:49 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.89000000, trigger 3150.33000000, відстань: -3.56000000
+2025-11-15 11:47:54 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:47:54 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.87000000, trigger 3150.33000000, відстань: -3.54000000
+2025-11-15 11:48:00 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:00 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.67000000, trigger 3150.33000000, відстань: -3.34000000
+2025-11-15 11:48:05 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:06 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.98000000, trigger 3150.33000000, відстань: -3.65000000
+2025-11-15 11:48:11 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:11 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.39000000, trigger 3150.33000000, відстань: -4.06000000
+2025-11-15 11:48:16 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:16 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.65000000, trigger 3150.33000000, відстань: -4.32000000
+2025-11-15 11:48:22 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:22 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.67000000, trigger 3150.33000000, відстань: -4.34000000
+2025-11-15 11:48:27 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:27 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.91000000, trigger 3150.33000000, відстань: -3.58000000
+2025-11-15 11:48:33 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:33 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.81000000, trigger 3150.33000000, відстань: -4.48000000
+2025-11-15 11:48:38 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:38 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.26000000, trigger 3150.33000000, відстань: -3.93000000
+2025-11-15 11:48:43 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:44 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.73000000, trigger 3150.33000000, відстань: -3.40000000
+2025-11-15 11:48:49 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:49 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.70000000, trigger 3150.33000000, відстань: -3.37000000
+2025-11-15 11:48:54 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:48:54 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.69000000, trigger 3150.33000000, відстань: -3.36000000
+2025-11-15 11:49:00 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:00 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.14000000, trigger 3150.33000000, відстань: -3.81000000
+2025-11-15 11:49:05 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:05 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3154.69000000, trigger 3150.33000000, відстань: -4.36000000
+2025-11-15 11:49:10 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:11 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3153.81000000, trigger 3150.33000000, відстань: -3.48000000
+2025-11-15 11:49:16 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:16 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3152.44000000, trigger 3150.33000000, відстань: -2.11000000
+2025-11-15 11:49:21 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:21 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3152.00000000, trigger 3150.33000000, відстань: -1.67000000
+2025-11-15 11:49:27 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:27 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3151.48000000, trigger 3150.33000000, відстань: -1.15000000
+2025-11-15 11:49:32 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:32 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3151.47000000, trigger 3150.33000000, відстань: -1.14000000
+2025-11-15 11:49:38 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:38 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3151.25000000, trigger 3150.33000000, відстань: -0.92000000
+2025-11-15 11:49:43 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:43 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3151.08000000, trigger 3150.33000000, відстань: -0.75000000
+2025-11-15 11:49:48 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:49 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3151.34000000, trigger 3150.33000000, відстань: -1.01000000
+2025-11-15 11:49:54 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:54 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3150.94000000, trigger 3150.33000000, відстань: -0.61000000
+2025-11-15 11:49:59 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:49:59 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3150.50000000, trigger 3150.33000000, відстань: -0.17000000
+2025-11-15 11:50:05 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:05 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:10 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:10 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:15 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:15 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:20 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:20 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:25 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:25 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:31 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:31 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:36 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:36 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:41 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:41 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:46 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:52 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:50:57 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:50:57 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:02 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:02 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:07 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:07 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:12 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:12 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:18 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:23 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:23 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:28 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:28 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:33 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:33 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:39 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:39 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:44 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:44 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:51:49 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Filled
+2025-11-15 11:51:49 | INFO     | trading.signal_handler:_watch_trigger_order:1457 - ✅ Trigger order ETHUSDT виконано зі статусом Filled
+2025-11-15 11:52:04 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:52:05 | DEBUG    | trading.signal_handler:close:231 - TakeProfit helper closed
+2025-11-15 11:52:11 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 11:52:11 | INFO     | trading.signal_handler:get_usdt_balance:851 - Баланс USDT:
+2025-11-15 11:52:11 | INFO     | trading.signal_handler:get_usdt_balance:852 -    - Кошелек: 1856.52 USDT
+2025-11-15 11:52:11 | INFO     | trading.signal_handler:get_usdt_balance:853 -    - В ордерах: 0.00 USDT
+2025-11-15 11:52:11 | INFO     | trading.signal_handler:get_usdt_balance:854 -    - Доступно: 1856.52 USDT
+2025-11-15 11:52:11 | DEBUG    | trading.take_profit:_get_session:96 - TakeProfit session created
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:place_trigger_order:1180 - 📉 Trigger НИЖЧЕ поточної: спрацює при ПАДІННІ до 3141.78000000
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:place_trigger_order:1186 -    � SHORT: поточна 3148.08000000 → trigger 3141.78000000
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:place_trigger_order:1237 - 🎯 TRIGGER ORDER: ETHUSDT SHORT
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:place_trigger_order:1238 -    Поточна ціна: 3148.08000000
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:place_trigger_order:1239 -    Trigger ціна: 3141.78000000
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:place_trigger_order:1240 -    Trigger direction: 2 (падіння)
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:place_trigger_order:1241 -    Розмір: 0.03 (94.25 USDT @ 10x)
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:place_trigger_order:1243 -    Stop Loss: 3163.83000000
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:place_trigger_order:1250 - ✅ TRIGGER ORDER розміщено: ETHUSDT SHORT
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:_watch_trigger_order:1326 - 📡 Моніторинг trigger order для ETHUSDT
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:_watch_trigger_order:1327 -    Order ID: 9adfc3fb-a9a7-4619-8e3f-4bee3911d354
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:_watch_trigger_order:1328 -    Trigger: 3141.78000000
+2025-11-15 11:52:12 | INFO     | trading.signal_handler:_watch_trigger_order:1329 -    Direction: SHORT
+2025-11-15 11:52:12 | INFO     | __main__:test_trigger_order:50 - ✅ Trigger order розміщено і залишається активним
+2025-11-15 11:52:12 | INFO     | __main__:test_trigger_order:51 - ⏳ Натисніть Ctrl+C для завершення (ордер залишиться активним)
+2025-11-15 11:52:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:52:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3147.65000000, trigger 3141.78000000, відстань: -5.87000000
+2025-11-15 11:52:23 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:52:23 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3147.09000000, trigger 3141.78000000, відстань: -5.31000000
+2025-11-15 11:52:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:52:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3147.92000000, trigger 3141.78000000, відстань: -6.14000000
+2025-11-15 11:52:34 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:52:34 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3147.71000000, trigger 3141.78000000, відстань: -5.93000000
+2025-11-15 11:52:40 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:52:40 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3149.10000000, trigger 3141.78000000, відстань: -7.32000000
+2025-11-15 11:52:45 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:52:45 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3148.30000000, trigger 3141.78000000, відстань: -6.52000000
+2025-11-15 11:52:50 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:52:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3148.41000000, trigger 3141.78000000, відстань: -6.63000000
+2025-11-15 11:52:56 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:52:56 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3148.68000000, trigger 3141.78000000, відстань: -6.90000000
+2025-11-15 11:53:01 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:53:01 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3149.56000000, trigger 3141.78000000, відстань: -7.78000000
+2025-11-15 11:53:07 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:53:07 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3149.98000000, trigger 3141.78000000, відстань: -8.20000000
+2025-11-15 11:53:12 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:53:12 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3150.06000000, trigger 3141.78000000, відстань: -8.28000000
+2025-11-15 11:53:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:53:18 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3149.41000000, trigger 3141.78000000, відстань: -7.63000000
+2025-11-15 11:53:23 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:53:23 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3150.01000000, trigger 3141.78000000, відстань: -8.23000000
+2025-11-15 11:53:28 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:53:29 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3150.36000000, trigger 3141.78000000, відстань: -8.58000000
+2025-11-15 11:53:34 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:53:34 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3149.99000000, trigger 3141.78000000, відстань: -8.21000000
+2025-11-15 11:53:39 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:53:39 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3150.74000000, trigger 3141.78000000, відстань: -8.96000000
+2025-11-15 11:53:45 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 11:53:45 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3150.74000000, trigger 3141.78000000, відстань: -8.96000000
+2025-11-15 12:47:40 | WARNING  | trading.signal_handler:_signed_request:819 - Connection error GET /v5/order/realtime (attempt 1/5): Cannot connect to host api-demo.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-15 12:47:40 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 12:47:40 | WARNING  | trading.signal_handler:_signed_request:819 - Connection error GET /v5/order/realtime (attempt 2/5): Cannot connect to host api-demo.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-15 12:47:42 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 12:47:42 | WARNING  | trading.signal_handler:_signed_request:819 - Connection error GET /v5/order/realtime (attempt 3/5): Cannot connect to host api-demo.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-15 12:47:43 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 12:47:43 | WARNING  | trading.signal_handler:_signed_request:819 - Connection error GET /v5/order/realtime (attempt 4/5): Cannot connect to host api-demo.bybit.com:443 ssl:default [getaddrinfo failed]
+2025-11-15 12:47:46 | DEBUG    | trading.signal_handler:_get_session:212 - SignalHandler session created
+2025-11-15 12:47:47 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 12:47:47 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3164.77000000, trigger 3141.78000000, відстань: -22.99000000
+2025-11-15 12:47:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 12:47:52 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3165.39000000, trigger 3141.78000000, відстань: -23.61000000
+2025-11-15 12:47:57 | DEBUG    | trading.signal_handler:_watch_trigger_order:1442 - Trigger order ETHUSDT статус: Untriggered
+2025-11-15 12:47:58 | DEBUG    | trading.signal_handler:_watch_trigger_order:1453 - SHORT trigger: поточна 3165.73000000, trigger 3141.78000000, відстань: -23.95000000
+2025-11-15 12:48:02 | INFO     | trading.signal_handler:_watch_trigger_order:1469 - Моніторинг trigger order ETHUSDT скасовано

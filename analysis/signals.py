@@ -574,7 +574,7 @@ async def monitor_and_trade(pair, target, direction, settings):
                 # Коли consolidated=True (RSI досяг екстремуму), відкриваємо позицію негайно
                 
                 if requires_pullback and consolidated:
-                    logger.info(f"🚀 GRAVITY2: Умови виконані - відкриваємо MARKET ORDER")
+                    logger.info(f"🚀 GRAVITY2: Умови виконані - відкриваємо позицію")
                     logger.info(f"   Стратегія: {strategy.name}")
                     logger.info(f"   Сигнал з каналу: {direction}")
                     logger.info(f"   Направлення угоди: {trade_direction}")
@@ -617,61 +617,124 @@ async def monitor_and_trade(pair, target, direction, settings):
                         logger.info(f"   Свічка: H={candle_high:.8f} L={candle_low:.8f}")
                         logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
                         
-                        # Валідація stop loss
-                        current_market_price = await signal_handler.get_real_time_price(pair)
-                        if trade_direction == 'long' and stop_loss_price >= current_market_price:
-                            logger.error(f"❌ КРИТИЧНО: SL >= Market Price для LONG!")
-                            logger.error(f"   Market: {current_market_price:.8f}, SL: {stop_loss_price:.8f}")
-                            break
-                        if trade_direction == 'short' and stop_loss_price <= current_market_price:
-                            logger.error(f"❌ КРИТИЧНО: SL <= Market Price для SHORT!")
-                            logger.error(f"   Market: {current_market_price:.8f}, SL: {stop_loss_price:.8f}")
-                            break
-                        
-                        # Розраховуємо розмір позиції
-                        qty_usdt = await risk_manager.calculate_position_size(pair, current_market_price)
-                        if not qty_usdt or qty_usdt < 10:
-                            qty_usdt = 10
-                        
-                        logger.info(f"💰 Розмір позиції: {qty_usdt} USDT")
-                        
-                        # Метадані для відстеження
-                        metadata = {
-                            "source": f"gravity2_{trade_direction}",
-                            "signal_level": float(target),
-                            "direction": trade_direction,
-                            "timeframe": timeframe,
-                            "strategy": strategy.name,
-                            "signal_direction": direction,
-                            "candle_high": candle_high,
-                            "candle_low": candle_low,
-                            "rsi_value": _last_rsi_val
-                        }
-                        
-                        logger.info(f"📝 Розміщення MARKET ORDER для Gravity2...")
-                        logger.info(f"   Напрямок: {trade_direction.upper()}")
-                        logger.info(f"   Поточна ціна: {current_market_price:.8f}")
-                        logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
-                        logger.info(f"   RSI: {_last_rsi_val:.2f}")
-                        
-                        # КРИТИЧНО: Ставимо MARKET ORDER
-                        result = await signal_handler.place_market_order(
-                            pair=pair,
-                            direction=trade_direction,
-                            quantity_usdt=qty_usdt,
-                            stop_loss=stop_loss_price,
-                            take_profit=None,
-                            metadata=metadata
-                        )
-                        
-                        if result:
-                            logger.info(f"✅ MARKET ORDER розміщено для {pair}")
-                            logger.info(f"   Стратегія: Gravity2")
-                            logger.info(f"   Напрямок: {trade_direction.upper()}")
+                        # ✅ КРИТИЧНО: ТІЛЬКИ ДЛЯ SHORT використовуємо TRIGGER ORDER
+                        if trade_direction == 'short':
+                            # Для SHORT: trigger на LOW свічки
+                            trigger_price = c_low
+                            logger.info(f"🎯 SHORT: Розміщуємо TRIGGER ORDER на LOW свічки: {trigger_price:.8f}")
+                            
+                            # Валідація stop loss відносно trigger price
+                            if stop_loss_price <= trigger_price:
+                                logger.error(f"❌ КРИТИЧНО: SL <= Trigger для SHORT!")
+                                logger.error(f"   Trigger: {trigger_price:.8f}, SL: {stop_loss_price:.8f}")
+                                break
+                            
+                            # Розраховуємо розмір позиції
+                            qty_usdt = await risk_manager.calculate_position_size(pair, trigger_price)
+                            if not qty_usdt or qty_usdt < 10:
+                                qty_usdt = 10
+                            
+                            logger.info(f"💰 Розмір позиції: {qty_usdt} USDT")
+                            
+                            # Метадані для відстеження
+                            metadata = {
+                                "source": f"gravity2_short_trigger",
+                                "signal_level": float(target),
+                                "direction": trade_direction,
+                                "timeframe": timeframe,
+                                "strategy": strategy.name,
+                                "signal_direction": direction,
+                                "candle_high": candle_high,
+                                "candle_low": candle_low,
+                                "rsi_value": _last_rsi_val,
+                                "trigger_price": trigger_price
+                            }
+                            
+                            logger.info(f"� Розміщення TRIGGER ORDER для SHORT...")
+                            logger.info(f"   Trigger ціна: {trigger_price:.8f}")
                             logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
-                            await signal_handler.start_external_trade_monitor()
-                        else:
-                            logger.error(f"❌ Не вдалося розмістити market order для {pair}")
+                            logger.info(f"   RSI: {_last_rsi_val:.2f}")
+                            
+                            # ✅ Ставимо TRIGGER ORDER для SHORT
+                            result = await signal_handler.place_trigger_order(
+                                pair=pair,
+                                direction=trade_direction,
+                                trigger_price=trigger_price,
+                                quantity_usdt=qty_usdt,
+                                stop_loss=stop_loss_price,
+                                take_profit=None,
+                                metadata=metadata
+                            )
+                            
+                            if result:
+                                logger.info(f"✅ TRIGGER ORDER розміщено для SHORT {pair}")
+                                logger.info(f"   Trigger: {trigger_price:.8f}")
+                                logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
+                                await signal_handler.start_external_trade_monitor()
+                            else:
+                                logger.error(f"❌ Не вдалося розмістити trigger order для {pair}")
+                        
+                        else:  # trade_direction == 'long'
+                            # Для LONG: звичайний MARKET ORDER
+                            logger.info(f"📈 LONG: Розміщуємо MARKET ORDER (без trigger)")
+                            
+                            # Валідація stop loss відносно поточної ціни
+                            current_market_price = await signal_handler.get_real_time_price(pair)
+                            if stop_loss_price >= current_market_price:
+                                logger.error(f"❌ КРИТИЧНО: SL >= Market Price для LONG!")
+                                logger.error(f"   Market: {current_market_price:.8f}, SL: {stop_loss_price:.8f}")
+                                break
+                            
+                            # Розраховуємо розмір позиції
+                            qty_usdt = await risk_manager.calculate_position_size(pair, current_market_price)
+                            if not qty_usdt or qty_usdt < 10:
+                                qty_usdt = 10
+                            
+                            logger.info(f"💰 Розмір позиції: {qty_usdt} USDT")
+                            
+                            # Метадані для відстеження
+                            metadata = {
+                                "source": f"gravity2_long_market",
+                                "signal_level": float(target),
+                                "direction": trade_direction,
+                                "timeframe": timeframe,
+                                "strategy": strategy.name,
+                                "signal_direction": direction,
+                                "candle_high": candle_high,
+                                "candle_low": candle_low,
+                                "rsi_value": _last_rsi_val
+                            }
+                            
+                            logger.info(f"📝 Розміщення MARKET ORDER для LONG...")
+                            logger.info(f"   Поточна ціна: {current_market_price:.8f}")
+                            logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
+                            logger.info(f"   RSI: {_last_rsi_val:.2f}")
+                            
+                            # Для LONG використовуємо place_limit_order на поточній ціні як market
+                            # або можна використати справжній market order якщо потрібно
+                            specs = await signal_handler._get_symbol_specs(pair)
+                            price_step = specs.get("price_step", 0.0)
+                            from decimal import ROUND_DOWN
+                            
+                            entry_price = signal_handler._quantize_price(current_market_price, price_step, ROUND_DOWN)
+                            
+                            result = await signal_handler.place_limit_order(
+                                pair=pair,
+                                direction=trade_direction,
+                                price=entry_price,
+                                quantity_usdt=qty_usdt,
+                                stop_loss=stop_loss_price,
+                                take_profit=None,
+                                metadata=metadata
+                            )
+                            
+                            if result:
+                                logger.info(f"✅ LIMIT ORDER розміщено для LONG {pair}")
+                                logger.info(f"   Вхід: {entry_price:.8f}")
+                                logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
+                                await signal_handler.start_external_trade_monitor()
+                            else:
+                                logger.error(f"❌ Не вдалося розмістити order для {pair}")
                         
                     except Exception as e:
                         logger.error(f"❌ Помилка відкриття Gravity2 позиції для {pair}: {e}")
