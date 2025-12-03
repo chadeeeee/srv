@@ -626,6 +626,7 @@ def detect_pinbar(candles, direction, pinbar_body_ratio=2.5, lookback=5):
                     logger.info(f"   - Стоп ЗА екстремумом: {stop_price:.8f}")
                     logger.info(f"   - Ratio: {ratio:.2f}, Color: {'Green' if c > o else 'Red'}")
                     
+                    # ✅ КРИТИЧНО ВИПРАВЛЕНО: LONG entry на HIGH свічки (не LOW!)
                     return {
                         'timestamp': timestamp,
                         'open': o,
@@ -633,16 +634,16 @@ def detect_pinbar(candles, direction, pinbar_body_ratio=2.5, lookback=5):
                         'low': l,
                         'close': c,
                         'direction': 'long',
-                        'entry_price': h,
-                        'stop_price': stop_price,  # ✅ Стоп ЗА екстремумом
-                        'extremum_price': l,  # ✅ ДОДАНО: зберігаємо екстремум окремо
+                        'entry_price': h,  # ✅ LONG: входимо на HIGH свічки
+                        'stop_price': stop_price,
+                        'extremum_price': l,
                         'invalidate_price': l,
                         'body': body,
                         'total_range': total_range,
                         'lower_wick': lower_wick,
                         'is_extremum': True,
                         'candle_index': i,
-                        'stop_offset_percent': stop_offset * 100  # ✅ ДОДАНО: зберігаємо відсоток
+                        'stop_offset_percent': stop_offset * 100
                     }
             
             elif direction == 'short':
@@ -660,6 +661,7 @@ def detect_pinbar(candles, direction, pinbar_body_ratio=2.5, lookback=5):
                     logger.info(f"   - Стоп ЗА екстремумом: {stop_price:.8f}")
                     logger.info(f"   - Ratio: {ratio:.2f}, Color: {'Red' if c < o else 'Green'}")
                     
+                    # ✅ КРИТИЧНО ВИПРАВЛЕНО: SHORT entry на LOW свічки (не HIGH!)
                     return {
                         'timestamp': timestamp,
                         'open': o,
@@ -667,17 +669,18 @@ def detect_pinbar(candles, direction, pinbar_body_ratio=2.5, lookback=5):
                         'low': l,
                         'close': c,
                         'direction': 'short',
-                        'entry_price': l,
-                        'stop_price': stop_price,  # ✅ Стоп ЗА екстремумом
-                        'extremum_price': h,  # ✅ ДОДАНО: зберігаємо екстремум окремо
+                        'entry_price': l,  # ✅ SHORT: входимо на LOW свічки
+                        'stop_price': stop_price,
+                        'extremum_price': h,
                         'invalidate_price': h,
                         'body': body,
                         'total_range': total_range,
                         'upper_wick': upper_wick,
                         'is_extremum': True,
                         'candle_index': i,
-                        'stop_offset_percent': stop_offset * 100  # ✅ ДОДАНО: зберігаємо відсоток
+                        'stop_offset_percent': stop_offset * 100
                     }
+
             
         except (ValueError, IndexError) as e:
             logger.error(f"Error detecting pinbar: {e}")
