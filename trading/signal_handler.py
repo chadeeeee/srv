@@ -1106,6 +1106,56 @@ class SignalHandler:
         if await self._is_drawdown_blocked():
             logger.warning(f"Пропускаем размещення лимитного ордера для {pair}: защита по просадке")
             return None
+        
+        # ✅ КРИТИЧНО: Перевірка максимальної кількості відкритих угод
+        settings = get_settings()
+        max_trades = settings.get('max_open_trades')
+        if max_trades is not None:
+            max_trades = int(max_trades)
+            active_count = await self.get_active_positions_count()
+            
+            # Рахуємо також conditional orders (trigger orders)
+            try:
+                result = await self._signed_request("GET", "/v5/order/realtime", {"category": "linear"})
+                if result and result.get("retCode") == 0:
+                    active_orders = result.get("result", {}).get("list", [])
+                    # Фільтруємо умовні ордери (не виконані limit/conditional)
+                    conditional_count = len([o for o in active_orders if o.get("orderStatus") in ["New", "PartiallyFilled", "Untriggered"]])
+                else:
+                    conditional_count = 0
+            except Exception:
+                conditional_count = 0
+            
+            total_active = active_count + conditional_count
+            
+            logger.info(f"📊 Перевірка ліміту угод для {pair}:")
+            logger.info(f"   - Активні позиції: {active_count}")
+            logger.info(f"   - Умовні ордери: {conditional_count}")
+            logger.info(f"   - Всього відкрито: {total_active}")
+            logger.info(f"   - Максимум дозволено: {max_trades}")
+            
+            if total_active >= max_trades:
+                logger.warning(f"⛔ ПЕРЕВИЩЕНО ЛІМІТ УГОД!")
+                logger.warning(f"   Відкрито: {total_active} (позицій: {active_count} + ордерів: {conditional_count})")
+                logger.warning(f"   Максимум: {max_trades}")
+                logger.warning(f"   Пропускаємо відкриття {pair}")
+                
+                try:
+                    await notify_user(
+                        f"⛔ ЛІМІТ УГОД ПЕРЕВИЩЕНО!\n"
+                        f"━━━━━━━━━━━━━━━━━━\n"
+                        f"Спроба відкриття: {pair}\n"
+                        f"Позицій: {active_count}\n"
+                        f"Умовних ордерів: {conditional_count}\n"
+                        f"Всього: {total_active}\n"
+                        f"Максимум: {max_trades}\n"
+                        f"\n❌ Угода НЕ відкрита"
+                    )
+                except Exception:
+                    pass
+                
+                return None
+        
         position = await self._take_profit_helper.get_position(pair)
         size = 0.0
         if position:
@@ -1225,6 +1275,56 @@ class SignalHandler:
         if await self._is_drawdown_blocked():
             logger.warning(f"Пропускаємо trigger order для {pair}: захист по просадці")
             return None
+        
+        # ✅ КРИТИЧНО: Перевірка максимальної кількості відкритих угод
+        settings = get_settings()
+        max_trades = settings.get('max_open_trades')
+        if max_trades is not None:
+            max_trades = int(max_trades)
+            active_count = await self.get_active_positions_count()
+            
+            # Рахуємо також conditional orders (trigger orders)
+            try:
+                result = await self._signed_request("GET", "/v5/order/realtime", {"category": "linear"})
+                if result and result.get("retCode") == 0:
+                    active_orders = result.get("result", {}).get("list", [])
+                    # Фільтруємо умовні ордери (не виконані limit/conditional)
+                    conditional_count = len([o for o in active_orders if o.get("orderStatus") in ["New", "PartiallyFilled", "Untriggered"]])
+                else:
+                    conditional_count = 0
+            except Exception:
+                conditional_count = 0
+            
+            total_active = active_count + conditional_count
+            
+            logger.info(f"📊 Перевірка ліміту угод для {pair} (TRIGGER):")
+            logger.info(f"   - Активні позиції: {active_count}")
+            logger.info(f"   - Умовні ордери: {conditional_count}")
+            logger.info(f"   - Всього відкрито: {total_active}")
+            logger.info(f"   - Максимум дозволено: {max_trades}")
+            
+            if total_active >= max_trades:
+                logger.warning(f"⛔ ПЕРЕВИЩЕНО ЛІМІТ УГОД (TRIGGER)!")
+                logger.warning(f"   Відкрито: {total_active} (позицій: {active_count} + ордерів: {conditional_count})")
+                logger.warning(f"   Максимум: {max_trades}")
+                logger.warning(f"   Пропускаємо відкриття TRIGGER для {pair}")
+                
+                try:
+                    await notify_user(
+                        f"⛔ ЛІМІТ УГОД ПЕРЕВИЩЕНО (TRIGGER)!\n"
+                        f"━━━━━━━━━━━━━━━━━━\n"
+                        f"Спроба відкриття: {pair}\n"
+                        f"Тип: TRIGGER ORDER\n"
+                        f"Позицій: {active_count}\n"
+                        f"Умовних ордерів: {conditional_count}\n"
+                        f"Всього: {total_active}\n"
+                        f"Максимум: {max_trades}\n"
+                        f"\n❌ Trigger НЕ розміщено"
+                    )
+                except Exception:
+                    pass
+                
+                return None
         
         # Перевірка чи позиція вже існує
         position = await self._take_profit_helper.get_position(pair)

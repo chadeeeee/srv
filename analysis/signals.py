@@ -534,20 +534,24 @@ async def monitor_and_trade(pair, target, direction, settings):
                 max_tol = t * 0.003  # 0.3% від рівня
                 tol = min(base_tol, max_tol)
                 
-                # ✅ ВИПРАВЛЕНО: Правильна логіка для LONG/SHORT
-                # LONG: відкриваємо коли ціна >= рівня (вище або на рівні)
-                # SHORT: відкриваємо коли ціна <= рівня (нижче або на рівні)
+                # ✅ КРИТИЧНО ВИПРАВЛЕНО: Правильна логіка перевірки досягнення рівня
+                # Рівень вважається досягнутим ТІЛЬКИ якщо:
+                # 1. Ціна ПЕРЕТНУЛА рівень (crossed from other side)
+                # 2. АБО ціна в межах tolerance від рівня
+                #
+                # ⚠️ ПОПЕРЕДНЯ ПОМИЛКА: "or current_price >= t" дозволяла відкривати 
+                # SHORT угоди навіть якщо ціна була ДУЖЕ ДАЛЕКО нижче рівня!
                 
                 if trade_direction == 'long':
-                    # LONG: вхід коли ціна НА РІВНІ або ВИЩЕ
-                    # Якщо ціна вже вище рівня - входимо негайно!
+                    # LONG: вхід коли ціна ПЕРЕТНУЛА рівень знизу вгору
+                    # АБО знаходиться в межах tolerance від рівня
                     crossed = (prev_price is not None and prev_price < t and current_price >= t)
-                    near = abs(current_price - t) <= tol or current_price >= t
+                    near = abs(current_price - t) <= tol
                 else:
-                    # SHORT: вхід коли ціна НА РІВНІ або НИЖЧЕ
-                    # Якщо ціна вже нижче рівня - входимо негайно!
+                    # SHORT: вхід коли ціна ПЕРЕТНУЛА рівень зверху вниз
+                    # АБО знаходиться в межах tolerance від рівня
                     crossed = (prev_price is not None and prev_price > t and current_price <= t)
-                    near = abs(current_price - t) <= tol or current_price <= t
+                    near = abs(current_price - t) <= tol
                 
                 reached = crossed or near
                 
@@ -565,8 +569,16 @@ async def monitor_and_trade(pair, target, direction, settings):
                 
                 if reached:
                     level_touched = True
-                    logger.info(f"✅ Рівень торкнувся {pair} @ {t:.6f} (поточна: {current_price:.6f})")
+                    logger.info(f"✅ Рівень ДОСЯГНУТО {pair} @ {t:.6f}")
+                    logger.info(f"   Попередня ціна: {prev_price:.6f}" if prev_price else "   Попередня ціна: N/A")
+                    logger.info(f"   Поточна ціна: {current_price:.6f}")
                     logger.info(f"   Напрямок торгівлі: {trade_direction.upper()}")
+                    logger.info(f"   Tolerance: {tol:.8f} ({tol/t*100:.3f}%)")
+                    logger.info(f"   Відстань до рівня: {abs(current_price - t):.8f}")
+                    if crossed:
+                        logger.info(f"   ✓ Причина: ПЕРЕТИН рівня (crossed from {'below' if trade_direction == 'long' else 'above'})")
+                    if near:
+                        logger.info(f"   ✓ Причина: В межах tolerance ({abs(current_price - t):.8f} <= {tol:.8f})")
                     logger.info(f"   Стратегія: {strategy.name}")
                     if ignore_pinbar:
                         logger.info(f"🚀 Рівень досягнуто. IGNORE_PINBAR=True -> Виконуємо вхід...")
@@ -574,6 +586,7 @@ async def monitor_and_trade(pair, target, direction, settings):
                         logger.info(f"🚀 Рівень досягнуто. Починаємо пошук паттерна (Strategy: {strategy.name})...")
                     start_touch_time = time.time()
                     _last_log_search = 0.0  # Скидаємо таймер логування
+
             
             
             # ✅ КРИТИЧНО: Gravity2 МАЄ СПОЧАТКУ ЧЕКАТИ ТОРКАННЯ РІВНЯ!

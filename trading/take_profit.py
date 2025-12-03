@@ -467,9 +467,12 @@ class TakeProfit:
 
         settings = get_settings()
         
-        # ВИПРАВЛЕНО: Беремо значення з БД
-        rsi_high = float(rsi_high_override if rsi_high_override is not None else settings.get('rsi_exit_long', 70))
-        rsi_low = float(rsi_low_override if rsi_low_override is not None else settings.get('rsi_exit_short', 30))
+        # ✅ ПРАВИЛЬНА ЛОГІКА RSI:
+        # - LONG закривається при RSI >= rsi_high (ціна ЗРОСЛА, перекупленість, час продавати)
+        # - SHORT закривається при RSI <= rsi_low (ціна ВПАЛА, перепроданість, час закривати)
+        
+        rsi_high = float(rsi_high_override if rsi_high_override is not None else settings.get('rsi_high', 70))
+        rsi_low = float(rsi_low_override if rsi_low_override is not None else settings.get('rsi_low', 30))
         
         if rsi_period_override is not None:
             try:
@@ -478,7 +481,6 @@ class TakeProfit:
                 pass
         
         # ⚠️ КРИТИЧНО: RSI МАЄ БРАТИСЯ ВИКЛЮЧНО НА 1-ХВИЛИННОМУ ТАЙМФРЕЙМІ!
-        # ІГНОРУЄМО будь-які оverride або налаштування з БД
         rsi_interval = '1'  # ЖОРСТКО ФІКСОВАНО НА 1 ХВИЛИНУ
         
         # Логування попередження, якщо був спроба використати інший інтервал
@@ -488,10 +490,16 @@ class TakeProfit:
 
         logger.info(f"RSI TP трекер для {pair}:")
         logger.info(f"   - Направлення: {direction.upper()}")
-        logger.info(f"   - RSI High (для закриття LONG): {rsi_high}")
-        logger.info(f"   - RSI Low (для закриття SHORT): {rsi_low}")
+        logger.info(f"   - RSI High (для LONG): {rsi_high}")
+        logger.info(f"   - RSI Low (для SHORT): {rsi_low}")
         logger.info(f"   - RSI Period: {self.rsi_period}")
         logger.info(f"   - RSI Interval: {rsi_interval} (ФІКСОВАНО)")
+        
+        # ✅ ПРАВИЛЬНА ЛОГІКА:
+        if direction == "long":
+            logger.info(f"   ✓ LONG: Закриємо коли RSI >= {rsi_high} (ціна зросла)")
+        else:
+            logger.info(f"   ✓ SHORT: Закриємо коли RSI <= {rsi_low} (ціна впала)")
 
         # ДОДАНО: Лічильник для періодичних оновлень
         check_count = 0
@@ -543,12 +551,16 @@ class TakeProfit:
                         except Exception as e:
                             logger.debug(f"Не вдалося відправити RSI статус: {e}")
 
-                    # ВИПРАВЛЕНО: LONG закривається при RSI >= rsi_high, SHORT при RSI <= rsi_low
+
+                    # ✅ ПРАВИЛЬНА ЛОГІКА RSI:
+                    # LONG закривається при RSI >= rsi_high (ціна зросла → перекупленість → закриваємо)
+                    # SHORT закривається при RSI <= rsi_low (ціна впала → перепроданість → закриваємо)
+                    
                     if direction == "long" and rsi >= rsi_high:
-                        logger.warning(f"RSI TAKE-PROFIT: {pair} LONG")
+                        logger.warning(f"🔔 RSI TAKE-PROFIT: {pair} LONG")
                         logger.warning(f"   - Поточний RSI: {rsi:.2f}")
                         logger.warning(f"   - Поріг RSI High: {rsi_high}")
-                        logger.warning(f"   - Умова: RSI {rsi:.2f} >= {rsi_high}")
+                        logger.warning(f"   - Умова: RSI {rsi:.2f} >= {rsi_high} (ПЕРЕКУПЛЕНІСТЬ)")
                         
                         rsi_auto_close(pair, direction, rsi, rsi_high)
                         success = await self.close_position(pair, "Buy")
@@ -564,10 +576,11 @@ class TakeProfit:
                         break
                         
                     elif direction == "short" and rsi <= rsi_low:
-                        logger.warning(f"RSI TAKE-PROFIT: {pair} SHORT")
+                        logger.warning(f"🔔 RSI TAKE-PROFIT: {pair} SHORT")
                         logger.warning(f"   - Поточний RSI: {rsi:.2f}")
                         logger.warning(f"   - Поріг RSI Low: {rsi_low}")
-                        logger.warning(f"   - Умова: RSI {rsi:.2f} <= {rsi_low}")
+                        logger.warning(f"   - Умова: RSI {rsi:.2f} <= {rsi_low} (ПЕРЕПРОДАНІСТЬ)")
+                        logger.warning(f"   - Логіка: Ціна впала → RSI низький → закриваємо SHORT")
                         
                         rsi_auto_close(pair, direction, rsi, rsi_low)
                         success = await self.close_position(pair, "Sell")
@@ -588,6 +601,7 @@ class TakeProfit:
                                 logger.info(f"{pair} LONG: RSI={rsi:.2f} (чекаємо >= {rsi_high}, залишилось {rsi_high - rsi:.2f})")
                             else:
                                 logger.info(f"{pair} SHORT: RSI={rsi:.2f} (чекаємо <= {rsi_low}, залишилось {rsi - rsi_low:.2f})")
+
 
                 except asyncio.CancelledError:
                     logger.info(f"RSI tracking cancelled: {pair}")
