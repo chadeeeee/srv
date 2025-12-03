@@ -839,7 +839,7 @@ class SignalHandler:
         if method.upper() == "POST":
             headers["Content-Type"] = "application/json"
         max_retries = 5
-        base_delay = 0.6
+        base_delay = 0.6                              
         for attempt in range(1, max_retries + 1):
             try:
                 async with self._sem:
