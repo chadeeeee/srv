@@ -562,6 +562,20 @@ class TakeProfit:
                         logger.warning(f"   - Поріг RSI High: {rsi_high}")
                         logger.warning(f"   - Умова: RSI {rsi:.2f} >= {rsi_high} (ПЕРЕКУПЛЕНІСТЬ)")
                         
+                        # 📲 Telegram оповіщення про закриття LONG по RSI
+                        try:
+                            from telegram_bot import notify_user
+                            await notify_user(
+                                f"✅ RSI TAKE-PROFIT: {pair}\n"
+                                f"━━━━━━━━━━━━━━━━━━\n"
+                                f"📈 Напрямок: LONG\n"
+                                f"📊 RSI: {rsi:.2f} (досяг {rsi_high})\n"
+                                f"💡 Причина: Перекупленість\n"
+                                f"🎯 Закриваємо позицію..."
+                            )
+                        except Exception as e:
+                            logger.error(f"Не вдалося відправити TG повідомлення: {e}")
+                        
                         rsi_auto_close(pair, direction, rsi, rsi_high)
                         success = await self.close_position(pair, "Buy")
                         
@@ -581,6 +595,20 @@ class TakeProfit:
                         logger.warning(f"   - Поріг RSI Low: {rsi_low}")
                         logger.warning(f"   - Умова: RSI {rsi:.2f} <= {rsi_low} (ПЕРЕПРОДАНІСТЬ)")
                         logger.warning(f"   - Логіка: Ціна впала → RSI низький → закриваємо SHORT")
+                        
+                        # 📲 Telegram оповіщення про закриття SHORT по RSI
+                        try:
+                            from telegram_bot import notify_user
+                            await notify_user(
+                                f"✅ RSI TAKE-PROFIT: {pair}\n"
+                                f"━━━━━━━━━━━━━━━━━━\n"
+                                f"📉 Напрямок: SHORT\n"
+                                f"📊 RSI: {rsi:.2f} (досяг {rsi_low})\n"
+                                f"💡 Причина: Перепроданість\n"
+                                f"🎯 Закриваємо позицію..."
+                            )
+                        except Exception as e:
+                            logger.error(f"Не вдалося відправити TG повідомлення: {e}")
                         
                         rsi_auto_close(pair, direction, rsi, rsi_low)
                         success = await self.close_position(pair, "Sell")
