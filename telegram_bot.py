@@ -155,15 +155,6 @@ def security_menu_keyboard(settings):
         f"Таймаут ожидания пинбара (мин): <code>{_format_value(pinbar_timeout, 'pinbar_timeout')}</code>\n"
         f"Новые сделки: <code>{bot_status}</code>\n"
         f"<i>Напишите STOP для остановки бота или START для возобновления</i>\n\n"
-        f"<b>Жизнь лимитки:</b>\n"
-        f"• Количество минут, в течение которых лимитный ордер может оставаться открытым\n"
-        f"• Если лимитка не исполнилась за это время, она автоматически отменяется\n"
-        f"• Например, 5 = лимитка будет отменена через 5 минут, если не исполнилась\n\n"
-        f"<b>📍 Смещение стоп-лосса:</b>\n"
-        f"• 0 или Отключено = стоп точно на экстремуме свечи\n"
-        f"• 0.0001 = 0.01% от цены\n"
-        f"• 0.001 = 0.1% от цены\n"
-        f"• 0.01 = 1% от цены"
     )
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Макс. просадка (%)", callback_data="security_drawdown")],
@@ -605,8 +596,7 @@ async def process_security_setting(callback: CallbackQuery, state: FSMContext):
         keyboard = input_keyboard("back_security")
         await callback.message.edit_text(
             "Введите время жизни лимитного ордера в минутах (например, 5):\n\n"
-            "Если лимитка не исполнилась за это время, она будет автоматически отменена.\n"
-            "Рекомендуется: 3-10 минут",
+            "Если лимитка не исполнилась за это время, она будет автоматически отменена.",
             reply_markup=keyboard
         )
         await state.set_state(SettingsStates.waiting_for_limit_order_lifetime)
