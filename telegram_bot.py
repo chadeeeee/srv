@@ -16,6 +16,7 @@ from config import CONFIG
 from utils.settings_manager import get_settings, update_setting
 from utils.logger import logger, setting_changed
 
+
 class SettingsStates(StatesGroup):
     waiting_for_pinbar_tail = State()
     waiting_for_pinbar_body = State()
@@ -37,17 +38,22 @@ class SettingsStates(StatesGroup):
     waiting_for_pinbar_body_ratio = State()
     waiting_for_limit_order_lifetime = State()
 
+
 def main_menu_keyboard():
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Пинбар", callback_data="menu_pinbar")],
         [InlineKeyboardButton(text="RSI", callback_data="menu_rsi")],
         [InlineKeyboardButton(text="Сделки", callback_data="menu_trades")],
-        [InlineKeyboardButton(text="Безопасность", callback_data="menu_security")],
-        [InlineKeyboardButton(text="Стратегия", callback_data="menu_strategy")],
-        [InlineKeyboardButton(text="Размер позиции", callback_data="menu_position")],
+        [InlineKeyboardButton(text="Безопасность",
+                              callback_data="menu_security")],
+        [InlineKeyboardButton(
+            text="Стратегия", callback_data="menu_strategy")],
+        [InlineKeyboardButton(text="Размер позиции",
+                              callback_data="menu_position")],
         [InlineKeyboardButton(text="Другое", callback_data="menu_other")]
     ])
     return keyboard
+
 
 def _format_value(value, param_name=""):
     if value is None or value == 'disabled' or value == 0:
@@ -77,11 +83,12 @@ def _format_value(value, param_name=""):
         elif "entry_offset" in param_name.lower():
             hint = " (вход будет точно на HIGH/LOW свечи)"
         return f"Отключено{hint}"
-    
+
     if "stop_loss_offset" in param_name.lower() or "entry_offset" in param_name.lower():
         return f"{float(value) * 100:.4f}%"
-    
+
     return str(value)
+
 
 def pinbar_menu_keyboard(settings):
     tail = settings.get('pinbar_tail_percent')
@@ -94,12 +101,16 @@ def pinbar_menu_keyboard(settings):
         f"Макс. % противоположной тени: <code>{_format_value(opposite, 'opposite')}</code>"
     )
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Мин % основной тени", callback_data="pinbar_tail")],
-        [InlineKeyboardButton(text="Макс % тела", callback_data="pinbar_body")],
-        [InlineKeyboardButton(text="Макс % противоположной тени", callback_data="pinbar_opposite")],
+        [InlineKeyboardButton(text="Мин % основной тени",
+                              callback_data="pinbar_tail")],
+        [InlineKeyboardButton(text="Макс % тела",
+                              callback_data="pinbar_body")],
+        [InlineKeyboardButton(
+            text="Макс % противоположной тени", callback_data="pinbar_opposite")],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
     return text, keyboard
+
 
 def rsi_menu_keyboard(settings):
     rsi_high = settings.get('rsi_high')
@@ -116,6 +127,7 @@ def rsi_menu_keyboard(settings):
     ])
     return text, keyboard
 
+
 def trades_menu_keyboard(settings):
     max_retries = settings.get('max_retries')
     max_trades = settings.get('max_open_trades')
@@ -125,11 +137,14 @@ def trades_menu_keyboard(settings):
         f"Макс. кол-во откр. сделок: <code>{_format_value(max_trades, 'trades')}</code>"
     )
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Сделки после стопа", callback_data="trades_retries")],
-        [InlineKeyboardButton(text="Макс. откр. сделок", callback_data="trades_max")],
+        [InlineKeyboardButton(text="Сделки после стопа",
+                              callback_data="trades_retries")],
+        [InlineKeyboardButton(text="Макс. откр. сделок",
+                              callback_data="trades_max")],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
     return text, keyboard
+
 
 def security_menu_keyboard(settings):
     from utils.settings_manager import is_bot_active, is_drawdown_protection_active
@@ -146,7 +161,7 @@ def security_menu_keyboard(settings):
     dd_protection = is_drawdown_protection_active()
     bot_status = "Включены" if bot_active else "Отключены"
     " АКТИВНА" if dd_protection else "Выключена"
-    
+
     text = (
         f"<b>Настройки Безопасности:</b>\n\n"
         f"Макс. просадка (%): <code>{_format_value(max_drawdown, 'drawdown')}</code>\n"
@@ -157,13 +172,18 @@ def security_menu_keyboard(settings):
         f"<i>Напишите STOP для остановки бота или START для возобновления</i>\n\n"
     )
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Макс. просадка (%)", callback_data="security_drawdown")],
-        [InlineKeyboardButton(text="Жизнь лимитки (мин)", callback_data="security_limit_order_lifetime")],
-        [InlineKeyboardButton(text="Таймаут ожидания пинбара (мин)", callback_data="security_pinbar_timeout")],
-        [InlineKeyboardButton(text="Смещение стоп-лосса", callback_data="security_stop_loss_offset")],
+        [InlineKeyboardButton(text="Макс. просадка (%)",
+                              callback_data="security_drawdown")],
+        [InlineKeyboardButton(text="Жизнь лимитки (мин)",
+                              callback_data="security_limit_order_lifetime")],
+        [InlineKeyboardButton(text="Таймаут ожидания пинбара (мин)",
+                              callback_data="security_pinbar_timeout")],
+        [InlineKeyboardButton(text="Смещение стоп-лосса",
+                              callback_data="security_stop_loss_offset")],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
     return text, keyboard
+
 
 def position_menu_keyboard(settings):
     position_size = settings.get('position_size_percent')
@@ -172,61 +192,72 @@ def position_menu_keyboard(settings):
         f"Размер (% от баланса): <code>{_format_value(position_size, 'position')}</code>"
     )
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Изменить размер", callback_data="position_size")],
+        [InlineKeyboardButton(text="Изменить размер",
+                              callback_data="position_size")],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
     return text, keyboard
+
 
 def other_menu_keyboard(settings):
     timeframe_raw = settings.get('timeframe', '1m')
     timeframe = _format_timeframe_display(timeframe_raw)
     pinbar_body_ratio = settings.get('pinbar_body_ratio', 2.5)
-    
+
     text = (
         f"<b>Другие настройки:</b>\n\n"
         f"Таймфрейм: <code>{timeframe}</code>"
     )
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Таймфрейм", callback_data="other_timeframe")],
+        [InlineKeyboardButton(
+            text="Таймфрейм", callback_data="other_timeframe")],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
     return text, keyboard
+
 
 def _format_timeframe_display(raw_value):
     if not raw_value:
         return "1m"
     return str(raw_value)
 
+
 def _normalize_timeframe_for_db(user_input):
     if not user_input:
         return '1m'
-    
+
     user_input = str(user_input).strip().lower()
-    
-    valid_formats = {'1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '12h', '1d', '1w', '1M'}
-    
+
+    valid_formats = {'1m', '3m', '5m', '15m', '30m',
+                     '1h', '2h', '4h', '6h', '12h', '1d', '1w', '1M'}
+
     if user_input in valid_formats:
         return user_input
-    
+
     if user_input.upper() in {'1M', '3M', '5M', '15M', '30M'}:
         return user_input
     if user_input.upper() in {'1H', '2H', '4H', '6H', '12H'}:
         return user_input
     if user_input.upper() in {'1D', '1W'}:
         return user_input
-    
+
     return None
+
 
 def input_keyboard(back_callback):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="Отключить", callback_data="disable_setting")],
+        [InlineKeyboardButton(
+            text="Отключить", callback_data="disable_setting")],
         [InlineKeyboardButton(text="Назад", callback_data=back_callback)]
     ])
     return keyboard
 
+
 def strategy_menu_keyboard(settings):
     current_raw = settings.get('strategy') or ""
-    enabled = set([s.lower() for s in (current_raw or "").replace(';',',').replace('|',',').split(',') if s.strip()])
+    enabled = set([s.lower() for s in (current_raw or "").replace(
+        ';', ',').replace('|', ',').split(',') if s.strip()])
+
     def label(name, key):
         return (" " if key in enabled else " ") + name
     text = (
@@ -235,14 +266,18 @@ def strategy_menu_keyboard(settings):
         f"Нажмите для включения/отключения стратегии:"
     )
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text=label("Quantum Premium2", "quantum"), callback_data="strategy_quantum")],
-        [InlineKeyboardButton(text=label("Quantum Gravity2", "gravity2"), callback_data="strategy_gravity2")],
+        [InlineKeyboardButton(text=label(
+            "Quantum Premium2", "quantum"), callback_data="strategy_quantum")],
+        [InlineKeyboardButton(text=label(
+            "Quantum Gravity2", "gravity2"), callback_data="strategy_gravity2")],
         [InlineKeyboardButton(text="Назад", callback_data="back_main")]
     ])
     return text, keyboard
 
+
 bot = None
 dp = None
+
 
 def init_bot():
     global bot, dp
@@ -260,60 +295,96 @@ def init_bot():
         dp = None
         return None, None
     try:
-        # Спочатку реєструємо текстові команди STOP/START (щоб спрацювали раніше інших обробників)
-        dp.message.register(cmd_stop, lambda msg: msg.text and msg.text.strip().upper() == "STOP")
-        dp.message.register(cmd_start_trading, lambda msg: msg.text and msg.text.strip().upper() == "START")
-        
-        # Потім команди з /
+
+        dp.message.register(
+            cmd_stop, lambda msg: msg.text and msg.text.strip().upper() == "STOP")
+        dp.message.register(
+            cmd_start_trading, lambda msg: msg.text and msg.text.strip().upper() == "START")
+
         dp.message.register(cmd_start, Command("start"))
         dp.message.register(cmd_settings, Command("settings"))
-        dp.callback_query.register(process_main_menu, F.data.startswith("menu_"))
-        dp.callback_query.register(process_strategy_setting, F.data.startswith("menu_strategy"))
-        dp.callback_query.register(process_strategy_setting, F.data.startswith("strategy_"))
+        dp.callback_query.register(
+            process_main_menu, F.data.startswith("menu_"))
+        dp.callback_query.register(
+            process_strategy_setting, F.data.startswith("menu_strategy"))
+        dp.callback_query.register(
+            process_strategy_setting, F.data.startswith("strategy_"))
         dp.callback_query.register(process_back_main, F.data == "back_main")
-        dp.callback_query.register(process_back_pinbar, F.data == "back_pinbar")
+        dp.callback_query.register(
+            process_back_pinbar, F.data == "back_pinbar")
         dp.callback_query.register(process_back_rsi, F.data == "back_rsi")
-        dp.callback_query.register(process_back_trades, F.data == "back_trades")
-        dp.callback_query.register(process_back_security, F.data == "back_security")
+        dp.callback_query.register(
+            process_back_trades, F.data == "back_trades")
+        dp.callback_query.register(
+            process_back_security, F.data == "back_security")
         dp.callback_query.register(process_back_other, F.data == "back_other")
-        dp.callback_query.register(process_pinbar_setting, F.data.startswith("pinbar_"))
-        dp.callback_query.register(process_rsi_setting, F.data.startswith("rsi_"))
-        dp.callback_query.register(process_trades_setting, F.data.startswith("trades_"))
-        dp.callback_query.register(process_security_setting, F.data.startswith("security_"))
-        dp.callback_query.register(process_position_setting, F.data == "position_size")
-        dp.callback_query.register(process_other_setting, F.data.startswith("other_"))
-        dp.callback_query.register(process_disable_setting, F.data == "disable_setting")
-        dp.message.register(process_pinbar_tail_input, SettingsStates.waiting_for_pinbar_tail)
-        dp.message.register(process_pinbar_body_input, SettingsStates.waiting_for_pinbar_body)
-        dp.message.register(process_pinbar_opposite_input, SettingsStates.waiting_for_pinbar_opposite)
-        dp.message.register(process_pinbar_timeout_input, SettingsStates.waiting_for_pinbar_timeout)
-        dp.message.register(process_rsi_high_input, SettingsStates.waiting_for_rsi_high)
-        dp.message.register(process_rsi_low_input, SettingsStates.waiting_for_rsi_low)
-        dp.message.register(process_max_retries_input, SettingsStates.waiting_for_max_retries)
-        dp.message.register(process_max_trades_input, SettingsStates.waiting_for_max_trades)
-        dp.message.register(process_max_drawdown_input, SettingsStates.waiting_for_max_drawdown)
-        dp.message.register(process_limit_candles_input, SettingsStates.waiting_for_limit_candles)
-        dp.message.register(process_position_size_input, SettingsStates.waiting_for_position_size)
-        dp.message.register(process_timeframe_input, SettingsStates.waiting_for_timeframe)
-        dp.message.register(process_stop_loss_offset_input, SettingsStates.waiting_for_stop_loss_offset)
-        dp.message.register(process_entry_offset_input, SettingsStates.waiting_for_entry_offset)
-        dp.message.register(process_max_losses_in_row_input, SettingsStates.waiting_for_max_losses_in_row)
-        dp.message.register(process_pause_after_losses_input, SettingsStates.waiting_for_pause_after_losses)
-        dp.message.register(process_max_equity_drawdown_input, SettingsStates.waiting_for_max_equity_drawdown)
-        dp.message.register(process_pinbar_body_ratio_input, SettingsStates.waiting_for_pinbar_body_ratio)
-        dp.message.register(process_limit_order_lifetime_input, SettingsStates.waiting_for_limit_order_lifetime)
+        dp.callback_query.register(
+            process_pinbar_setting, F.data.startswith("pinbar_"))
+        dp.callback_query.register(
+            process_rsi_setting, F.data.startswith("rsi_"))
+        dp.callback_query.register(
+            process_trades_setting, F.data.startswith("trades_"))
+        dp.callback_query.register(
+            process_security_setting, F.data.startswith("security_"))
+        dp.callback_query.register(
+            process_position_setting, F.data == "position_size")
+        dp.callback_query.register(
+            process_other_setting, F.data.startswith("other_"))
+        dp.callback_query.register(
+            process_disable_setting, F.data == "disable_setting")
+        dp.message.register(process_pinbar_tail_input,
+                            SettingsStates.waiting_for_pinbar_tail)
+        dp.message.register(process_pinbar_body_input,
+                            SettingsStates.waiting_for_pinbar_body)
+        dp.message.register(process_pinbar_opposite_input,
+                            SettingsStates.waiting_for_pinbar_opposite)
+        dp.message.register(process_pinbar_timeout_input,
+                            SettingsStates.waiting_for_pinbar_timeout)
+        dp.message.register(process_rsi_high_input,
+                            SettingsStates.waiting_for_rsi_high)
+        dp.message.register(process_rsi_low_input,
+                            SettingsStates.waiting_for_rsi_low)
+        dp.message.register(process_max_retries_input,
+                            SettingsStates.waiting_for_max_retries)
+        dp.message.register(process_max_trades_input,
+                            SettingsStates.waiting_for_max_trades)
+        dp.message.register(process_max_drawdown_input,
+                            SettingsStates.waiting_for_max_drawdown)
+        dp.message.register(process_limit_candles_input,
+                            SettingsStates.waiting_for_limit_candles)
+        dp.message.register(process_position_size_input,
+                            SettingsStates.waiting_for_position_size)
+        dp.message.register(process_timeframe_input,
+                            SettingsStates.waiting_for_timeframe)
+        dp.message.register(process_stop_loss_offset_input,
+                            SettingsStates.waiting_for_stop_loss_offset)
+        dp.message.register(process_entry_offset_input,
+                            SettingsStates.waiting_for_entry_offset)
+        dp.message.register(process_max_losses_in_row_input,
+                            SettingsStates.waiting_for_max_losses_in_row)
+        dp.message.register(process_pause_after_losses_input,
+                            SettingsStates.waiting_for_pause_after_losses)
+        dp.message.register(process_max_equity_drawdown_input,
+                            SettingsStates.waiting_for_max_equity_drawdown)
+        dp.message.register(process_pinbar_body_ratio_input,
+                            SettingsStates.waiting_for_pinbar_body_ratio)
+        dp.message.register(process_limit_order_lifetime_input,
+                            SettingsStates.waiting_for_limit_order_lifetime)
     except Exception as e:
         logger.error(f"Error registering aiogram handlers: {e}")
     return bot, dp
+
 
 async def cmd_start(message: Message):
     await message.answer(
         "/settings"
     )
 
+
 async def cmd_settings(message: Message):
     keyboard = main_menu_keyboard()
     await message.answer(" <b>Главное меню настроек:</b>", reply_markup=keyboard, parse_mode="HTML")
+
 
 async def cmd_stop(message: Message):
     """Зупинка бота - блокування нових угод"""
@@ -326,6 +397,7 @@ async def cmd_stop(message: Message):
         parse_mode="HTML"
     )
 
+
 async def cmd_start_trading(message: Message):
     """Відновлення роботи бота"""
     from utils.settings_manager import set_bot_active
@@ -336,6 +408,7 @@ async def cmd_start_trading(message: Message):
         "Напишите STOP чтобы приостановить",
         parse_mode="HTML"
     )
+
 
 async def process_main_menu(callback: CallbackQuery):
     settings = get_settings()
@@ -362,10 +435,12 @@ async def process_main_menu(callback: CallbackQuery):
         await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()
 
+
 async def process_back_main(callback: CallbackQuery):
     keyboard = main_menu_keyboard()
     await callback.message.edit_text(" <b>Главное меню настроек:</b>", reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()
+
 
 async def process_back_pinbar(callback: CallbackQuery):
     settings = get_settings()
@@ -373,11 +448,13 @@ async def process_back_pinbar(callback: CallbackQuery):
     await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()
 
+
 async def process_back_rsi(callback: CallbackQuery):
     settings = get_settings()
     text, keyboard = rsi_menu_keyboard(settings)
     await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()
+
 
 async def process_back_trades(callback: CallbackQuery):
     settings = get_settings()
@@ -385,17 +462,20 @@ async def process_back_trades(callback: CallbackQuery):
     await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()
 
+
 async def process_back_security(callback: CallbackQuery):
     settings = get_settings()
     text, keyboard = security_menu_keyboard(settings)
     await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()
 
+
 async def process_back_other(callback: CallbackQuery):
     settings = get_settings()
     text, keyboard = other_menu_keyboard(settings)
     await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
     await callback.answer()
+
 
 async def process_pinbar_setting(callback: CallbackQuery, state: FSMContext):
     if callback.data == "pinbar_tail":
@@ -428,6 +508,7 @@ async def process_pinbar_setting(callback: CallbackQuery, state: FSMContext):
         await state.set_state(SettingsStates.waiting_for_pinbar_timeout)
     await callback.answer()
 
+
 async def process_pinbar_tail_input(message: Message, state: FSMContext):
     try:
         value = int(message.text)
@@ -439,6 +520,7 @@ async def process_pinbar_tail_input(message: Message, state: FSMContext):
         await state.clear()
     except ValueError:
         await message.answer(" Неверное значение. Введите число.")
+
 
 async def process_pinbar_body_input(message: Message, state: FSMContext):
     try:
@@ -452,6 +534,7 @@ async def process_pinbar_body_input(message: Message, state: FSMContext):
     except ValueError:
         await message.answer(" Неверное значение. Введите число.")
 
+
 async def process_pinbar_opposite_input(message: Message, state: FSMContext):
     try:
         value = int(message.text)
@@ -463,6 +546,7 @@ async def process_pinbar_opposite_input(message: Message, state: FSMContext):
         await state.clear()
     except ValueError:
         await message.answer(" Неверное значение. Введите число.")
+
 
 async def process_pinbar_timeout_input(message: Message, state: FSMContext):
     try:
@@ -483,6 +567,7 @@ async def process_pinbar_timeout_input(message: Message, state: FSMContext):
     except ValueError:
         await message.answer(" Неверное значение. Введите число минут (например, 10).")
 
+
 async def process_rsi_setting(callback: CallbackQuery, state: FSMContext):
     if callback.data == "rsi_high":
         keyboard = input_keyboard("back_rsi")
@@ -500,6 +585,7 @@ async def process_rsi_setting(callback: CallbackQuery, state: FSMContext):
         await state.set_state(SettingsStates.waiting_for_rsi_low)
     await callback.answer()
 
+
 async def process_rsi_high_input(message: Message, state: FSMContext):
     try:
         value = int(message.text)
@@ -515,6 +601,7 @@ async def process_rsi_high_input(message: Message, state: FSMContext):
     except ValueError:
         await message.answer(" Невірне значення. Введіть число від 50 до 100")
 
+
 async def process_rsi_low_input(message: Message, state: FSMContext):
     try:
         value = int(message.text)
@@ -529,6 +616,7 @@ async def process_rsi_low_input(message: Message, state: FSMContext):
         await state.clear()
     except ValueError:
         await message.answer(" Невірне значення. Введіть число від 0 до 50")
+
 
 async def process_trades_setting(callback: CallbackQuery, state: FSMContext):
     if callback.data == "trades_retries":
@@ -546,6 +634,7 @@ async def process_trades_setting(callback: CallbackQuery, state: FSMContext):
         )
         await state.set_state(SettingsStates.waiting_for_max_trades)
     await callback.answer()
+
 
 async def process_max_retries_input(message: Message, state: FSMContext):
     try:
@@ -565,6 +654,7 @@ async def process_max_retries_input(message: Message, state: FSMContext):
     except ValueError:
         await message.answer(" Неверное значение. Введите число от 0 до 10.")
 
+
 async def process_max_trades_input(message: Message, state: FSMContext):
     try:
         value = int(message.text)
@@ -576,6 +666,7 @@ async def process_max_trades_input(message: Message, state: FSMContext):
         await state.clear()
     except ValueError:
         await message.answer(" Неверное значение. Введите число.")
+
 
 async def process_security_setting(callback: CallbackQuery, state: FSMContext):
     if callback.data == "security_drawdown":
@@ -653,6 +744,7 @@ async def process_security_setting(callback: CallbackQuery, state: FSMContext):
         await state.set_state(SettingsStates.waiting_for_max_equity_drawdown)
     await callback.answer()
 
+
 async def process_max_drawdown_input(message: Message, state: FSMContext):
     try:
         value = float(message.text)
@@ -664,6 +756,7 @@ async def process_max_drawdown_input(message: Message, state: FSMContext):
         await state.clear()
     except ValueError:
         await message.answer(" Неверное значение. Введите число.")
+
 
 async def process_limit_candles_input(message: Message, state: FSMContext):
     try:
@@ -677,6 +770,7 @@ async def process_limit_candles_input(message: Message, state: FSMContext):
     except ValueError:
         await message.answer(" Неверное значение. Введите число.")
 
+
 async def process_stop_loss_offset_input(message: Message, state: FSMContext):
     try:
         value_text = message.text.strip().lower()
@@ -684,15 +778,15 @@ async def process_stop_loss_offset_input(message: Message, state: FSMContext):
         if value_text in ("off", "disabled", "выкл", "вимкнено"):
             update_setting('stop_loss_offset', 0)
             await message.answer(f" Смещение стоп-лосса ОТКЛЮЧЕНО\n"
-                               f"Стоп будет ставиться точно на экстремуме сигнальной свечи")
+                                 f"Стоп будет ставиться точно на экстремуме сигнальной свечи")
         else:
             value = float(value_text)
             if value < 0:
                 await message.answer(" Значение не может быть отрицательным")
                 return
-            
+
             update_setting('stop_loss_offset', value)
-            
+
             percentage = value * 100
             await message.answer(
                 f" Смещение стоп-лосса установлено: {percentage:.4f}%\n\n"
@@ -701,13 +795,14 @@ async def process_stop_loss_offset_input(message: Message, state: FSMContext):
                 f"• 0.001 = 0.1% (10 пунктов на $10000)\n"
                 f"• 0.01 = 1% (100 пунктов на $10000)"
             )
-        
+
         settings = get_settings()
         text, keyboard = security_menu_keyboard(settings)
         await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
         await state.clear()
     except ValueError:
         await message.answer(" Неверное значение. Введите число (например, 0.0001 для 0.01%) или 'off' для отключения.")
+
 
 async def process_entry_offset_input(message: Message, state: FSMContext):
     """Обработка введенного значения смещения входа"""
@@ -716,16 +811,17 @@ async def process_entry_offset_input(message: Message, state: FSMContext):
         if value < 0 or value > 1:
             await message.answer("⚠️ Значение должно быть от 0 до 1")
             return
-        
+
         update_setting('entry_offset_percent', value)
         await message.answer(f"✅ Смещение входа обновлено: {value}%")
-        
+
         settings = get_settings()
         text, keyboard = security_menu_keyboard(settings)
         await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
         await state.clear()
     except ValueError:
         await message.answer("❌ Неверное значение. Введите число (например, 0.01)")
+
 
 async def process_max_losses_in_row_input(message: Message, state: FSMContext):
     try:
@@ -739,6 +835,7 @@ async def process_max_losses_in_row_input(message: Message, state: FSMContext):
     except ValueError:
         await message.answer(" Неверное значение. Введите целое число.")
 
+
 async def process_pause_after_losses_input(message: Message, state: FSMContext):
     try:
         value = int(message.text)
@@ -750,6 +847,7 @@ async def process_pause_after_losses_input(message: Message, state: FSMContext):
         await state.clear()
     except ValueError:
         await message.answer(" Неверное значение. Введите целое число.")
+
 
 async def process_max_equity_drawdown_input(message: Message, state: FSMContext):
     try:
@@ -763,6 +861,7 @@ async def process_max_equity_drawdown_input(message: Message, state: FSMContext)
     except ValueError:
         await message.answer(" Неверное значение. Введите число.")
 
+
 async def process_limit_order_lifetime_input(message: Message, state: FSMContext):
     try:
         value = int(message.text)
@@ -771,13 +870,14 @@ async def process_limit_order_lifetime_input(message: Message, state: FSMContext
             return
         update_setting('limit_order_lifetime', value)
         await message.answer(f"Время жизни лимитного ордера установлено: {value} минут\n\n"
-                           f"Лимитки будут автоматически отменяться через {value} минут, если не исполнятся.")
+                             f"Лимитки будут автоматически отменяться через {value} минут, если не исполнятся.")
         settings = get_settings()
         text, keyboard = security_menu_keyboard(settings)
         await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
         await state.clear()
     except ValueError:
         await message.answer("Неверное значение. Введите целое число минут (например, 5).")
+
 
 async def process_position_setting(callback: CallbackQuery, state: FSMContext):
     keyboard = input_keyboard("back_main")
@@ -787,6 +887,7 @@ async def process_position_setting(callback: CallbackQuery, state: FSMContext):
     )
     await state.set_state(SettingsStates.waiting_for_position_size)
     await callback.answer()
+
 
 async def process_position_size_input(message: Message, state: FSMContext):
     try:
@@ -799,6 +900,7 @@ async def process_position_size_input(message: Message, state: FSMContext):
         await state.clear()
     except ValueError:
         await message.answer(" Неверное значение. Введите число.")
+
 
 async def process_other_setting(callback: CallbackQuery, state: FSMContext):
     if callback.data == "other_timeframe":
@@ -826,16 +928,17 @@ async def process_other_setting(callback: CallbackQuery, state: FSMContext):
         await state.set_state(SettingsStates.waiting_for_pinbar_body_ratio)
     await callback.answer()
 
+
 async def process_pinbar_body_ratio_input(message: Message, state: FSMContext):
     try:
         value = float(message.text)
         if value < 1.0 or value > 10.0:
             await message.answer(" Значення має бути від 1.0 до 10.0")
             return
-        
+
         update_setting('pinbar_body_ratio', value)
         await message.answer(f" Pinbar body ratio встановлено: {value}")
-        
+
         settings = get_settings()
         text, keyboard = other_menu_keyboard(settings)
         await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
@@ -843,11 +946,12 @@ async def process_pinbar_body_ratio_input(message: Message, state: FSMContext):
     except ValueError:
         await message.answer(" Невірне значення. Введіть число (наприклад, 2.5)")
 
+
 async def process_timeframe_input(message: Message, state: FSMContext):
     try:
         user_input = message.text.strip()
         normalized = _normalize_timeframe_for_db(user_input)
-        
+
         if normalized is None:
             await message.answer(
                 " Невірний формат таймфрейму!\n\n"
@@ -859,18 +963,19 @@ async def process_timeframe_input(message: Message, state: FSMContext):
                 parse_mode="HTML"
             )
             return
-        
+
         update_setting('timeframe', normalized)
         await message.answer(f" Таймфрейм встановлено: {normalized}")
-        
+
         settings = get_settings()
         text, keyboard = other_menu_keyboard(settings)
         await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
         await state.clear()
-        
+
     except Exception as e:
         logger.error(f"Error processing timeframe input: {e}")
         await message.answer(" Помилка обробки таймфрейму. Спробуйте ще раз.")
+
 
 async def process_disable_setting(callback: CallbackQuery, state: FSMContext):
     current_state = await state.get_state()
@@ -912,6 +1017,7 @@ async def process_disable_setting(callback: CallbackQuery, state: FSMContext):
             await process_back_main(callback)
     await callback.answer()
 
+
 async def process_strategy_setting(callback: CallbackQuery, state: FSMContext = None):
     settings = get_settings()
     if callback.data == "menu_strategy":
@@ -942,6 +1048,7 @@ async def process_strategy_setting(callback: CallbackQuery, state: FSMContext = 
         await callback.answer()
         return
 
+
 async def start_bot():
     global bot, dp
     if bot is None or dp is None:
@@ -964,6 +1071,7 @@ async def start_bot():
                 pass
             logger.info(" Aiogram bot stopped")
 
+
 async def stop_bot():
     global bot, dp
     try:
@@ -974,6 +1082,7 @@ async def stop_bot():
     except Exception as e:
         logger.warning(f"Error stopping aiogram bot: {e}")
     logger.info(" Aiogram bot stopped")
+
 
 async def notify_user(message: str):
     global bot

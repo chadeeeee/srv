@@ -36,7 +36,7 @@ class TakeProfit:
         if rsi_low_val is None:
             rsi_low_val = CONFIG.get('RSI_OVERSOLD', 30)
         self.rsi_oversold = float(rsi_low_val)
-        # Ensure _time_offset is always an integer
+
         offset_val = settings.get('timestamp_offset', 0)
         try:
             self._time_offset = int(offset_val) if offset_val else 0
@@ -45,7 +45,7 @@ class TakeProfit:
         self.active_positions = {}
         self._session = None
         self._timeout = aiohttp.ClientTimeout(total=10)
-        self._session_timeout = aiohttp.ClientTimeout(total=10)  # Added for compatibility
+        self._session_timeout = aiohttp.ClientTimeout(total=10)
         self._sem = asyncio.Semaphore(5)
         self._closed = False
 
@@ -68,7 +68,8 @@ class TakeProfit:
                             if text and len(text) > 0:
                                 data = json.loads(text)
                                 if data.get("retCode") == 0:
-                                    server_time = int(data["result"]["timeNano"]) // 1000000
+                                    server_time = int(
+                                        data["result"]["timeNano"]) // 1000000
                                     local_time = int(time.time() * 1000)
                                     offset = server_time - local_time
                                     await asyncio.to_thread(update_setting, 'timestamp_offset', offset)
@@ -86,11 +87,11 @@ class TakeProfit:
         if self._closed:
             return
         self._closed = True
-        
+
         if self._session and not self._session.closed:
             try:
                 await self._session.close()
-                # Wait for proper cleanup
+
                 await asyncio.sleep(0.25)
             except Exception as e:
                 logger.warning(f"Error closing TakeProfit session: {e}")
@@ -99,16 +100,18 @@ class TakeProfit:
     async def _get_session(self):
         """Get or create session with proper state checking"""
         if self._closed:
-            # Reset closed state and create new session
+
             self._closed = False
             self._session = None
-        
+
         if self._session is None or self._session.closed:
             ssl_context = ssl.create_default_context()
             ssl_context.check_hostname = False
             ssl_context.verify_mode = ssl.CERT_NONE
-            connector = aiohttp.TCPConnector(ssl=ssl_context, limit=30, enable_cleanup_closed=True)
-            self._session = aiohttp.ClientSession(connector=connector, timeout=self._timeout)
+            connector = aiohttp.TCPConnector(
+                ssl=ssl_context, limit=30, enable_cleanup_closed=True)
+            self._session = aiohttp.ClientSession(
+                connector=connector, timeout=self._timeout)
             logger.debug("TakeProfit session created")
         return self._session
 
@@ -131,7 +134,8 @@ class TakeProfit:
                             if text and len(text) > 0:
                                 data = json.loads(text)
                                 if data.get("retCode") == 0:
-                                    server_time = int(data["result"]["timeNano"]) // 1000000
+                                    server_time = int(
+                                        data["result"]["timeNano"]) // 1000000
                                     local_time = int(time.time() * 1000)
                                     offset = server_time - local_time
                                     await asyncio.to_thread(update_setting, 'timestamp_offset', offset)
@@ -234,28 +238,27 @@ class TakeProfit:
         }
         result = await self._signed_request("GET", "/v5/market/kline", params)
         if result and result.get("retCode") == 0:
-            # Bybit повертає свічки від найновішої до найстарішої
-            # Перевертаємо для хронологічного порядку (старіша → новіша)
+
             candles = result["result"]["list"]
             return list(reversed(candles))
         return None
 
     async def calculate_rsi(self, pair, interval: str = '1'):
-        # ⚠️ КРИТИЧНО: RSI МАЄ БРАТИСЯ ВИКЛЮЧНО НА 1-ХВИЛИННОМУ ТАЙМФРЕЙМІ!
-        # Параметр interval ІГНОРУЄТЬСЯ - завжди використовуємо '1'
+
         FIXED_RSI_INTERVAL = '1'
-        
+
         if interval != '1':
-            logger.warning(f"⚠️ RSI calculation: Forced 1m timeframe (requested: {interval})")
-        
+            logger.warning(
+                f"⚠️ RSI calculation: Forced 1m timeframe (requested: {interval})")
+
         candles = await self.get_klines(pair, FIXED_RSI_INTERVAL, self.rsi_period * 2 + 1)
-        if not candles or len(candles) < self.rsi_period + 1: 
+        if not candles or len(candles) < self.rsi_period + 1:
             logger.warning(f"Insufficient data for RSI calculation for {pair}")
             return None
-        # Свічки вже в хронологічному порядку після get_klines
+
         closes = [float(c[4]) for c in candles]
         rsi_array = talib.RSI(np.array(closes), timeperiod=self.rsi_period)
-        
+
         if not np.isnan(rsi_array[-1]):
             return rsi_array[-1]
         return None
@@ -324,33 +327,33 @@ class TakeProfit:
 
     def _find_rsi_extremes(self, rsi_values, extreme_type='high'):
         extremes = []
-        
+
         for i in range(2, len(rsi_values) - 2):
             if extreme_type == 'high':
-                is_extreme = (rsi_values[i] > rsi_values[i-1] and 
-                            rsi_values[i] > rsi_values[i-2] and
-                            rsi_values[i] > rsi_values[i+1] and 
-                            rsi_values[i] > rsi_values[i+2])
+                is_extreme = (rsi_values[i] > rsi_values[i-1] and
+                              rsi_values[i] > rsi_values[i-2] and
+                              rsi_values[i] > rsi_values[i+1] and
+                              rsi_values[i] > rsi_values[i+2])
             else:
-                is_extreme = (rsi_values[i] < rsi_values[i-1] and 
-                            rsi_values[i] < rsi_values[i-2] and
-                            rsi_values[i] < rsi_values[i+1] and 
-                            rsi_values[i] < rsi_values[i+2])
-            
+                is_extreme = (rsi_values[i] < rsi_values[i-1] and
+                              rsi_values[i] < rsi_values[i-2] and
+                              rsi_values[i] < rsi_values[i+1] and
+                              rsi_values[i] < rsi_values[i+2])
+
             if is_extreme:
                 extremes.append({'index': i, 'value': rsi_values[i]})
-        
+
         return extremes
 
     def _find_divergence_base(self, extremes, extreme_type='high'):
         threshold = self.rsi_overbought if extreme_type == 'high' else self.rsi_oversold
-        
+
         for i in range(len(extremes) - 2, -1, -1):
             if extreme_type == 'high' and extremes[i]['value'] >= threshold:
                 return extremes[i]
             elif extreme_type == 'low' and extremes[i]['value'] <= threshold:
                 return extremes[i]
-        
+
         return None
 
     async def detect_bullish_divergence(self, pair):
@@ -358,37 +361,39 @@ class TakeProfit:
             candles = await self.get_klines(pair, '1', self.rsi_period * 3 + 10)
             if not candles or len(candles) < self.rsi_period + 10:
                 return None
-            
+
             closes = [float(c[4]) for c in candles]
             lows = [float(c[3]) for c in candles]
-            
+
             rsi_values = []
             for i in range(self.rsi_period, len(closes)):
                 window = closes[i - self.rsi_period:i + 1]
-                rsi = talib.RSI(np.array(window), timeperiod=self.rsi_period)[-1]
+                rsi = talib.RSI(np.array(window),
+                                timeperiod=self.rsi_period)[-1]
                 if not np.isnan(rsi):
                     rsi_values.append(rsi)
-            
+
             if len(rsi_values) < 10:
                 return None
-            
+
             rsi_lows = self._find_rsi_extremes(rsi_values, 'low')
-            
+
             if len(rsi_lows) < 2:
                 return None
-            
+
             current_rsi_low = rsi_lows[-1]
             base_rsi_low = self._find_divergence_base(rsi_lows, 'low')
-            
+
             if not base_rsi_low:
                 return None
-            
-            current_price_low = lows[current_rsi_low['index'] + self.rsi_period]
+
+            current_price_low = lows[current_rsi_low['index'] +
+                                     self.rsi_period]
             base_price_low = lows[base_rsi_low['index'] + self.rsi_period]
-            
+
             if current_price_low < base_price_low and current_rsi_low['value'] > base_rsi_low['value']:
-                divergence_detected(pair, 'BULLISH', base_rsi_low['value'], 
-                                  current_rsi_low['value'], base_price_low, current_price_low)
+                divergence_detected(pair, 'BULLISH', base_rsi_low['value'],
+                                    current_rsi_low['value'], base_price_low, current_price_low)
                 return {
                     'type': 'bullish',
                     'base_rsi': base_rsi_low['value'],
@@ -396,9 +401,9 @@ class TakeProfit:
                     'base_price': base_price_low,
                     'current_price': current_price_low
                 }
-            
+
             return None
-            
+
         except Exception as e:
             logger.error(f"Error detecting bullish divergence for {pair}: {e}")
             return None
@@ -408,37 +413,39 @@ class TakeProfit:
             candles = await self.get_klines(pair, '1', self.rsi_period * 3 + 10)
             if not candles or len(candles) < self.rsi_period + 10:
                 return None
-            
+
             closes = [float(c[4]) for c in candles]
             highs = [float(c[2]) for c in candles]
-            
+
             rsi_values = []
             for i in range(self.rsi_period, len(closes)):
                 window = closes[i - self.rsi_period:i + 1]
-                rsi = talib.RSI(np.array(window), timeperiod=self.rsi_period)[-1]
+                rsi = talib.RSI(np.array(window),
+                                timeperiod=self.rsi_period)[-1]
                 if not np.isnan(rsi):
                     rsi_values.append(rsi)
-            
+
             if len(rsi_values) < 10:
                 return None
-            
+
             rsi_highs = self._find_rsi_extremes(rsi_values, 'high')
-            
+
             if len(rsi_highs) < 2:
                 return None
-            
+
             current_rsi_high = rsi_highs[-1]
             base_rsi_high = self._find_divergence_base(rsi_highs, 'high')
-            
+
             if not base_rsi_high:
                 return None
-            
-            current_price_high = highs[current_rsi_high['index'] + self.rsi_period]
+
+            current_price_high = highs[current_rsi_high['index'] +
+                                       self.rsi_period]
             base_price_high = highs[base_rsi_high['index'] + self.rsi_period]
-            
+
             if current_price_high > base_price_high and current_rsi_high['value'] < base_rsi_high['value']:
-                divergence_detected(pair, 'BEARISH', base_rsi_high['value'], 
-                                  current_rsi_high['value'], base_price_high, current_price_high)
+                divergence_detected(pair, 'BEARISH', base_rsi_high['value'],
+                                    current_rsi_high['value'], base_price_high, current_price_high)
                 return {
                     'type': 'bearish',
                     'base_rsi': base_rsi_high['value'],
@@ -446,9 +453,9 @@ class TakeProfit:
                     'base_price': base_price_high,
                     'current_price': current_price_high
                 }
-            
+
             return None
-            
+
         except Exception as e:
             logger.error(f"Error detecting bearish divergence for {pair}: {e}")
             return None
@@ -456,7 +463,8 @@ class TakeProfit:
     async def track_position_rsi(self,
                                  pair,
                                  direction,
-                                 on_exit: Optional[Callable[[str, str, str, Optional[dict]], Awaitable[None]]] = None,
+                                 on_exit: Optional[Callable[[
+                                     str, str, str, Optional[dict]], Awaitable[None]]] = None,
                                  rsi_high_override: Optional[float] = None,
                                  rsi_low_override: Optional[float] = None,
                                  rsi_period_override: Optional[int] = None,
@@ -466,27 +474,25 @@ class TakeProfit:
         notified_reason = None
 
         settings = get_settings()
-        
-        # ✅ ПРАВИЛЬНА ЛОГІКА RSI:
-        # - LONG закривається при RSI >= rsi_high (ціна ЗРОСЛА, перекупленість, час продавати)
-        # - SHORT закривається при RSI <= rsi_low (ціна ВПАЛА, перепроданість, час закривати)
-        
-        rsi_high = float(rsi_high_override if rsi_high_override is not None else settings.get('rsi_high', 70))
-        rsi_low = float(rsi_low_override if rsi_low_override is not None else settings.get('rsi_low', 30))
-        
+
+        rsi_high = float(
+            rsi_high_override if rsi_high_override is not None else settings.get('rsi_high', 70))
+        rsi_low = float(
+            rsi_low_override if rsi_low_override is not None else settings.get('rsi_low', 30))
+
         if rsi_period_override is not None:
             try:
                 self.rsi_period = int(rsi_period_override)
             except Exception:
                 pass
-        
-        # ⚠️ КРИТИЧНО: RSI МАЄ БРАТИСЯ ВИКЛЮЧНО НА 1-ХВИЛИННОМУ ТАЙМФРЕЙМІ!
-        rsi_interval = '1'  # ЖОРСТКО ФІКСОВАНО НА 1 ХВИЛИНУ
-        
-        # Логування попередження, якщо був спроба використати інший інтервал
-        requested_interval = str(rsi_interval_override if rsi_interval_override is not None else settings.get('rsi_interval', '1'))
+
+        rsi_interval = '1'
+
+        requested_interval = str(
+            rsi_interval_override if rsi_interval_override is not None else settings.get('rsi_interval', '1'))
         if requested_interval != '1':
-            logger.warning(f"⚠️ RSI interval requested: '{requested_interval}', but FORCED to '1' (1 minute)")
+            logger.warning(
+                f"⚠️ RSI interval requested: '{requested_interval}', but FORCED to '1' (1 minute)")
 
         logger.info(f"RSI TP трекер для {pair}:")
         logger.info(f"   - Направлення: {direction.upper()}")
@@ -494,17 +500,17 @@ class TakeProfit:
         logger.info(f"   - RSI Low (для SHORT): {rsi_low}")
         logger.info(f"   - RSI Period: {self.rsi_period}")
         logger.info(f"   - RSI Interval: {rsi_interval} (ФІКСОВАНО)")
-        
-        # ✅ ПРАВИЛЬНА ЛОГІКА:
-        if direction == "long":
-            logger.info(f"   ✓ LONG: Закриємо коли RSI >= {rsi_high} (ціна зросла)")
-        else:
-            logger.info(f"   ✓ SHORT: Закриємо коли RSI <= {rsi_low} (ціна впала)")
 
-        # ДОДАНО: Лічильник для періодичних оновлень
+        if direction == "long":
+            logger.info(
+                f"   ✓ LONG: Закриємо коли RSI >= {rsi_high} (ціна зросла)")
+        else:
+            logger.info(
+                f"   ✓ SHORT: Закриємо коли RSI <= {rsi_low} (ціна впала)")
+
         check_count = 0
         last_telegram_update = 0
-        telegram_update_interval_minutes = 10  # Кожні 10 хвилин
+        telegram_update_interval_minutes = 10
 
         try:
             while pair in self.active_positions:
@@ -525,44 +531,40 @@ class TakeProfit:
                                 notified_reason = 'position_closed'
                                 await on_exit(pair, direction, notified_reason, {"reason": "missing_position"})
                             except Exception as exc:
-                                logger.error(f"RSI exit callback failed: {exc}")
+                                logger.error(
+                                    f"RSI exit callback failed: {exc}")
                         break
 
-                    # ДОДАНО: Періодичне оновлення статусу в TG (кожні 10 хвилин)
                     current_time = time.time()
                     if current_time - last_telegram_update >= telegram_update_interval_minutes * 60:
                         try:
                             from telegram_bot import notify_user
                             if direction == "long":
                                 distance = rsi_high - rsi
-                                status = f"📊 {pair} ({direction.upper()})\n" \
-                                        f"RSI зараз: {rsi:.1f}\n" \
-                                        f"Закриємо при: ≥ {rsi_high:.0f}\n" \
-                                        f"Залишилось: {distance:.1f}"
+                                status = f"📊 {pair} ({direction.upper()})\n"\
+                                    f"RSI зараз: {rsi:.1f}\n"\
+                                    f"Закриємо при: ≥ {rsi_high:.0f}\n"\
+                                    f"Залишилось: {distance:.1f}"
                             else:
                                 distance = rsi - rsi_low
-                                status = f"📊 {pair} ({direction.upper()})\n" \
-                                        f"RSI зараз: {rsi:.1f}\n" \
-                                        f"Закриємо при: ≤ {rsi_low:.0f}\n" \
-                                        f"Залишилось: {distance:.1f}"
-                            
+                                status = f"📊 {pair} ({direction.upper()})\n"\
+                                    f"RSI зараз: {rsi:.1f}\n"\
+                                    f"Закриємо при: ≤ {rsi_low:.0f}\n"\
+                                    f"Залишилось: {distance:.1f}"
+
                             await notify_user(status)
                             last_telegram_update = current_time
                         except Exception as e:
-                            logger.debug(f"Не вдалося відправити RSI статус: {e}")
+                            logger.debug(
+                                f"Не вдалося відправити RSI статус: {e}")
 
-
-                    # ✅ ПРАВИЛЬНА ЛОГІКА RSI:
-                    # LONG закривається при RSI >= rsi_high (ціна зросла → перекупленість → закриваємо)
-                    # SHORT закривається при RSI <= rsi_low (ціна впала → перепроданість → закриваємо)
-                    
                     if direction == "long" and rsi >= rsi_high:
                         logger.warning(f"🔔 RSI TAKE-PROFIT: {pair} LONG")
                         logger.warning(f"   - Поточний RSI: {rsi:.2f}")
                         logger.warning(f"   - Поріг RSI High: {rsi_high}")
-                        logger.warning(f"   - Умова: RSI {rsi:.2f} >= {rsi_high} (ПЕРЕКУПЛЕНІСТЬ)")
-                        
-                        # 📲 Telegram оповіщення про закриття LONG по RSI
+                        logger.warning(
+                            f"   - Умова: RSI {rsi:.2f} >= {rsi_high} (ПЕРЕКУПЛЕНІСТЬ)")
+
                         try:
                             from telegram_bot import notify_user
                             await notify_user(
@@ -574,29 +576,33 @@ class TakeProfit:
                                 f"🎯 Закриваємо позицію..."
                             )
                         except Exception as e:
-                            logger.error(f"Не вдалося відправити TG повідомлення: {e}")
-                        
+                            logger.error(
+                                f"Не вдалося відправити TG повідомлення: {e}")
+
                         rsi_auto_close(pair, direction, rsi, rsi_high)
                         success = await self.close_position(pair, "Buy")
-                        
+
                         del self.active_positions[pair]
                         if on_exit:
-                            context = {"rsi": rsi, "success": success, "method": "market_order", "rsi_threshold": rsi_high}
+                            context = {"rsi": rsi, "success": success,
+                                       "method": "market_order", "rsi_threshold": rsi_high}
                             try:
                                 notified_reason = 'take_profit'
                                 await on_exit(pair, direction, notified_reason, context)
                             except Exception as exc:
-                                logger.error(f"RSI exit callback failed: {exc}")
+                                logger.error(
+                                    f"RSI exit callback failed: {exc}")
                         break
-                        
+
                     elif direction == "short" and rsi <= rsi_low:
                         logger.warning(f"🔔 RSI TAKE-PROFIT: {pair} SHORT")
                         logger.warning(f"   - Поточний RSI: {rsi:.2f}")
                         logger.warning(f"   - Поріг RSI Low: {rsi_low}")
-                        logger.warning(f"   - Умова: RSI {rsi:.2f} <= {rsi_low} (ПЕРЕПРОДАНІСТЬ)")
-                        logger.warning(f"   - Логіка: Ціна впала → RSI низький → закриваємо SHORT")
-                        
-                        # 📲 Telegram оповіщення про закриття SHORT по RSI
+                        logger.warning(
+                            f"   - Умова: RSI {rsi:.2f} <= {rsi_low} (ПЕРЕПРОДАНІСТЬ)")
+                        logger.warning(
+                            f"   - Логіка: Ціна впала → RSI низький → закриваємо SHORT")
+
                         try:
                             from telegram_bot import notify_user
                             await notify_user(
@@ -608,35 +614,39 @@ class TakeProfit:
                                 f"🎯 Закриваємо позицію..."
                             )
                         except Exception as e:
-                            logger.error(f"Не вдалося відправити TG повідомлення: {e}")
-                        
+                            logger.error(
+                                f"Не вдалося відправити TG повідомлення: {e}")
+
                         rsi_auto_close(pair, direction, rsi, rsi_low)
                         success = await self.close_position(pair, "Sell")
-                        
+
                         del self.active_positions[pair]
                         if on_exit:
-                            context = {"rsi": rsi, "success": success, "method": "market_order", "rsi_threshold": rsi_low}
+                            context = {"rsi": rsi, "success": success,
+                                       "method": "market_order", "rsi_threshold": rsi_low}
                             try:
                                 notified_reason = 'take_profit'
                                 await on_exit(pair, direction, notified_reason, context)
                             except Exception as exc:
-                                logger.error(f"RSI exit callback failed: {exc}")
+                                logger.error(
+                                    f"RSI exit callback failed: {exc}")
                         break
                     else:
-                        # Логування поточного стану RSI (кожні 10 перевірок)
+
                         if check_count % 10 == 0:
                             if direction == "long":
-                                logger.info(f"{pair} LONG: RSI={rsi:.2f} (чекаємо >= {rsi_high}, залишилось {rsi_high - rsi:.2f})")
+                                logger.info(
+                                    f"{pair} LONG: RSI={rsi:.2f} (чекаємо >= {rsi_high}, залишилось {rsi_high - rsi:.2f})")
                             else:
-                                logger.info(f"{pair} SHORT: RSI={rsi:.2f} (чекаємо <= {rsi_low}, залишилось {rsi - rsi_low:.2f})")
-
+                                logger.info(
+                                    f"{pair} SHORT: RSI={rsi:.2f} (чекаємо <= {rsi_low}, залишилось {rsi - rsi_low:.2f})")
 
                 except asyncio.CancelledError:
                     logger.info(f"RSI tracking cancelled: {pair}")
                     raise
                 except Exception as e:
                     logger.error(f"Error in RSI tracking: {pair} - {e}")
-                
+
                 await asyncio.sleep(poll_seconds)
 
         except asyncio.CancelledError:
@@ -647,15 +657,15 @@ class TakeProfit:
                     await on_exit(pair, direction, 'tracking_stopped', {"reason": "tracker_finished"})
                 except Exception as exc:
                     logger.error(f"RSI exit finalizer failed: {exc}")
-            
+
             logger.debug(f"RSI tracker finished for {pair}")
-# ...existing code...
+
     async def _get_live_price(self, symbol):
         params = {
             "category": "linear",
             "symbol": symbol
         }
-        
+
         try:
             result = await self._signed_request("GET", "/v5/market/tickers", params)
             if result and result.get("retCode") == 0:
