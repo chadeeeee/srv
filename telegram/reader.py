@@ -1,3 +1,21 @@
+import sys
+import asyncio
+import re
+from pathlib import Path
+from typing import Optional
+
+# Setup path BEFORE importing project modules
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+if sys.platform.startswith("win"):
+    try:
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    except Exception:
+        pass
+
+# Now import project modules
 from analysis.signals import stop_all_monitoring, show_rsi_for_pairs
 from decimal import ROUND_DOWN, ROUND_UP
 from pybit.unified_trading import HTTP
@@ -12,21 +30,6 @@ from trading.signal_handler import SignalHandler
 from config import CONFIG
 from telethon.tl.types import Channel
 from telethon import TelegramClient, events
-import asyncio
-import sys
-import re
-if sys.platform.startswith("win"):
-    try:
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-    except Exception:
-        pass
-
-from pathlib import Path
-from typing import Optional
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 api_id = CONFIG.get('TELEGRAM_API_ID')
