@@ -615,47 +615,54 @@ async def monitor_and_trade(pair, target, direction, settings):
 
                     if ignore_pinbar and not requires_pullback:
                         logger.info(
-                            f"🚀 PREMIUM2: МИТТЄВИЙ ВХІД на рівні з каналу!")
-                        logger.info(f"   Рівень: {float(target):.8f}")
+                            f"🚀 PREMIUM2: Вхід на екстремумі СИГНАЛЬНОЇ СВІЧКИ!")
+                        logger.info(f"   Рівень з каналу: {float(target):.8f}")
                         logger.info(f"   Напрямок: {trade_direction.upper()}")
 
                         try:
+                            # Отримуємо сигнальну свічку (остання закрита свічка, яка торкнулась рівня)
+                            tf_api = _parse_timeframe_to_api(timeframe)
+                            signal_candles = await get_klines(pair, tf_api, limit=5)
+                            
+                            if not signal_candles or len(signal_candles) < 2:
+                                logger.error(f"❌ Не вдалося отримати свічки для {pair}")
+                                _active_monitors[pair] = False
+                                break
+                            
+                            # Сигнальна свічка - остання ЗАКРИТА свічка
+                            signal_candle = signal_candles[-2]
+                            candle_high = float(signal_candle[2])
+                            candle_low = float(signal_candle[3])
+                            candle_open = float(signal_candle[1])
+                            candle_close = float(signal_candle[4])
+                            
+                            logger.info(f"   📊 СИГНАЛЬНА СВІЧКА (TF {timeframe}):")
+                            logger.info(f"      O={candle_open:.8f} H={candle_high:.8f} L={candle_low:.8f} C={candle_close:.8f}")
+                            
                             specs = await signal_handler._get_symbol_specs(pair)
                             price_step = specs.get("price_step", 0.0)
+                            stop_offset = CONFIG.get("STOP_BEHIND_EXTREMUM_OFFSET", 0.001)
 
-                            entry_price = signal_handler._quantize_price(float(target), price_step,
-                                                                         ROUND_UP if trade_direction == 'long' else ROUND_DOWN)
-
-                            logger.info(
-                                f"   Ціна входу (рівень): {entry_price:.8f}")
-
-                            extremum_data = await signal_handler.get_candle_extremum_from_db_timeframe(
-                                pair,
-                                trade_direction,
-                                pinbar_candle_index=None
-                            )
-
-                            if extremum_data:
-                                stop_loss_price = extremum_data["stop_price"]
+                            # Для SHORT (опір): лімітка на LOW, стоп на HIGH
+                            # Для LONG (підтримка): лімітка на HIGH, стоп на LOW
+                            if trade_direction == 'short':
+                                entry_price = signal_handler._quantize_price(candle_low, price_step, ROUND_DOWN)
+                                raw_stop = candle_high * (1 + stop_offset)
+                                stop_loss_price = signal_handler._quantize_price(raw_stop, price_step, ROUND_UP)
+                                logger.info(f"   📉 SHORT: Лімітка на LOW={entry_price:.8f}, Стоп за HIGH={stop_loss_price:.8f}")
                             else:
+                                entry_price = signal_handler._quantize_price(candle_high, price_step, ROUND_UP)
+                                raw_stop = candle_low * (1 - stop_offset)
+                                stop_loss_price = signal_handler._quantize_price(raw_stop, price_step, ROUND_DOWN)
+                                logger.info(f"   📈 LONG: Лімітка на HIGH={entry_price:.8f}, Стоп за LOW={stop_loss_price:.8f}")
 
-                                if trade_direction == 'long':
-                                    stop_loss_price = float(target) * 0.995
-                                else:
-                                    stop_loss_price = float(target) * 1.005
-                                stop_loss_price = signal_handler._quantize_price(stop_loss_price, price_step,
-                                                                                 ROUND_DOWN if trade_direction == 'long' else ROUND_UP)
-
-                            logger.info(f"   Stop Loss: {stop_loss_price:.8f}")
-
+                            # Валідація стопа
                             if trade_direction == 'long' and stop_loss_price >= entry_price:
-                                logger.error(
-                                    f"❌ КРИТИЧНО: SL >= Entry для LONG!")
+                                logger.error(f"❌ КРИТИЧНО: SL >= Entry для LONG!")
                                 stop_loss_price = signal_handler._quantize_price(
                                     entry_price * 0.995, price_step, ROUND_DOWN)
                             if trade_direction == 'short' and stop_loss_price <= entry_price:
-                                logger.error(
-                                    f"❌ КРИТИЧНО: SL <= Entry для SHORT!")
+                                logger.error(f"❌ КРИТИЧНО: SL <= Entry для SHORT!")
                                 stop_loss_price = signal_handler._quantize_price(
                                     entry_price * 1.005, price_step, ROUND_UP)
 
@@ -664,21 +671,20 @@ async def monitor_and_trade(pair, target, direction, settings):
                                 qty_usdt = 10
 
                             metadata = {
-                                "source": f"premium2_instant_entry",
+                                "source": f"premium2_signal_candle_entry",
                                 "signal_level": float(target),
                                 "actual_entry": entry_price,
                                 "direction": trade_direction,
                                 "timeframe": timeframe,
                                 "strategy": strategy.name,
                                 "ignore_pinbar": True,
-                                "instant_entry": True,
-                                "entry_on_touch": True
+                                "signal_candle_high": candle_high,
+                                "signal_candle_low": candle_low,
+                                "entry_on_signal_candle": True
                             }
 
                             if trade_direction == 'long':
-
-                                logger.info(
-                                    f"📈 PREMIUM2 LONG: Лімітний ордер на рівні")
+                                logger.info(f"📈 PREMIUM2 LONG: Лімітка на HIGH сигнальної свічки")
                                 result = await signal_handler.place_limit_order(
                                     pair=pair,
                                     direction=trade_direction,
@@ -689,13 +695,11 @@ async def monitor_and_trade(pair, target, direction, settings):
                                     metadata=metadata
                                 )
                             else:
-
-                                logger.info(
-                                    f"📉 PREMIUM2 SHORT: Тригерний ордер на рівні")
-                                result = await signal_handler.place_trigger_order(
+                                logger.info(f"📉 PREMIUM2 SHORT: Лімітка на LOW сигнальної свічки")
+                                result = await signal_handler.place_limit_order(
                                     pair=pair,
                                     direction=trade_direction,
-                                    trigger_price=entry_price,
+                                    price=entry_price,
                                     quantity_usdt=qty_usdt,
                                     stop_loss=stop_loss_price,
                                     take_profit=None,
@@ -703,18 +707,17 @@ async def monitor_and_trade(pair, target, direction, settings):
                                 )
 
                             if result:
-                                logger.info(
-                                    f"✅ ОРДЕР РОЗМІЩЕНО МИТТЄВО: {pair} @ {entry_price:.8f}")
+                                logger.info(f"✅ ЛІМІТНИЙ ОРДЕР РОЗМІЩЕНО: {pair}")
+                                logger.info(f"   Вхід: {entry_price:.8f} (на {'LOW' if trade_direction == 'short' else 'HIGH'} свічки)")
+                                logger.info(f"   Стоп: {stop_loss_price:.8f} (за {'HIGH' if trade_direction == 'short' else 'LOW'} свічки)")
                                 await signal_handler.start_external_trade_monitor()
                                 _active_monitors[pair] = False
                                 break
                             else:
-                                logger.error(
-                                    f"❌ Не вдалося розмістити ордер для {pair}")
+                                logger.error(f"❌ Не вдалося розмістити ордер для {pair}")
 
                         except Exception as e:
-                            logger.error(
-                                f"❌ Помилка миттєвого входу PREMIUM2: {pair} - {e}")
+                            logger.error(f"❌ Помилка входу PREMIUM2: {pair} - {e}")
                             import traceback
                             logger.error(traceback.format_exc())
 
