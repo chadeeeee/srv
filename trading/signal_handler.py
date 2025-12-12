@@ -561,7 +561,16 @@ class SignalHandler:
                         rsi_high = float(
                             rsi_high_val) if rsi_high_val is not None else None
 
-                        rsi_period = int(rsi_cfg.get("rsi_period", 14))
+                        try:
+                            # Safely get rsi_period, default to 14 if missing or None
+                            rsi_period_val = rsi_cfg.get("rsi_period")
+                            if rsi_period_val is None:
+                                rsi_period = 14
+                            else:
+                                rsi_period = int(rsi_period_val)
+                        except (ValueError, TypeError):
+                             logger.warning(f"Invalid RSI period in DB: {rsi_cfg.get('rsi_period')}, using default 14")
+                             rsi_period = 14
                         rsi_interval = '1'
                         direction = meta.get("direction", "long")
 
@@ -1960,7 +1969,7 @@ class SignalHandler:
             strategy = get_strategy_for_channel(channel_id)
         else:
             from trading.strategies import QuantumPremium2Strategy
-            strategy = QuantumPremium2Strategy(-1003193138774)
+            strategy = QuantumPremium2Strategy(-1002956255805)
 
         logger.info(f"Стратегия для {pair}: {strategy.name}")
         logger.info(f"   - Канал: {channel_id}")
@@ -2404,11 +2413,23 @@ class SignalHandler:
                             logger.info(f"   - RSI Length: {rsi_length}")
                             logger.info(f"   - RSI Interval: {rsi_interval}")
 
-                            from analysis.signals import get_rsi
-                            current_rsi, _ = await get_rsi(pair, interval=rsi_interval, period=rsi_length)
+                            # Ensure rsi_length is not None
+                            if rsi_length is None:
+                                rsi_length = 14
+                                logger.warning(f"RSI Length was None, using default: {rsi_length}")
 
+                            from analysis.signals import get_rsi
+                            if rsi_length is None:
+                                rsi_length = 14  # Default fallback
+                            
+                            try:
+                                current_rsi, _ = await get_rsi(pair, interval=rsi_interval, period=rsi_length)
+                            except Exception as e:
+                                logger.error(f"Не удалось запустить RSI трекер для {pair}: {e}")
+                                return
                             logger.info(f"Запуск RSI Take-Profit для {pair}:")
-                            logger.info(f"   - Напрямок: {direction.upper()}")
+                            logger.info(
+                                f"   - Напрямок: {direction.upper()}")
                             logger.info(
                                 f"   - Поточний RSI: {current_rsi:.2f}")
                             if direction == "long":

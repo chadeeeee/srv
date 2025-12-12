@@ -48,29 +48,37 @@ async def get_last_message_from_channel(client, channel_id_or_list):
             channel_id_or_list = [channel_id_or_list]
 
         for channel in channel_id_or_list:
-            entity = await client.get_entity(channel)
-            if isinstance(entity, Channel):
-                messages = await client.get_messages(entity, limit=1)
-                if messages:
-                    last_message = messages[0].text
+            try:
+                entity = await client.get_entity(channel)
+                if isinstance(entity, Channel):
+                    messages = await client.get_messages(entity, limit=1)
+                    if messages:
+                        last_message = messages[0].text
+                        
+                        if not last_message:
+                            logger.info(f"Последнее сообщение в {channel} не содержит текста.")
+                            continue
 
-                    coin_match = re.search(r'`([A-Z]+USDT)`', last_message)
-                    coin = coin_match.group(1) if coin_match else "N/A"
+                        coin_match = re.search(r'`([A-Z]+USDT)`', last_message)
+                        coin = coin_match.group(1) if coin_match else "N/A"
 
-                    if "Поддержка" in last_message:
-                        direction = "LONG"
-                    elif "Сопротивление" in last_message:
-                        direction = "SHORT"
-                    else:
-                        direction = "N/A"
+                        if "Поддержка" in last_message:
+                            direction = "LONG"
+                        elif "Сопротивление" in last_message:
+                            direction = "SHORT"
+                        else:
+                            direction = "N/A"
 
-                    price_match = re.search(r'`([\d.,]+)`', last_message)
-                    price = price_match.group(1) if price_match else "N/A"
+                        price_match = re.search(r'`([\d.,]+)`', last_message)
+                        price = price_match.group(1) if price_match else "N/A"
 
-                    logger.info(
-                        f"Последнее сообщение из {channel}: Монета: {coin}, Направление: {direction}, Цена: {price}")
+                        logger.info(
+                            f"Последнее сообщение из {channel}: Монета: {coin}, Направление: {direction}, Цена: {price}")
+            except Exception as e:
+                logger.error(
+                    f"Ошибка получения последнего сообщения из канала {channel}: {e}")
     except Exception as e:
-        logger.error(f"Ошибка получения последнего сообщения: {e}")
+        logger.error(f"Критическая ошибка в get_last_message_from_channel: {e}")
 
 
 async def send_command_reply(event, message, *, parse_mode=None):
@@ -416,6 +424,10 @@ async def main():
         logger.error(f"Не удалось показать баланс: {e}")
 
     await client.start()
+    
+    # Pre-fetch dialogs to populate entity cache
+    # This helps resolve channel IDs to entities (access hash)
+    await client.get_dialogs(limit=None)
 
     logger.info(f" Підключено до каналів: {channel_targets}")
     await get_last_message_from_channel(client, channel_targets)
