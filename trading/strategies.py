@@ -160,7 +160,7 @@ class QuantumGravity2Strategy(BaseStrategy):
 
 def get_strategy_for_channel(channel_id: int) -> BaseStrategy:
     CHANNEL_STRATEGIES = {
-        -1002956255805: QuantumPremium2Strategy,
+        -1002990245762: QuantumPremium2Strategy,
         -1003193138774: QuantumGravity2Strategy,
     }
 

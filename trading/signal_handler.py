@@ -1862,7 +1862,7 @@ class SignalHandler:
         else:
             from trading.strategies import QuantumPremium2Strategy
 
-            strategy = QuantumPremium2Strategy(-1002956255805)
+            strategy = QuantumPremium2Strategy(-1002990245762)
 
         logger.info(f"Стратегия для {pair}: {strategy.name}")
         logger.info(f"   - Канал: {channel_id}")
