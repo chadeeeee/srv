@@ -1,49 +1,51 @@
+import threading
+import time
+
 import psycopg2
 from psycopg2 import sql
-from utils.logger import setting_changed
-from config import CONFIG
-import time
-import threading
 
-DB_HOST = CONFIG['DB_HOST']
-DB_PORT = CONFIG['DB_PORT']
-DB_NAME = CONFIG['DB_NAME']
-DB_USER = CONFIG['DB_USER']
-DB_PASS = CONFIG['DB_PASS']
+from config import CONFIG
+from utils.logger import setting_changed
+
+DB_HOST = CONFIG["DB_HOST"]
+DB_PORT = CONFIG["DB_PORT"]
+DB_NAME = CONFIG["DB_NAME"]
+DB_USER = CONFIG["DB_USER"]
+DB_PASS = CONFIG["DB_PASS"]
 
 SETTING_COLUMNS = (
-    'id',
-    'body_tail_ratio',
-    'pinbar_size',
-    'rsi_low',
-    'rsi_high',
-    'rsi_period',
-    'rsi_interval',
-    'max_retries',
-    'max_open_trades',
-    'stop_loss_offset',
-    'timestamp_offset',
-    'pinbar_timeout',
-    'strategy',
-    'bot_was_active_before_panika',
-    'pinbar_tail_percent',
-    'pinbar_body_percent',
-    'pinbar_opposite_percent',
-    'position_size_percent',
-    'limit_timeout',
-    'max_drawdown_percent',
-    'dd_stop_active',
-    'equity_peak',
-    'limit_max_candles',
-    'timeframe',
-    'max_losses_in_row',
-    'pause_after_losses',
-    'max_equity_drawdown',
-    'losses_in_row',
-    'pause_until',
-    'limit_order_lifetime',
+    "id",
+    "body_tail_ratio",
+    "pinbar_size",
+    "rsi_low",
+    "rsi_high",
+    "rsi_period",
+    "rsi_interval",
+    "max_retries",
+    "max_open_trades",
+    "stop_loss_offset",
+    "timestamp_offset",
+    "pinbar_timeout",
+    "strategy",
+    "bot_was_active_before_panika",
+    "pinbar_tail_percent",
+    "pinbar_body_percent",
+    "pinbar_opposite_percent",
+    "position_size_percent",
+    "limit_timeout",
+    "max_drawdown_percent",
+    "dd_stop_active",
+    "equity_peak",
+    "limit_max_candles",
+    "timeframe",
+    "max_losses_in_row",
+    "pause_after_losses",
+    "max_equity_drawdown",
+    "losses_in_row",
+    "pause_until",
+    "limit_order_lifetime",
 )
-ALLOWED_FIELDS = set(SETTING_COLUMNS) - {'id'}
+ALLOWED_FIELDS = set(SETTING_COLUMNS) - {"id"}
 
 _lock = threading.Lock()
 _settings_store = {
@@ -83,29 +85,33 @@ _db_ready = False
 
 
 def get_connection():
-    return psycopg2.connect(
-        host=DB_HOST,
-        port=DB_PORT,
-        dbname=DB_NAME,
-        user=DB_USER,
-        password=DB_PASS
-    )
+    return psycopg2.connect(host=DB_HOST, port=DB_PORT, dbname=DB_NAME, user=DB_USER, password=DB_PASS)
 
 
 def _normalize_timeframe_for_db(value):
     if not value:
-        return '1m'
+        return "1m"
 
     value = str(value).strip().upper()
 
     internal_to_display = {
-        '1': '1m', '3': '3m', '5': '5m', '15': '15m', '30': '30m',
-        '60': '1h', '120': '2h', '240': '4h', '360': '6h', '720': '12h',
-        'D': '1d', 'W': '1w', 'M': '1M'
+        "1": "1m",
+        "3": "3m",
+        "5": "5m",
+        "15": "15m",
+        "30": "30m",
+        "60": "1h",
+        "120": "2h",
+        "240": "4h",
+        "360": "6h",
+        "720": "12h",
+        "D": "1d",
+        "W": "1w",
+        "M": "1M",
     }
 
-    if value in ('1M', '3M', '5M', '15M', '30M', '1H', '2H', '4H', '6H', '12H', '1D', '1W', '1MON'):
-        return value.lower() if value != '1MON' else '1M'
+    if value in ("1M", "3M", "5M", "15M", "30M", "1H", "2H", "4H", "6H", "12H", "1D", "1W", "1MON"):
+        return value.lower() if value != "1MON" else "1M"
 
     if value in internal_to_display:
         return internal_to_display[value]
@@ -120,25 +126,34 @@ def _format_timeframe_for_display(internal_value):
 def _parse_timeframe_to_internal(value):
     """Parse timeframe from any format to internal API format (1, 5, 60, D, W, M)"""
     if not value:
-        return '1'
+        return "1"
 
     value = str(value).strip().upper()
 
     display_to_internal = {
-        '1M': '1', '3M': '3', '5M': '5', '15M': '15', '30M': '30',
-        '1H': '60', '2H': '120', '4H': '240', '6H': '360', '12H': '720',
-        '1D': 'D', '1W': 'W', '1MON': 'M'
+        "1M": "1",
+        "3M": "3",
+        "5M": "5",
+        "15M": "15",
+        "30M": "30",
+        "1H": "60",
+        "2H": "120",
+        "4H": "240",
+        "6H": "360",
+        "12H": "720",
+        "1D": "D",
+        "1W": "W",
+        "1MON": "M",
     }
 
     if value in display_to_internal:
         return display_to_internal[value]
 
-    valid_internal = {'1', '3', '5', '15', '30', '60',
-                      '120', '240', '360', '720', 'D', 'W', 'M'}
+    valid_internal = {"1", "3", "5", "15", "30", "60", "120", "240", "360", "720", "D", "W", "M"}
     if value in valid_internal:
         return value
 
-    return '1'
+    return "1"
 
 
 def init_db():
@@ -148,56 +163,82 @@ def init_db():
     try:
         conn = get_connection()
         cur = conn.cursor()
-        cur.execute(
-            "CREATE TABLE IF NOT EXISTS settings (id SERIAL PRIMARY KEY)")
+        cur.execute("CREATE TABLE IF NOT EXISTS settings (id SERIAL PRIMARY KEY)")
 
-        for col in ['strategy', 'rsi_low', 'rsi_high', 'rsi_period', 'rsi_interval', 'max_retries',
-                    'max_open_trades', 'stop_loss_offset', 'pinbar_timeout', 'limit_max_candles',
-                    'timeframe', 'max_drawdown_percent', 'equity_peak', 'dd_stop_active',
-                    'pinbar_tail_percent', 'pinbar_body_percent', 'pinbar_opposite_percent',
-                    'position_size_percent', 'limit_timeout', 'max_losses_in_row', 'pause_after_losses',
-                    'max_equity_drawdown', 'losses_in_row', 'pause_until', 'bot_was_active_before_panika',
-                    'timestamp_offset', 'body_tail_ratio', 'pinbar_size', 'limit_order_lifetime']:
-            cur.execute(
-                f"ALTER TABLE settings ADD COLUMN IF NOT EXISTS {col} TEXT")
+        for col in [
+            "strategy",
+            "rsi_low",
+            "rsi_high",
+            "rsi_period",
+            "rsi_interval",
+            "max_retries",
+            "max_open_trades",
+            "stop_loss_offset",
+            "pinbar_timeout",
+            "limit_max_candles",
+            "timeframe",
+            "max_drawdown_percent",
+            "equity_peak",
+            "dd_stop_active",
+            "pinbar_tail_percent",
+            "pinbar_body_percent",
+            "pinbar_opposite_percent",
+            "position_size_percent",
+            "limit_timeout",
+            "max_losses_in_row",
+            "pause_after_losses",
+            "max_equity_drawdown",
+            "losses_in_row",
+            "pause_until",
+            "bot_was_active_before_panika",
+            "timestamp_offset",
+            "body_tail_ratio",
+            "pinbar_size",
+            "limit_order_lifetime",
+        ]:
+            cur.execute(f"ALTER TABLE settings ADD COLUMN IF NOT EXISTS {col} TEXT")
 
+        cur.execute("CREATE TABLE IF NOT EXISTS blacklist (symbol TEXT PRIMARY KEY)")
         cur.execute(
-            "CREATE TABLE IF NOT EXISTS blacklist (symbol TEXT PRIMARY KEY)")
-        cur.execute("""
+            """
             CREATE TABLE IF NOT EXISTS bot_state (
                 id SERIAL PRIMARY KEY,
                 is_active BOOLEAN DEFAULT TRUE,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
-        """)
+        """
+        )
         conn.commit()
 
         cur.execute("SELECT * FROM settings ORDER BY id DESC LIMIT 1")
         row = cur.fetchone()
         if not row:
 
-            cur.execute("""
+            cur.execute(
+                """
                 INSERT INTO settings (
                     strategy, rsi_low, rsi_high, rsi_period, rsi_interval, max_retries,
                     max_open_trades, stop_loss_offset, pinbar_timeout, limit_max_candles, 
                     timeframe, max_drawdown_percent, equity_peak, dd_stop_active
                 ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-            """, (
-                _settings_store.get("strategy"),
-                str(_settings_store.get("rsi_low")),
-                str(_settings_store.get("rsi_high")),
-                str(_settings_store.get("rsi_period")),
-                str(_settings_store.get("rsi_interval")),
-                str(_settings_store.get("max_retries")),
-                str(_settings_store.get("max_open_trades")),
-                str(_settings_store.get("stop_loss_offset")),
-                str(_settings_store.get("pinbar_timeout")),
-                str(_settings_store.get("limit_max_candles")),
-                str(_settings_store.get("timeframe")),
-                str(_settings_store.get("max_drawdown_percent")),
-                str(_settings_store.get("equity_peak")),
-                str(_settings_store.get("dd_stop_active")),
-            ))
+            """,
+                (
+                    _settings_store.get("strategy"),
+                    str(_settings_store.get("rsi_low")),
+                    str(_settings_store.get("rsi_high")),
+                    str(_settings_store.get("rsi_period")),
+                    str(_settings_store.get("rsi_interval")),
+                    str(_settings_store.get("max_retries")),
+                    str(_settings_store.get("max_open_trades")),
+                    str(_settings_store.get("stop_loss_offset")),
+                    str(_settings_store.get("pinbar_timeout")),
+                    str(_settings_store.get("limit_max_candles")),
+                    str(_settings_store.get("timeframe")),
+                    str(_settings_store.get("max_drawdown_percent")),
+                    str(_settings_store.get("equity_peak")),
+                    str(_settings_store.get("dd_stop_active")),
+                ),
+            )
             conn.commit()
 
         cur.close()
@@ -218,14 +259,20 @@ def _persist_setting_db(key, value):
         cur.execute("SELECT id FROM settings ORDER BY id DESC LIMIT 1")
         r = cur.fetchone()
         if not r:
-            cur.execute("INSERT INTO settings (strategy) VALUES (%s) RETURNING id", (str(
-                _settings_store.get("strategy")),))
+            cur.execute(
+                "INSERT INTO settings (strategy) VALUES (%s) RETURNING id", (str(_settings_store.get("strategy")),)
+            )
             conn.commit()
         try:
-            cur.execute(sql.SQL("ALTER TABLE settings ADD COLUMN IF NOT EXISTS {col} TEXT").format(
-                col=sql.Identifier(key)))
-            cur.execute(sql.SQL("UPDATE settings SET {col} = %s WHERE id = (SELECT id FROM settings ORDER BY id DESC LIMIT 1)").format(
-                col=sql.Identifier(key)), (str(value),))
+            cur.execute(
+                sql.SQL("ALTER TABLE settings ADD COLUMN IF NOT EXISTS {col} TEXT").format(col=sql.Identifier(key))
+            )
+            cur.execute(
+                sql.SQL(
+                    "UPDATE settings SET {col} = %s WHERE id = (SELECT id FROM settings ORDER BY id DESC LIMIT 1)"
+                ).format(col=sql.Identifier(key)),
+                (str(value),),
+            )
             conn.commit()
         except Exception:
             conn.rollback()
@@ -245,15 +292,14 @@ def get_settings():
             conn = get_connection()
             cur = conn.cursor()
             cols = ", ".join(SETTING_COLUMNS)
-            cur.execute(
-                f"SELECT {cols} FROM settings ORDER BY id DESC LIMIT 1")
+            cur.execute(f"SELECT {cols} FROM settings ORDER BY id DESC LIMIT 1")
             row = cur.fetchone()
             cur.close()
             conn.close()
             if row:
                 settings_dict = {}
                 for k, v in zip(SETTING_COLUMNS, row):
-                    if v == 'None':
+                    if v == "None":
                         settings_dict[k] = None
                     else:
                         settings_dict[k] = v
@@ -272,7 +318,7 @@ def get_setting(key, default=None):
 
 def update_setting(key, value):
 
-    if key == 'timeframe':
+    if key == "timeframe":
         value = _normalize_timeframe_for_db(value)
 
     with _lock:
@@ -315,8 +361,7 @@ def add_to_blacklist(symbol):
     try:
         conn = get_connection()
         cur = conn.cursor()
-        cur.execute(
-            "INSERT INTO blacklist (symbol) VALUES (%s) ON CONFLICT (symbol) DO NOTHING", (symbol.upper(),))
+        cur.execute("INSERT INTO blacklist (symbol) VALUES (%s) ON CONFLICT (symbol) DO NOTHING", (symbol.upper(),))
         conn.commit()
         cur.close()
         conn.close()
@@ -331,8 +376,7 @@ def remove_from_blacklist(symbol):
     try:
         conn = get_connection()
         cur = conn.cursor()
-        cur.execute("DELETE FROM blacklist WHERE symbol = %s",
-                    (symbol.upper(),))
+        cur.execute("DELETE FROM blacklist WHERE symbol = %s", (symbol.upper(),))
         conn.commit()
         cur.close()
         conn.close()
@@ -376,8 +420,7 @@ def set_bot_active(state: bool):
     try:
         conn = get_connection()
         cur = conn.cursor()
-        cur.execute(
-            "INSERT INTO bot_state (is_active, updated_at) VALUES (%s, CURRENT_TIMESTAMP)", (bool(state),))
+        cur.execute("INSERT INTO bot_state (is_active, updated_at) VALUES (%s, CURRENT_TIMESTAMP)", (bool(state),))
         conn.commit()
         cur.close()
         conn.close()
@@ -396,15 +439,13 @@ def is_trading_paused():
 
 def set_trading_paused(minutes):
     with _lock:
-        _settings_store["pause_until"] = time.time() + \
-            max(0, int(minutes) * 60)
+        _settings_store["pause_until"] = time.time() + max(0, int(minutes) * 60)
     return True
 
 
 def increment_losses_in_row():
     with _lock:
-        _settings_store["losses_in_row"] = int(
-            _settings_store.get("losses_in_row", 0)) + 1
+        _settings_store["losses_in_row"] = int(_settings_store.get("losses_in_row", 0)) + 1
         val = _settings_store["losses_in_row"]
     try:
         setting_changed("losses_in_row", val)
@@ -480,8 +521,7 @@ def check_and_update_drawdown(current_equity):
 
 def reset_drawdown_protection():
     with _lock:
-        _settings_store["equity_peak"] = float(
-            _settings_store.get("equity_peak", 0.0))
+        _settings_store["equity_peak"] = float(_settings_store.get("equity_peak", 0.0))
         _settings_store["dd_stop_active"] = False
     try:
         setting_changed("dd_stop_active", False)

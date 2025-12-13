@@ -1,4 +1,5 @@
 from enum import Enum
+
 from loguru import logger
 
 
@@ -72,11 +73,10 @@ class QuantumPremium2Strategy(BaseStrategy):
                 "entry_on": "high",
                 "stop_on": "low",
                 "invalidate_on": "low",
-
                 "check_rsi_or_divergence": True,
                 "rsi_condition": "oversold",
                 "rsi_threshold": "low",
-                "allow_divergence": True
+                "allow_divergence": True,
             }
         else:
 
@@ -89,11 +89,10 @@ class QuantumPremium2Strategy(BaseStrategy):
                 "entry_on": "low",
                 "stop_on": "high",
                 "invalidate_on": "high",
-
                 "check_rsi_or_divergence": True,
                 "rsi_condition": "overbought",
                 "rsi_threshold": "high",
-                "allow_divergence": True
+                "allow_divergence": True,
             }
 
 
@@ -143,7 +142,7 @@ class QuantumGravity2Strategy(BaseStrategy):
                 "trade_direction": "short",
                 "entry_on": "low",
                 "stop_on": "high",
-                "invalidate_on": "high"
+                "invalidate_on": "high",
             }
         else:
 
@@ -155,23 +154,21 @@ class QuantumGravity2Strategy(BaseStrategy):
                 "trade_direction": "long",
                 "entry_on": "high",
                 "stop_on": "low",
-                "invalidate_on": "low"
+                "invalidate_on": "low",
             }
 
 
 def get_strategy_for_channel(channel_id: int) -> BaseStrategy:
     CHANNEL_STRATEGIES = {
-        -1002990245762: QuantumPremium2Strategy,
+        -1002956255805: QuantumPremium2Strategy,
         -1003193138774: QuantumGravity2Strategy,
     }
 
     strategy_class = CHANNEL_STRATEGIES.get(channel_id)
     if strategy_class:
         strategy = strategy_class(channel_id)
-        logger.info(
-            f"Обрано стратегію: {strategy.name} для каналу {channel_id}")
+        logger.info(f"Обрано стратегію: {strategy.name} для каналу {channel_id}")
         return strategy
 
-    logger.warning(
-        f"Невідомий канал {channel_id}, використовуємо Quantum Premium2 за замовчуванням")
+    logger.warning(f"Невідомий канал {channel_id}, використовуємо Quantum Premium2 за замовчуванням")
     return QuantumPremium2Strategy(channel_id)
