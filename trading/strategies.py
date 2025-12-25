@@ -101,8 +101,8 @@ class QuantumGravity2Strategy(BaseStrategy):
         super().__init__("Quantum Gravity2", channel_id)
 
     def should_wait_for_level(self) -> bool:
-        """✅ ТЕПЕР ЧЕКАЄМО торкання рівня (як просив користувач)"""
-        return True
+        """Gravity2: Не чекаємо торкання як тригера старту, але моніторимо торкання як умова скасування"""
+        return False
 
     def get_entry_direction(self, signal_direction: str) -> str:
         """

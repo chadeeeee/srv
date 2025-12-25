@@ -154,7 +154,11 @@ async def monitor_and_trade(pair, target, direction, settings):
     from trading.signal_handler import SignalHandler
 
     _active_monitors[pair] = True
-    _monitor_states[pair] = BotState.WAIT_LEVEL_TOUCH
+    if is_gravity2:
+        _monitor_states[pair] = BotState.WAIT_RSI
+        logger.info(f"[{pair}] Gravity2: Старт з пошуку RSI (Wait RSI), контроль дотику рівня активний.")
+    else:
+        _monitor_states[pair] = BotState.WAIT_LEVEL_TOUCH
 
     timeframe_raw = str(settings.get("timeframe") or "1m")
     timeframe_api = _parse_timeframe_to_api(timeframe_raw)
@@ -227,7 +231,7 @@ async def monitor_and_trade(pair, target, direction, settings):
     )
 
     level_touched = False
-    touch_time = None
+    touch_time = time.time() if is_gravity2 else None
     rsi_trigger_candle_index = None
     touch_candle_index = None
     touch_candle_index = None
@@ -273,15 +277,32 @@ async def monitor_and_trade(pair, target, direction, settings):
                 await asyncio.sleep(1)
                 continue
 
-            state = _monitor_states.get(pair, BotState.WAIT_LEVEL_TOUCH)
+            state = _monitor_states.get(pair, BotState.WAIT_LEVEL_TOUCH if not is_gravity2 else BotState.WAIT_RSI)
 
-            # === STATE: WAIT_LEVEL_TOUCH ===
+            # Розрахунок параметрів рівня для перевірки торкання
+            t = float(target)
+            ranges = [float(c[2]) - float(c[3]) for c in candles[-20:-1] if len(c) > 3]
+            avg_range = sum(ranges) / len(ranges) if ranges else 0.001
+            tol = min(max(avg_range * 0.1, t * 0.0005), t * 0.003)
+
+            # === GRAVITY2 SAFETY CHECK: CANCEL ON LEVEL TOUCH ===
+            if is_gravity2 and state in [BotState.WAIT_RSI, BotState.WAIT_PINBAR_GRAVITY]:
+                # Gravity2: Якщо ціна торкається рівня ДО входу -> СКАСУВАННЯ
+                # direction="long" (Signal) -> Рівень Підтримки. Ціна має бути вище. Якщо впала до рівня -> Cancel.
+                # direction="short" (Signal) -> Рівень Опору. Ціна має бути нижче. Якщо виросла до рівня -> Cancel.
+                
+                touch_detected = False
+                if direction == "long" and current_price <= t + tol:
+                    touch_detected = True
+                elif direction == "short" and current_price >= t - tol:
+                    touch_detected = True
+                
+                if touch_detected:
+                    logger.info(f"[{pair}] ❌ GRAVITY2: Ціна торкнулася рівня {t} до входу → СКАСУВАННЯ")
+                    break
+
+            # === STATE: WAIT_LEVEL_TOUCH (Premium2) ===
             if state == BotState.WAIT_LEVEL_TOUCH and not level_touched:
-                t = float(target)
-                ranges = [float(c[2]) - float(c[3]) for c in candles[-20:-1] if len(c) > 3]
-                avg_range = sum(ranges) / len(ranges) if ranges else 0.001
-                tol = min(max(avg_range * 0.1, t * 0.0005), t * 0.003)
-
                 if direction == "long":
                     crossed = prev_price is not None and prev_price > t and current_price <= t
                 else:
@@ -298,6 +319,8 @@ async def monitor_and_trade(pair, target, direction, settings):
                     logger.info(f"[{pair}] ✅ РІВЕНЬ ТОРКНУТО: {t:.8f}")
 
                     if is_gravity2:
+                        # Цей блок не повинен спрацьовувати для Gravity2, оскільки ми починаємо з WAIT_RSI,
+                        # але залишаємо для сумісності або якщо state зміниться вручну
                         _monitor_states[pair] = BotState.WAIT_RSI
                     else:
                         _monitor_states[pair] = BotState.WAIT_PINBAR
