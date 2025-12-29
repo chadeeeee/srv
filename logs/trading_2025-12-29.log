@@ -1,0 +1,166 @@
+2025-12-29 12:45:04 | INFO     | utils.settings_manager:init_db:178 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2025-12-29 12:45:08 | INFO     | __main__:monitor_bybit_positions:106 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-12-29 12:45:09 | DEBUG    | trading.signal_handler:_get_session:262 - SignalHandler session created
+2025-12-29 12:45:11 | INFO     | trading.signal_handler:_init_db:137 - Подключение к базе данных (Aiven Cloud/SSL) установлено
+2025-12-29 12:45:12 | DEBUG    | trading.risk_manager:sync_time:37 - Time offset updated: -6101
+2025-12-29 12:45:12 | INFO     | __main__:main:407 -  Підключено до каналів: [-1003193138774, -1002956255805]
+2025-12-29 12:45:13 | ERROR    | __main__:get_last_message_from_channel:85 - Ошибка получения последнего сообщения из канала -1002956255805: Could not find the input entity for PeerChannel(channel_id=2956255805) (PeerChannel). Please read https://docs.telethon.dev/en/stable/concepts/entities.html to find out more details.
+2025-12-29 12:45:13 | INFO     | trading.signal_handler:start_external_trade_monitor:2010 - External trade monitor started
+2025-12-29 12:45:13 | INFO     | __main__:main:729 - Бот для настроек запущен
+2025-12-29 12:45:13 | INFO     | __main__:main:736 - Запуск клієнта Telegram...
+2025-12-29 12:45:13 | DEBUG    | trading.signal_handler:_get_pybit_session:2049 - PyBit session created successfully (recv_window=20000)
+2025-12-29 12:45:16 | INFO     | __main__:signal_handler:835 - Зупинка...
+2025-12-29 12:45:16 | INFO     | __main__:monitor_bybit_positions:360 - monitor_bybit_positions cancelled
+2025-12-29 12:45:16 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2414 - External trade monitor loop отменен
+2025-12-29 12:45:16 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2417 - External trade monitor loop завершен
+2025-12-29 12:45:17 | INFO     | __main__:main:753 - Начинается graceful shutdown...
+2025-12-29 12:45:17 | DEBUG    | trading.signal_handler:close:281 - TakeProfit helper closed
+2025-12-29 12:45:17 | INFO     | telegram_bot:start_bot:1308 -  Aiogram bot stopped
+2025-12-29 12:52:29 | INFO     | utils.settings_manager:init_db:178 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2025-12-29 12:52:32 | INFO     | __main__:monitor_bybit_positions:106 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-12-29 12:52:33 | DEBUG    | trading.signal_handler:_get_session:262 - SignalHandler session created
+2025-12-29 12:52:34 | INFO     | trading.signal_handler:_init_db:137 - Подключение к базе данных (Aiven Cloud/SSL) установлено
+2025-12-29 12:52:36 | DEBUG    | trading.risk_manager:sync_time:37 - Time offset updated: -6101
+2025-12-29 12:52:30 | INFO     | __main__:main:407 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-12-29 12:52:31 | INFO     | trading.signal_handler:start_external_trade_monitor:2010 - External trade monitor started
+2025-12-29 12:52:31 | INFO     | __main__:main:729 - Бот для настроек запущен
+2025-12-29 12:52:31 | INFO     | __main__:main:736 - Запуск клієнта Telegram...
+2025-12-29 12:52:31 | DEBUG    | trading.signal_handler:_get_pybit_session:2049 - PyBit session created successfully (recv_window=20000)
+2025-12-29 12:52:52 | INFO     | __main__:handler_event:424 - 📥 Получено сообщение 1938 из целевого канала
+2025-12-29 12:52:52 | INFO     | __main__:handler_event:552 -  Ціна з каналу: 5.808
+2025-12-29 12:52:52 | INFO     | __main__:handler_event:566 -  Валидный сигнал: UNIUSDT @ 5.808 (long)
+2025-12-29 12:52:52 | INFO     | __main__:handler_event:567 - 📍 Точная цена для ордера: 5.808
+2025-12-29 12:52:52 | INFO     | __main__:handler_event:568 -  ID каналу: -1003193138774
+2025-12-29 12:52:52 | INFO     | trading.strategies:get_strategy_for_channel:172 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-12-29 12:52:52 | INFO     | __main__:handler_event:573 - 📊 Стратегия для канала -1003193138774: Quantum Gravity2
+2025-12-29 12:52:52 | INFO     | utils.logger:trade_signal:35 - Trade signal received
+2025-12-29 12:52:52 | INFO     | utils.logger:signal_from_channel:42 - Signal from channel
+2025-12-29 12:52:55 | INFO     | trading.strategies:get_strategy_for_channel:172 - Обрано стратегію: Quantum Gravity2 для каналу -1003193138774
+2025-12-29 12:52:55 | INFO     | trading.signal_handler:place_signal_limit_order:1921 - Стратегия для UNIUSDT: Quantum Gravity2
+2025-12-29 12:52:55 | INFO     | trading.signal_handler:place_signal_limit_order:1922 -    - Канал: -1003193138774
+2025-12-29 12:52:55 | INFO     | trading.signal_handler:place_signal_limit_order:1923 -    - Точна цена з каналу: 5.808
+2025-12-29 12:52:55 | INFO     | trading.signal_handler:place_signal_limit_order:1924 -    - Направлення: LONG
+2025-12-29 12:52:55 | INFO     | trading.signal_handler:place_signal_limit_order:1956 - [UNIUSDT] Запуск моніторингу (Quantum Gravity2)
+2025-12-29 12:52:57 | INFO     | trading.signal_handler:place_signal_limit_order:1969 - ✅ Завдання моніторингу запущено з Quantum Gravity2
+2025-12-29 12:52:57 | INFO     | __main__:handler_event:614 - [UNIUSDT] Моніторинг запущено
+2025-12-29 12:52:57 | DEBUG    | trading.signal_handler:start_external_trade_monitor:2006 - External trade monitor already running
+2025-12-29 12:52:59 | INFO     | trading.signal_handler:_init_db:137 - Подключение к базе данных (Aiven Cloud/SSL) установлено
+2025-12-29 12:52:59 | INFO     | trading.signal_handler:_get_rsi_settings_db:173 - Читаю RSI настройки з БД...
+2025-12-29 12:52:59 | INFO     | trading.signal_handler:_get_rsi_settings_db:201 - RSI настройки з БД отримано: {'rsi_low': 40.0, 'rsi_high': 60.0, 'rsi_period': 14, 'rsi_interval': '1'}
+2025-12-29 12:52:59 | INFO     | analysis.trigger_strategy:monitor_and_trade:241 - [UNIUSDT] Gravity2: Старт з пошуку RSI (Wait RSI), контроль дотику рівня активний.
+2025-12-29 12:52:59 | INFO     | analysis.trigger_strategy:monitor_and_trade:256 - [UNIUSDT] ⚙️ ПОВНИЙ КОНФІГ:
+   🔹 РИЗИК: Поз=5.0%, МаксУгод=3, Спроб=3, СмещениеSL=0.0
+   🔹 ПІНБАР: 100м, Tail>=0.0%, Body<=100.0%, Opp<=100.0%
+   🔹 RSI: 40.0-60.0 (P=14, TF=1)
+   🔹 ТАЙМАУТ ТРИГЕРА: 100м
+2025-12-29 12:52:59 | INFO     | analysis.trigger_strategy:monitor_and_trade:266 - [UNIUSDT] Старт моніторингу
+2025-12-29 12:52:59 | INFO     | analysis.trigger_strategy:monitor_and_trade:267 - [UNIUSDT] Стратегія: Quantum Gravity2, Рівень: 5.808, Сигнал: long, Торгівля: short
+2025-12-29 12:52:59 | DEBUG    | trading.signal_handler:_get_session:262 - SignalHandler session created
+2025-12-29 12:52:59 | INFO     | trading.signal_handler:cancel_all_orders:1366 - All orders cancelled for UNIUSDT
+2025-12-29 12:53:01 | DEBUG    | trading.signal_handler:_get_session:262 - SignalHandler session created
+2025-12-29 12:53:02 | DEBUG    | trading.signal_handler:close:281 - TakeProfit helper closed
+2025-12-29 12:53:02 | INFO     | analysis.trigger_strategy:monitor_and_trade:444 - [UNIUSDT] ✅ RSI ПЕРЕКУПЛЕНІСТЬ: 63.79 >= 60.0
+2025-12-29 12:53:02 | INFO     | analysis.trigger_strategy:monitor_and_trade:451 - [UNIUSDT] ✅ RSI OK. Чекаємо пінбар GRAVITY...
+2025-12-29 12:53:04 | INFO     | analysis.trigger_strategy:monitor_and_trade:495 - [UNIUSDT] ✅ GRAVITY ПІНБАР: H=6.13400000 L=6.13300000
+2025-12-29 12:53:07 | INFO     | analysis.trigger_strategy:monitor_and_trade:531 - [UNIUSDT] 🎯 TRIGGER ORDER: SHORT
+2025-12-29 12:53:07 | INFO     | analysis.trigger_strategy:monitor_and_trade:532 - [UNIUSDT]    Trigger: 6.13300000
+2025-12-29 12:53:07 | INFO     | analysis.trigger_strategy:monitor_and_trade:533 - [UNIUSDT]    SL: 6.13400000
+2025-12-29 12:53:08 | INFO     | trading.signal_handler:place_trigger_order:1410 - 📊 Перевірка ліміту угод для UNIUSDT (TRIGGER):
+2025-12-29 12:53:08 | INFO     | trading.signal_handler:place_trigger_order:1411 -    - Активні позиції: 0
+2025-12-29 12:53:08 | INFO     | trading.signal_handler:place_trigger_order:1412 -    - Умовні ордери: 0
+2025-12-29 12:53:08 | INFO     | trading.signal_handler:place_trigger_order:1413 -    - Всього відкрито: 0
+2025-12-29 12:53:08 | INFO     | trading.signal_handler:place_trigger_order:1414 -    - Максимум дозволено: 3
+2025-12-29 12:53:08 | DEBUG    | trading.take_profit:_get_session:118 - TakeProfit session created
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:place_trigger_order:1461 - 📉 Trigger НИЖЧЕ поточної: спрацює при ПАДІННІ до 6.13300000
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:place_trigger_order:1467 -    � SHORT: поточна 6.13400000 → trigger 6.13300000
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:place_trigger_order:1518 - 🎯 TRIGGER ORDER: UNIUSDT SHORT
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:place_trigger_order:1519 -    Поточна ціна: 6.13400000
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:place_trigger_order:1520 -    Trigger ціна: 6.13300000
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:place_trigger_order:1521 -    Trigger direction: 2 (падіння)
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:place_trigger_order:1524 -    Розмір: 16.3 (99.97 USDT @ 10x)
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:place_trigger_order:1526 -    Stop Loss: 6.13400000
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:place_trigger_order:1533 - ✅ TRIGGER ORDER розміщено: UNIUSDT SHORT
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:_watch_trigger_order:1609 - 📡 Моніторинг trigger order для UNIUSDT
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:_watch_trigger_order:1610 -    Order ID: 20c7cc4d-283f-464a-91cc-8444b5d6d030
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:_watch_trigger_order:1611 -    Trigger: 6.13300000
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:_watch_trigger_order:1612 -    Direction: SHORT
+2025-12-29 12:53:09 | INFO     | analysis.trigger_strategy:monitor_and_trade:558 - [UNIUSDT] ✅ TRIGGER РОЗМІЩЕНО
+2025-12-29 12:53:09 | INFO     | trading.signal_handler:start_external_trade_monitor:2010 - External trade monitor started
+2025-12-29 12:53:09 | DEBUG    | trading.signal_handler:_get_pybit_session:2049 - PyBit session created successfully (recv_window=20000)
+2025-12-29 12:53:14 | DEBUG    | trading.signal_handler:_watch_trigger_order:1714 - Trigger order UNIUSDT статус: Untriggered
+2025-12-29 12:53:14 | DEBUG    | trading.signal_handler:_watch_trigger_order:1727 - SHORT trigger: поточна 6.13600000, trigger 6.13300000, відстань: -0.00300000
+2025-12-29 12:53:18 | INFO     | analysis.trigger_strategy:monitor_and_trade:586 - [UNIUSDT] ❌ Ціна (6.13500000) пробила SL (6.13400000) до активації → ВИДАЛЕННЯ
+2025-12-29 12:53:18 | INFO     | trading.signal_handler:cancel_order:1356 - Order 20c7cc4d-283f-464a-91cc-8444b5d6d030 cancelled successfully
+2025-12-29 12:53:18 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2414 - External trade monitor loop отменен
+2025-12-29 12:53:18 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2417 - External trade monitor loop завершен
+2025-12-29 12:53:18 | INFO     | trading.signal_handler:stop_external_trade_monitor:2025 - External trade monitor stopped
+2025-12-29 12:53:18 | DEBUG    | trading.signal_handler:close:281 - TakeProfit helper closed
+2025-12-29 12:53:19 | DEBUG    | trading.signal_handler:_get_session:262 - SignalHandler session created
+2025-12-29 12:53:20 | DEBUG    | trading.signal_handler:_watch_trigger_order:1714 - Trigger order UNIUSDT статус: Deactivated
+2025-12-29 12:53:25 | DEBUG    | trading.signal_handler:_watch_trigger_order:1714 - Trigger order UNIUSDT статус: Deactivated
+2025-12-29 12:53:30 | DEBUG    | trading.signal_handler:_watch_trigger_order:1714 - Trigger order UNIUSDT статус: Deactivated
+2025-12-29 12:53:36 | DEBUG    | trading.signal_handler:_watch_trigger_order:1714 - Trigger order UNIUSDT статус: Deactivated
+2025-12-29 12:53:41 | DEBUG    | trading.signal_handler:_watch_trigger_order:1714 - Trigger order UNIUSDT статус: Deactivated
+2025-12-29 12:53:46 | DEBUG    | trading.signal_handler:_watch_trigger_order:1714 - Trigger order UNIUSDT статус: Deactivated
+2025-12-29 12:53:51 | DEBUG    | trading.signal_handler:_watch_trigger_order:1714 - Trigger order UNIUSDT статус: Deactivated
+2025-12-29 12:53:53 | INFO     | __main__:signal_handler:835 - Зупинка...
+2025-12-29 12:53:53 | INFO     | __main__:monitor_bybit_positions:360 - monitor_bybit_positions cancelled
+2025-12-29 12:53:53 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2414 - External trade monitor loop отменен
+2025-12-29 12:53:53 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2417 - External trade monitor loop завершен
+2025-12-29 12:53:53 | INFO     | trading.signal_handler:_watch_trigger_order:1818 - Моніторинг trigger order UNIUSDT скасовано
+2025-12-29 12:53:53 | WARNING  | trading.signal_handler:__del__:842 - SignalHandler собран сборщиком мусора с открытой сессией aiohttp; вызовите await close() явно.
+2025-12-29 12:53:53 | INFO     | __main__:main:753 - Начинается graceful shutdown...
+2025-12-29 12:53:53 | DEBUG    | trading.signal_handler:close:281 - TakeProfit helper closed
+2025-12-29 12:53:54 | INFO     | telegram_bot:start_bot:1308 -  Aiogram bot stopped
+2025-12-29 12:53:58 | INFO     | utils.settings_manager:init_db:178 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2025-12-29 12:54:02 | INFO     | __main__:monitor_bybit_positions:106 - Запуск мониторинга позиций Bybit для ручных сделок
+2025-12-29 12:54:02 | DEBUG    | trading.signal_handler:_get_session:262 - SignalHandler session created
+2025-12-29 12:54:04 | INFO     | trading.signal_handler:_init_db:137 - Подключение к базе данных (Aiven Cloud/SSL) установлено
+2025-12-29 12:54:05 | DEBUG    | trading.risk_manager:sync_time:37 - Time offset updated: -100
+2025-12-29 12:54:06 | INFO     | __main__:main:407 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2025-12-29 12:54:06 | INFO     | trading.signal_handler:start_external_trade_monitor:2010 - External trade monitor started
+2025-12-29 12:54:06 | INFO     | __main__:main:729 - Бот для настроек запущен
+2025-12-29 12:54:06 | INFO     | __main__:main:736 - Запуск клієнта Telegram...
+2025-12-29 12:54:06 | DEBUG    | trading.signal_handler:_get_pybit_session:2049 - PyBit session created successfully (recv_window=20000)
+2025-12-29 12:54:16 | INFO     | __main__:handler_event:424 - 📥 Получено сообщение 1174 из целевого канала
+2025-12-29 12:54:16 | INFO     | __main__:handler_event:552 -  Ціна з каналу: 0.07516
+2025-12-29 12:54:16 | INFO     | __main__:handler_event:566 -  Валидный сигнал: ONTUSDT @ 0.07516 (short)
+2025-12-29 12:54:16 | INFO     | __main__:handler_event:567 - 📍 Точная цена для ордера: 0.07516
+2025-12-29 12:54:16 | INFO     | __main__:handler_event:568 -  ID каналу: -1002990245762
+2025-12-29 12:54:16 | INFO     | trading.strategies:get_strategy_for_channel:172 - Обрано стратегію: Quantum Premium2 для каналу -1002990245762
+2025-12-29 12:54:16 | INFO     | __main__:handler_event:573 - 📊 Стратегия для канала -1002990245762: Quantum Premium2
+2025-12-29 12:54:16 | INFO     | utils.logger:trade_signal:35 - Trade signal received
+2025-12-29 12:54:16 | INFO     | utils.logger:signal_from_channel:42 - Signal from channel
+2025-12-29 12:54:18 | INFO     | trading.strategies:get_strategy_for_channel:172 - Обрано стратегію: Quantum Premium2 для каналу -1002990245762
+2025-12-29 12:54:18 | INFO     | trading.signal_handler:place_signal_limit_order:1921 - Стратегия для ONTUSDT: Quantum Premium2
+2025-12-29 12:54:18 | INFO     | trading.signal_handler:place_signal_limit_order:1922 -    - Канал: -1002990245762
+2025-12-29 12:54:18 | INFO     | trading.signal_handler:place_signal_limit_order:1923 -    - Точна цена з каналу: 0.07516
+2025-12-29 12:54:18 | INFO     | trading.signal_handler:place_signal_limit_order:1924 -    - Направлення: SHORT
+2025-12-29 12:54:18 | INFO     | trading.signal_handler:place_signal_limit_order:1956 - [ONTUSDT] Запуск моніторингу (Quantum Premium2)
+2025-12-29 12:54:20 | INFO     | trading.signal_handler:place_signal_limit_order:1969 - ✅ Завдання моніторингу запущено з Quantum Premium2
+2025-12-29 12:54:20 | INFO     | __main__:handler_event:614 - [ONTUSDT] Моніторинг запущено
+2025-12-29 12:54:20 | DEBUG    | trading.signal_handler:start_external_trade_monitor:2006 - External trade monitor already running
+2025-12-29 12:54:21 | INFO     | trading.signal_handler:_init_db:137 - Подключение к базе данных (Aiven Cloud/SSL) установлено
+2025-12-29 12:54:21 | INFO     | trading.signal_handler:_get_rsi_settings_db:173 - Читаю RSI настройки з БД...
+2025-12-29 12:54:22 | INFO     | trading.signal_handler:_get_rsi_settings_db:201 - RSI настройки з БД отримано: {'rsi_low': 40.0, 'rsi_high': 60.0, 'rsi_period': 14, 'rsi_interval': '1'}
+2025-12-29 12:54:22 | INFO     | analysis.trigger_strategy:monitor_and_trade:256 - [ONTUSDT] ⚙️ ПОВНИЙ КОНФІГ:
+   🔹 РИЗИК: Поз=5.0%, МаксУгод=3, Спроб=3, СмещениеSL=0.0
+   🔹 ПІНБАР: 100м, Tail>=0.0%, Body<=100.0%, Opp<=100.0%
+   🔹 RSI: 40.0-60.0 (P=14, TF=1)
+   🔹 ТАЙМАУТ ТРИГЕРА: 100м
+2025-12-29 12:54:22 | INFO     | analysis.trigger_strategy:monitor_and_trade:266 - [ONTUSDT] Старт моніторингу
+2025-12-29 12:54:22 | INFO     | analysis.trigger_strategy:monitor_and_trade:267 - [ONTUSDT] Стратегія: Quantum Premium2, Рівень: 0.07516, Сигнал: short, Торгівля: short
+2025-12-29 12:54:22 | DEBUG    | trading.signal_handler:_get_session:262 - SignalHandler session created
+2025-12-29 12:54:23 | DEBUG    | trading.signal_handler:_get_session:262 - SignalHandler session created
+2025-12-29 12:54:23 | INFO     | trading.signal_handler:cancel_all_orders:1366 - All orders cancelled for ONTUSDT
+2025-12-29 12:54:24 | DEBUG    | trading.signal_handler:close:281 - TakeProfit helper closed
+2025-12-29 12:54:31 | DEBUG    | trading.signal_handler:_get_session:262 - SignalHandler session created
+2025-12-29 12:54:32 | DEBUG    | trading.signal_handler:close:281 - TakeProfit helper closed
+2025-12-29 12:54:40 | INFO     | __main__:signal_handler:835 - Зупинка...
+2025-12-29 12:54:40 | DEBUG    | trading.signal_handler:close:281 - TakeProfit helper closed
+2025-12-29 12:54:40 | INFO     | __main__:monitor_bybit_positions:360 - monitor_bybit_positions cancelled
+2025-12-29 12:54:40 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2414 - External trade monitor loop отменен
+2025-12-29 12:54:40 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2417 - External trade monitor loop завершен
+2025-12-29 12:54:40 | INFO     | __main__:main:753 - Начинается graceful shutdown...
+2025-12-29 12:54:40 | DEBUG    | trading.signal_handler:close:281 - TakeProfit helper closed
+2025-12-29 12:54:40 | INFO     | __main__:signal_handler:835 - Зупинка...
