@@ -272,12 +272,12 @@ async def monitor_and_trade(pair, target, direction, settings):
     touch_time = time.time() if is_gravity2 else None
     rsi_trigger_candle_index = None
     touch_candle_index = None
-    touch_candle_index = None
     signal_candle = None
     trigger_order_id = None
     trigger_placed_at = 0
     trigger_candle_count = 0
-    calculated_stop_loss = None # Для моніторингу пробою СЛ при активному тригері
+    calculated_stop_loss = None  # Для моніторингу пробою СЛ при активному тригері
+    last_processed_candle_ts = None  # Для відстеження вже оброблених свічок
 
     prev_price = None
     candles_since_touch = []
@@ -374,53 +374,76 @@ async def monitor_and_trade(pair, target, direction, settings):
 
             # === STATE: WAIT_PINBAR (Premium2) ===
             if state == BotState.WAIT_PINBAR:
-                candles_since_touch = candles[touch_candle_index:] if touch_candle_index else candles[-pinbar_timeout:]
-
-                # Перевірка таймауту за часом (хвилини), а не за кількістю свічок
+                # Перевірка таймауту за часом (хвилини)
                 elapsed_minutes = (time.time() - touch_time) / 60 if touch_time else 0
                 if elapsed_minutes > pinbar_timeout:
-                    logger.info(f"[{pair}] ⏱ Таймаут пошуку пінбара ({pinbar_timeout} хв)")
+                    logger.info(f"[{pair}] ⏱ Таймаут пошуку сигнальної свічки ({pinbar_timeout} хв)")
                     break
 
                 now = time.time()
-                if now - last_pinbar_log_time > 1200:  # Раз на 20 хвилин (1200 секунд)
-                    logger.info(f"[{pair}] ⏳ Ще шукаю пінбар...")
+                if now - last_pinbar_log_time > 1200:  # Раз на 20 хвилин
+                    logger.info(f"[{pair}] ⏳ Ще шукаю сигнальну свічку...")
                     last_pinbar_log_time = now
 
-                # Отримуємо RSI для перевірки (для Premium2)
+                # Отримуємо RSI для перевірки
                 current_rsi_val = None
                 if is_premium2:
                     current_rsi_val, _ = await get_rsi(pair, "1", rsi_period)
 
-                for i in range(len(candles_since_touch) - 1, 0, -1):
-                    candle = candles_since_touch[i]
-
-                    if not _is_pinbar(candle, direction, tail_percent_min, body_percent_max, opposite_percent_max):
+                # Premium2: Кожна свічка що оновила екстремум = сигнальна
+                # Дивимось на останню ЗАКРИТУ свічку (candles[-2])
+                if len(candles) >= 3:
+                    last_closed_candle = candles[-2]  # Остання закрита свічка
+                    candle_ts = int(last_closed_candle[0])  # Timestamp свічки
+                    
+                    # Перевіряємо чи ця свічка вже була оброблена
+                    if last_processed_candle_ts and candle_ts <= last_processed_candle_ts:
+                        # Ця свічка вже оброблена, чекаємо наступну
+                        await asyncio.sleep(5)
                         continue
-
-                    # RSI Check for Premium2:
-                    # - Long: Ціна впала до підтримки, чекаємо RSI <= Low (Перепроданість)
-                    # - Short: Ціна виросла до опору, чекаємо RSI >= High (Перекупленість)
-                    if is_premium2 and current_rsi_val is not None:
-                        if direction == "long" and current_rsi_val > rsi_low:
-                            continue
-                        if direction == "short" and current_rsi_val < rsi_high:
-                            continue
-
-                    abs_index = (
-                        touch_candle_index + i if touch_candle_index else len(candles) - len(candles_since_touch) + i
-                    )
-                    if not _is_new_extremum(candles, abs_index, direction):
-                        continue
-
-                    signal_candle = candle
-                    rsi_msg = f", RSI={current_rsi_val:.2f}" if current_rsi_val is not None else ""
-                    logger.info(f"[{pair}] ✅ ПІНБАР ЗНАЙДЕНО: H={float(candle[2]):.8f} L={float(candle[3]):.8f}{rsi_msg}")
-                    _monitor_states[pair] = BotState.SIGNAL_CONFIRMED
-                    break
+                    
+                    c_high = float(last_closed_candle[2])
+                    c_low = float(last_closed_candle[3])
+                    
+                    # Перевіряємо чи свічка оновила екстремум з моменту торкання рівня
+                    is_new_ext = False
+                    
+                    if direction == "long":
+                        # Для LONG: свічка має оновити мінімум (new low)
+                        candles_after_touch = candles[touch_candle_index:-1] if touch_candle_index else candles[-20:-1]
+                        if candles_after_touch:
+                            prev_lows = [float(c[3]) for c in candles_after_touch[:-1]] if len(candles_after_touch) > 1 else []
+                            if not prev_lows or c_low <= min(prev_lows):
+                                is_new_ext = True
+                    else:
+                        # Для SHORT: свічка має оновити максимум (new high)
+                        candles_after_touch = candles[touch_candle_index:-1] if touch_candle_index else candles[-20:-1]
+                        if candles_after_touch:
+                            prev_highs = [float(c[2]) for c in candles_after_touch[:-1]] if len(candles_after_touch) > 1 else []
+                            if not prev_highs or c_high >= max(prev_highs):
+                                is_new_ext = True
+                    
+                    if is_new_ext:
+                        # RSI Check for Premium2 (опціонально):
+                        rsi_ok = True
+                        if is_premium2 and current_rsi_val is not None:
+                            if direction == "long" and current_rsi_val > rsi_low:
+                                rsi_ok = False
+                                logger.debug(f"[{pair}] RSI {current_rsi_val:.1f} > {rsi_low}, чекаємо перепроданість")
+                            if direction == "short" and current_rsi_val < rsi_high:
+                                rsi_ok = False
+                                logger.debug(f"[{pair}] RSI {current_rsi_val:.1f} < {rsi_high}, чекаємо перекупленість")
+                        
+                        if rsi_ok:
+                            signal_candle = last_closed_candle
+                            last_processed_candle_ts = candle_ts  # Запам'ятовуємо оброблену свічку
+                            rsi_msg = f", RSI={current_rsi_val:.2f}" if current_rsi_val is not None else ""
+                            logger.info(f"[{pair}] ✅ СИГНАЛЬНА СВІЧКА (new extremum): H={c_high:.8f} L={c_low:.8f}{rsi_msg}")
+                            _monitor_states[pair] = BotState.SIGNAL_CONFIRMED
+                            # Не continue - переходимо до SIGNAL_CONFIRMED в цьому ж циклі
 
                 if _monitor_states.get(pair) != BotState.SIGNAL_CONFIRMED:
-                    await asyncio.sleep(tf_secs // 4)
+                    await asyncio.sleep(5)  # Перевіряємо кожні 5 секунд
                     continue
 
             # === STATE: WAIT_RSI (Gravity2) ===
@@ -563,16 +586,29 @@ async def monitor_and_trade(pair, target, direction, settings):
                     break
 
             if state == BotState.TRIGGER_PLACED:
-                # Перевірка таймауту за часом (точніше ніж лічильник ітерацій)
+                # Перевірка загального таймауту сигналу
+                total_elapsed = (time.time() - touch_time) / 60 if touch_time else 0
+                if total_elapsed > pinbar_timeout:
+                    logger.info(f"[{pair}] ⏱ Загальний таймаут сигналу ({pinbar_timeout} хв) → ЗАВЕРШЕННЯ")
+                    if trigger_order_id:
+                        await signal_handler.cancel_order(pair, trigger_order_id)
+                    break
+                
+                # Перевірка таймауту тригера
                 elapsed_seconds = time.time() - trigger_placed_at
                 timeout_seconds = trigger_timeout_minutes * 60
                 
                 if elapsed_seconds >= timeout_seconds:
-                    logger.info(f"[{pair}] ⏱ Trigger не активувався за {trigger_timeout_minutes} хв ({timeout_seconds}с) → ВИДАЛЕННЯ")
+                    logger.info(f"[{pair}] ⏱ Trigger не активувався за {trigger_timeout_minutes} хв → шукаємо наступну свічку")
                     if trigger_order_id:
                         await signal_handler.cancel_order(pair, trigger_order_id)
-                    _monitor_states[pair] = BotState.TRIGGER_EXPIRED
-                    break
+                    trigger_order_id = None
+                    signal_candle = None
+                    calculated_stop_loss = None
+                    # Повертаємось до пошуку наступної сигнальної свічки
+                    _monitor_states[pair] = BotState.WAIT_PINBAR
+                    await asyncio.sleep(1)
+                    continue
 
                 # Перевірка на пробій майбутнього SL
                 if calculated_stop_loss:
@@ -583,11 +619,16 @@ async def monitor_and_trade(pair, target, direction, settings):
                         sl_hit = True
                     
                     if sl_hit:
-                        logger.info(f"[{pair}] ❌ Ціна ({current_price:.8f}) пробила SL ({calculated_stop_loss:.8f}) до активації → ВИДАЛЕННЯ")
+                        logger.info(f"[{pair}] ❌ Ціна ({current_price:.8f}) пробила SL ({calculated_stop_loss:.8f}) до активації → шукаємо наступну свічку")
                         if trigger_order_id:
                             await signal_handler.cancel_order(pair, trigger_order_id)
-                        _monitor_states[pair] = BotState.TRIGGER_EXPIRED
-                        break
+                        trigger_order_id = None
+                        signal_candle = None
+                        calculated_stop_loss = None
+                        # Повертаємось до пошуку наступної сигнальної свічки
+                        _monitor_states[pair] = BotState.WAIT_PINBAR
+                        await asyncio.sleep(1)
+                        continue
 
                 position = await signal_handler._take_profit_helper.get_position(pair)
                 if position and float(position.get("size", 0) or 0) > 0:

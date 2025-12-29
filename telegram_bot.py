@@ -574,6 +574,8 @@ async def auto_refresh_status(pair: str, chat_id: int, message_id: int):
 
 async def process_status_refresh(callback: CallbackQuery):
     """Обробник кнопки оновлення"""
+    from aiogram.exceptions import TelegramBadRequest
+    
     data = callback.data.replace("status_refresh_", "")
     
     if data == "list":
@@ -583,7 +585,10 @@ async def process_status_refresh(callback: CallbackQuery):
         
         if not monitors:
             text = "📊 <b>Статус моніторингу</b>\n\n❌ Немає активних моніторингів"
-            await callback.message.edit_text(text, parse_mode="HTML")
+            try:
+                await callback.message.edit_text(text, parse_mode="HTML")
+            except TelegramBadRequest:
+                pass  # Повідомлення не змінилось
             await callback.answer("Список оновлено")
             return
         
@@ -596,7 +601,10 @@ async def process_status_refresh(callback: CallbackQuery):
         keyboard.append([InlineKeyboardButton(text="🔄 Оновити список", callback_data="status_refresh_list")])
         
         markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
-        await callback.message.edit_text(text, reply_markup=markup, parse_mode="HTML")
+        try:
+            await callback.message.edit_text(text, reply_markup=markup, parse_mode="HTML")
+        except TelegramBadRequest:
+            pass  # Повідомлення не змінилось
         await callback.answer("Список оновлено")
     else:
         # Оновлення конкретної пари
@@ -611,7 +619,10 @@ async def process_status_refresh(callback: CallbackQuery):
             ]
         )
         
-        await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
+        try:
+            await callback.message.edit_text(text, reply_markup=keyboard, parse_mode="HTML")
+        except TelegramBadRequest:
+            pass  # Повідомлення не змінилось
         await callback.answer("Оновлено")
 
 
