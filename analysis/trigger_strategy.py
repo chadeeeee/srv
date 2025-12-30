@@ -310,7 +310,7 @@ async def monitor_and_trade(pair, target, direction, settings):
                 await asyncio.sleep(1)
                 continue
 
-            candles = await get_klines(pair, timeframe_api, 50)
+            candles = await get_klines(pair, timeframe_api, 200)
             if not candles or len(candles) < 3:
                 await asyncio.sleep(1)
                 continue
@@ -326,9 +326,6 @@ async def monitor_and_trade(pair, target, direction, settings):
             # === GRAVITY2 SAFETY CHECK: CANCEL ON LEVEL TOUCH ===
             if is_gravity2 and state in [BotState.WAIT_RSI, BotState.WAIT_PINBAR_GRAVITY]:
                 # Gravity2: Якщо ціна торкається рівня ДО входу -> СКАСУВАННЯ
-                # direction="long" (Signal) -> Рівень Підтримки. Ціна має бути вище. Якщо впала до рівня -> Cancel.
-                # direction="short" (Signal) -> Рівень Опору. Ціна має бути нижче. Якщо виросла до рівня -> Cancel.
-                
                 touch_detected = False
                 if direction == "long" and current_price <= t + tol:
                     touch_detected = True
@@ -362,8 +359,6 @@ async def monitor_and_trade(pair, target, direction, settings):
                     logger.info(f"[{pair}] ✅ РІВЕНЬ ТОРКНУТО: {t:.8f}")
 
                     if is_gravity2:
-                        # Цей блок не повинен спрацьовувати для Gravity2, оскільки ми починаємо з WAIT_RSI,
-                        # але залишаємо для сумісності або якщо state зміниться вручну
                         _monitor_states[pair] = BotState.WAIT_RSI
                     else:
                         _monitor_states[pair] = BotState.WAIT_PINBAR
@@ -399,8 +394,6 @@ async def monitor_and_trade(pair, target, direction, settings):
                         continue
 
                     # RSI Check for Premium2:
-                    # - Long: Ціна впала до підтримки, чекаємо RSI <= Low (Перепроданість)
-                    # - Short: Ціна виросла до опору, чекаємо RSI >= High (Перекупленість)
                     if is_premium2 and current_rsi_val is not None:
                         if direction == "long" and current_rsi_val > rsi_low:
                             continue
@@ -434,8 +427,6 @@ async def monitor_and_trade(pair, target, direction, settings):
 
                 rsi_ok = False
                 # Gravity:
-                # Long (Low Level): RSI <= Low
-                # Short (High Level): RSI >= High
                 if trade_direction == "long" and current_rsi_val <= rsi_low:
                     rsi_ok = True
                     logger.info(f"[{pair}] ✅ RSI ПЕРЕПРОДАНІСТЬ: {current_rsi_val:.2f} <= {rsi_low}")
@@ -445,10 +436,12 @@ async def monitor_and_trade(pair, target, direction, settings):
 
                 if rsi_ok:
                     _monitor_states[pair] = BotState.WAIT_PINBAR_GRAVITY
-                    # Запам'ятовуємо індекс (поточний), з якого починаємо шукати пінбар та екстремум
-                    # Оскільки ми щойно отримали RSI, шукаємо серед свічок, які будуть далі (або ця сама, якщо закриється пінбаром)
-                    rsi_trigger_candle_index = len(candles) - 1
-                    logger.info(f"[{pair}] ✅ RSI OK. Чекаємо пінбар GRAVITY...")
+                    
+                    # Зберігаємо ЧАС свічки, на якій спрацював RSI
+                    rsi_trigger_candle_time = int(candles[-1][0])
+                    # rsi_trigger_candle_index = len(candles) - 1 # БІЛЬШЕ НЕ ВИКОРИСТОВУЄМО ІНДЕКС
+                    
+                    logger.info(f"[{pair}] ✅ RSI OK (Time={rsi_trigger_candle_time}). Чекаємо пінбар GRAVITY...")
                 else:
                     await asyncio.sleep(5)
                     continue
@@ -460,8 +453,19 @@ async def monitor_and_trade(pair, target, direction, settings):
                     logger.info(f"[{pair}] ⏱ Таймаут пошуку пінбара Gravity ({pinbar_timeout} хв)")
                     break
 
+                # Знаходимо індекс свічки RSI start в поточному списку candles
+                start_index = -1
+                for idx, c in enumerate(candles):
+                    if int(c[0]) == rsi_trigger_candle_time:
+                        start_index = idx
+                        break
+                
+                if start_index == -1:
+                    # Якщо свічка випала за межі 200 свічок - беремо початок
+                    start_index = 0
+                
                 # Шукаємо пінбар серед свічок, починаючи з моменту RSI
-                search_candles = candles[rsi_trigger_candle_index:]
+                search_candles = candles[start_index:]
                 
                 # Потрібно мінімум 1 свічка для аналізу. Якщо це та сама свічка, що й RSI, і вона закрита - ок.
                 # Але candles[-1] зазвичай закрита (в get_klines ми беремо closed).
