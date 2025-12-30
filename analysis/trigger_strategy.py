@@ -272,12 +272,12 @@ async def monitor_and_trade(pair, target, direction, settings):
     touch_time = time.time() if is_gravity2 else None
     rsi_trigger_candle_index = None
     touch_candle_index = None
+    touch_candle_index = None
     signal_candle = None
     trigger_order_id = None
     trigger_placed_at = 0
     trigger_candle_count = 0
-    calculated_stop_loss = None  # Для моніторингу пробою СЛ при активному тригері
-    last_processed_candle_ts = None  # Для відстеження вже оброблених свічок
+    calculated_stop_loss = None # Для моніторингу пробою СЛ при активному тригері
 
     prev_price = None
     candles_since_touch = []
@@ -341,25 +341,14 @@ async def monitor_and_trade(pair, target, direction, settings):
 
             # === STATE: WAIT_LEVEL_TOUCH (Premium2) ===
             if state == BotState.WAIT_LEVEL_TOUCH and not level_touched:
-                # Перевіряємо чи ціна перетнула рівень або біля рівня
                 if direction == "long":
-                    # LONG: рівень підтримки. Ціна має опуститись до рівня або нижче
                     crossed = prev_price is not None and prev_price > t and current_price <= t
-                    already_below = current_price <= t  # Ціна вже на рівні або нижче
                 else:
-                    # SHORT: рівень опору. Ціна має піднятись до рівня або вище
                     crossed = prev_price is not None and prev_price < t and current_price >= t
-                    already_below = current_price >= t  # Ціна вже на рівні або вище
 
                 near = abs(current_price - t) <= tol
 
-                # Логування для дебагу (рідко)
-                if prev_price is None:
-                    logger.info(f"[{pair}] Premium2: Початок моніторингу. Ціна: {current_price:.8f}, Рівень: {t:.8f}, Толеранс: {tol:.8f}")
-                    logger.info(f"[{pair}] Premium2: already_at_level={already_below}, near={near}")
-
-                # Торкання = перетнули АБО біля рівня АБО вже за рівнем
-                if crossed or near or already_below:
+                if crossed or near:
                     level_touched = True
                     touch_time = time.time()
                     touch_candle_index = len(candles) - 1
@@ -370,14 +359,14 @@ async def monitor_and_trade(pair, target, direction, settings):
                         _monitor_data[pair]["level_touched"] = True
                         _monitor_data[pair]["touch_time"] = touch_time
 
-                    reason = "crossed" if crossed else ("near" if near else "already_at_level")
-                    logger.info(f"[{pair}] ✅ РІВЕНЬ ТОРКНУТО ({reason}): рівень={t:.8f}, ціна={current_price:.8f}")
+                    logger.info(f"[{pair}] ✅ РІВЕНЬ ТОРКНУТО: {t:.8f}")
 
                     if is_gravity2:
+                        # Цей блок не повинен спрацьовувати для Gravity2, оскільки ми починаємо з WAIT_RSI,
+                        # але залишаємо для сумісності або якщо state зміниться вручну
                         _monitor_states[pair] = BotState.WAIT_RSI
                     else:
                         _monitor_states[pair] = BotState.WAIT_PINBAR
-                        logger.info(f"[{pair}] Premium2: Перехід до WAIT_PINBAR. Шукаю сигнальні свічки...")
 
                 prev_price = current_price
                 await asyncio.sleep(1)
@@ -385,96 +374,53 @@ async def monitor_and_trade(pair, target, direction, settings):
 
             # === STATE: WAIT_PINBAR (Premium2) ===
             if state == BotState.WAIT_PINBAR:
-                # Перевірка таймауту за часом (хвилини)
+                candles_since_touch = candles[touch_candle_index:] if touch_candle_index else candles[-pinbar_timeout:]
+
+                # Перевірка таймауту за часом (хвилини), а не за кількістю свічок
                 elapsed_minutes = (time.time() - touch_time) / 60 if touch_time else 0
                 if elapsed_minutes > pinbar_timeout:
-                    logger.info(f"[{pair}] ⏱ Таймаут пошуку сигнальної свічки ({pinbar_timeout} хв)")
+                    logger.info(f"[{pair}] ⏱ Таймаут пошуку пінбара ({pinbar_timeout} хв)")
                     break
 
                 now = time.time()
-                if now - last_pinbar_log_time > 300:  # Раз на 5 хвилин
-                    logger.info(f"[{pair}] ⏳ Premium2: шукаю сигнальну свічку... (elapsed: {elapsed_minutes:.1f} хв)")
+                if now - last_pinbar_log_time > 1200:  # Раз на 20 хвилин (1200 секунд)
+                    logger.info(f"[{pair}] ⏳ Ще шукаю пінбар...")
                     last_pinbar_log_time = now
 
-                # Отримуємо RSI для перевірки
+                # Отримуємо RSI для перевірки (для Premium2)
                 current_rsi_val = None
                 if is_premium2:
                     current_rsi_val, _ = await get_rsi(pair, "1", rsi_period)
 
-                # Premium2: Кожна свічка що оновила екстремум = сигнальна
-                # Дивимось на останню ЗАКРИТУ свічку (candles[-2])
-                if len(candles) >= 3:
-                    last_closed_candle = candles[-2]  # Остання закрита свічка
-                    candle_ts = int(last_closed_candle[0])  # Timestamp свічки
-                    
-                    # Перевіряємо чи ця свічка вже була оброблена
-                    if last_processed_candle_ts and candle_ts <= last_processed_candle_ts:
-                        # Ця свічка вже оброблена, чекаємо наступну
-                        await asyncio.sleep(5)
+                for i in range(len(candles_since_touch) - 1, 0, -1):
+                    candle = candles_since_touch[i]
+
+                    if not _is_pinbar(candle, direction, tail_percent_min, body_percent_max, opposite_percent_max):
                         continue
-                    
-                    c_high = float(last_closed_candle[2])
-                    c_low = float(last_closed_candle[3])
-                    
-                    logger.debug(f"[{pair}] Premium2: Аналіз свічки H={c_high:.8f} L={c_low:.8f}")
-                    
-                    # Перевіряємо чи свічка оновила екстремум з моменту торкання рівня
-                    is_new_ext = False
-                    
-                    # Беремо всі свічки від торкання до цієї (не включаючи цю)
-                    start_idx = touch_candle_index if touch_candle_index else max(0, len(candles) - 50)
-                    prev_candles = candles[start_idx:-2]  # Всі свічки до останньої закритої
-                    
-                    if direction == "long":
-                        # Для LONG: свічка має оновити мінімум (new low)
-                        if prev_candles:
-                            prev_lows = [float(c[3]) for c in prev_candles]
-                            min_prev_low = min(prev_lows)
-                            if c_low < min_prev_low:  # Строго менше
-                                is_new_ext = True
-                                logger.debug(f"[{pair}] Premium2: NEW LOW! {c_low:.8f} < {min_prev_low:.8f}")
-                            else:
-                                logger.debug(f"[{pair}] Premium2: L={c_low:.8f} >= min={min_prev_low:.8f}, not new extremum")
-                        else:
-                            # Перша свічка після торкання - завжди новий екстремум
-                            is_new_ext = True
-                            logger.debug(f"[{pair}] Premium2: Перша свічка після торкання = new extremum")
-                    else:
-                        # Для SHORT: свічка має оновити максимум (new high)
-                        if prev_candles:
-                            prev_highs = [float(c[2]) for c in prev_candles]
-                            max_prev_high = max(prev_highs)
-                            if c_high > max_prev_high:  # Строго більше
-                                is_new_ext = True
-                                logger.debug(f"[{pair}] Premium2: NEW HIGH! {c_high:.8f} > {max_prev_high:.8f}")
-                            else:
-                                logger.debug(f"[{pair}] Premium2: H={c_high:.8f} <= max={max_prev_high:.8f}, not new extremum")
-                        else:
-                            # Перша свічка після торкання - завжди новий екстремум
-                            is_new_ext = True
-                            logger.debug(f"[{pair}] Premium2: Перша свічка після торкання = new extremum")
-                    
-                    # Запам'ятовуємо свічку як оброблену
-                    last_processed_candle_ts = candle_ts
-                    
-                    if is_new_ext:
-                        # RSI Check for Premium2 - ОПЦІОНАЛЬНА (тільки логування)
-                        rsi_info = ""
-                        if is_premium2 and current_rsi_val is not None:
-                            rsi_info = f", RSI={current_rsi_val:.1f}"
-                            if direction == "long" and current_rsi_val > rsi_low:
-                                logger.info(f"[{pair}] Premium2: RSI {current_rsi_val:.1f} > {rsi_low} (не в зоні перепроданості)")
-                            if direction == "short" and current_rsi_val < rsi_high:
-                                logger.info(f"[{pair}] Premium2: RSI {current_rsi_val:.1f} < {rsi_high} (не в зоні перекупленості)")
-                        
-                        # Для Premium2 вхід базується ТІЛЬКИ на оновленні екстремуму
-                        signal_candle = last_closed_candle
-                        logger.info(f"[{pair}] ✅ PREMIUM2 СИГНАЛЬНА СВІЧКА: H={c_high:.8f} L={c_low:.8f}{rsi_info}")
-                        _monitor_states[pair] = BotState.SIGNAL_CONFIRMED
-                        # Не continue - переходимо до SIGNAL_CONFIRMED в цьому ж циклі
+
+                    # RSI Check for Premium2:
+                    # - Long: Ціна впала до підтримки, чекаємо RSI <= Low (Перепроданість)
+                    # - Short: Ціна виросла до опору, чекаємо RSI >= High (Перекупленість)
+                    if is_premium2 and current_rsi_val is not None:
+                        if direction == "long" and current_rsi_val > rsi_low:
+                            continue
+                        if direction == "short" and current_rsi_val < rsi_high:
+                            continue
+
+                    abs_index = (
+                        touch_candle_index + i if touch_candle_index else len(candles) - len(candles_since_touch) + i
+                    )
+                    if not _is_new_extremum(candles, abs_index, direction):
+                        continue
+
+                    signal_candle = candle
+                    rsi_msg = f", RSI={current_rsi_val:.2f}" if current_rsi_val is not None else ""
+                    logger.info(f"[{pair}] ✅ ПІНБАР ЗНАЙДЕНО: H={float(candle[2]):.8f} L={float(candle[3]):.8f}{rsi_msg}")
+                    _monitor_states[pair] = BotState.SIGNAL_CONFIRMED
+                    break
 
                 if _monitor_states.get(pair) != BotState.SIGNAL_CONFIRMED:
-                    await asyncio.sleep(5)  # Перевіряємо кожні 5 секунд
+                    await asyncio.sleep(tf_secs // 4)
                     continue
 
             # === STATE: WAIT_RSI (Gravity2) ===
@@ -514,71 +460,46 @@ async def monitor_and_trade(pair, target, direction, settings):
                     logger.info(f"[{pair}] ⏱ Таймаут пошуку пінбара Gravity ({pinbar_timeout} хв)")
                     break
 
-                # Дивимось на останню ЗАКРИТУ свічку
-                if len(candles) < 3:
-                    await asyncio.sleep(5)
-                    continue
+                # Шукаємо пінбар серед свічок, починаючи з моменту RSI
+                search_candles = candles[rsi_trigger_candle_index:]
+                
+                # Потрібно мінімум 1 свічка для аналізу. Якщо це та сама свічка, що й RSI, і вона закрита - ок.
+                # Але candles[-1] зазвичай закрита (в get_klines ми беремо closed).
+                
+                found_pinbar = False
+                for i in range(len(search_candles)):
+                    c = search_candles[i]
                     
-                last_closed_candle = candles[-2]  # Остання закрита свічка
-                candle_ts = int(last_closed_candle[0])
-                
-                # Перевіряємо чи ця свічка вже була оброблена
-                if last_processed_candle_ts and candle_ts <= last_processed_candle_ts:
-                    await asyncio.sleep(5)
-                    continue
-                
-                c_high = float(last_closed_candle[2])
-                c_low = float(last_closed_candle[3])
-                
-                # 1. Перевірка чи свічка є ПІНБАРОМ
-                is_pinbar = _is_pinbar(last_closed_candle, trade_direction, tail_percent_min, body_percent_max, opposite_percent_max)
-                
-                if not is_pinbar:
-                    # Не пінбар - запам'ятовуємо і чекаємо наступну
-                    last_processed_candle_ts = candle_ts
-                    await asyncio.sleep(5)
-                    continue
-                
-                # 2. Перевірка чи свічка ОНОВИЛА ЕКСТРЕМУМ з моменту RSI trigger
-                # Беремо всі свічки від моменту RSI до поточної (не включаючи поточну)
-                search_start = rsi_trigger_candle_index if rsi_trigger_candle_index else 0
-                prev_candles = candles[search_start:-2]  # Всі свічки до останньої закритої
-                
-                is_new_ext = True
-                
-                if trade_direction == "long":
-                    # Для LONG: свічка має зробити новий LOW (нижче за всі попередні)
-                    if prev_candles:
-                        prev_lows = [float(pc[3]) for pc in prev_candles]
-                        min_prev_low = min(prev_lows)
-                        if c_low >= min_prev_low:  # Якщо low >= попереднього мінімуму - НЕ новий екстремум
-                            is_new_ext = False
-                            logger.debug(f"[{pair}] Свічка L={c_low:.8f} НЕ оновила мінімум {min_prev_low:.8f}")
-                else:
-                    # Для SHORT: свічка має зробити новий HIGH (вище за всі попередні)
-                    if prev_candles:
-                        prev_highs = [float(pc[2]) for pc in prev_candles]
-                        max_prev_high = max(prev_highs)
-                        if c_high <= max_prev_high:  # Якщо high <= попереднього максимуму - НЕ новий екстремум
-                            is_new_ext = False
-                            logger.debug(f"[{pair}] Свічка H={c_high:.8f} НЕ оновила максимум {max_prev_high:.8f}")
-                
-                if not is_new_ext:
-                    # Свічка не оновила екстремум - запам'ятовуємо і чекаємо наступну
-                    last_processed_candle_ts = candle_ts
-                    await asyncio.sleep(5)
-                    continue
-                
-                # Всі умови виконані - це сигнальна свічка!
-                signal_candle = last_closed_candle
-                last_processed_candle_ts = candle_ts
-                logger.info(f"[{pair}] ✅ GRAVITY ПІНБАР (new extremum): H={c_high:.8f} L={c_low:.8f}")
-                _monitor_states[pair] = BotState.SIGNAL_CONFIRMED
-                # Не continue - переходимо до SIGNAL_CONFIRMED
+                    # 1. Is Pinbar?
+                    if not _is_pinbar(c, trade_direction, tail_percent_min, body_percent_max, opposite_percent_max):
+                        continue
 
-            if state == BotState.WAIT_PINBAR_GRAVITY and _monitor_states.get(pair) != BotState.SIGNAL_CONFIRMED:
-                await asyncio.sleep(5)
-                continue
+                    # 2. Is New Extremum (Relative to RSI trigger moment)?
+                    current_val = float(c[3]) if trade_direction == "long" else float(c[2])
+                    is_new_ext = True
+                    
+                    # Порівнюємо з попередніми свічками в цьому діапазоні (від RSI до поточної)
+                    for past_c in search_candles[:i]:
+                        past_val = float(past_c[3]) if trade_direction == "long" else float(past_c[2])
+                        if trade_direction == "long":
+                            if past_val <= current_val: # Low має бути нижчим за попередні
+                                is_new_ext = False
+                                break
+                        else:
+                            if past_val >= current_val: # High має бути вищим
+                                is_new_ext = False
+                                break
+                    
+                    if is_new_ext:
+                        signal_candle = c
+                        logger.info(f"[{pair}] ✅ GRAVITY ПІНБАР: H={float(c[2]):.8f} L={float(c[3]):.8f}")
+                        _monitor_states[pair] = BotState.SIGNAL_CONFIRMED
+                        found_pinbar = True
+                        break
+
+                if not found_pinbar:
+                    await asyncio.sleep(tf_secs // 4)
+                    continue
 
             if state == BotState.SIGNAL_CONFIRMED and signal_candle:
                 c_high = float(signal_candle[2])
@@ -642,29 +563,16 @@ async def monitor_and_trade(pair, target, direction, settings):
                     break
 
             if state == BotState.TRIGGER_PLACED:
-                # Перевірка загального таймауту сигналу
-                total_elapsed = (time.time() - touch_time) / 60 if touch_time else 0
-                if total_elapsed > pinbar_timeout:
-                    logger.info(f"[{pair}] ⏱ Загальний таймаут сигналу ({pinbar_timeout} хв) → ЗАВЕРШЕННЯ")
-                    if trigger_order_id:
-                        await signal_handler.cancel_order(pair, trigger_order_id)
-                    break
-                
-                # Перевірка таймауту тригера
+                # Перевірка таймауту за часом (точніше ніж лічильник ітерацій)
                 elapsed_seconds = time.time() - trigger_placed_at
                 timeout_seconds = trigger_timeout_minutes * 60
                 
                 if elapsed_seconds >= timeout_seconds:
-                    logger.info(f"[{pair}] ⏱ Trigger не активувався за {trigger_timeout_minutes} хв → шукаємо наступну свічку")
+                    logger.info(f"[{pair}] ⏱ Trigger не активувався за {trigger_timeout_minutes} хв ({timeout_seconds}с) → ВИДАЛЕННЯ")
                     if trigger_order_id:
                         await signal_handler.cancel_order(pair, trigger_order_id)
-                    trigger_order_id = None
-                    signal_candle = None
-                    calculated_stop_loss = None
-                    # Повертаємось до пошуку наступної сигнальної свічки
-                    _monitor_states[pair] = BotState.WAIT_PINBAR
-                    await asyncio.sleep(1)
-                    continue
+                    _monitor_states[pair] = BotState.TRIGGER_EXPIRED
+                    break
 
                 # Перевірка на пробій майбутнього SL
                 if calculated_stop_loss:
@@ -675,16 +583,11 @@ async def monitor_and_trade(pair, target, direction, settings):
                         sl_hit = True
                     
                     if sl_hit:
-                        logger.info(f"[{pair}] ❌ Ціна ({current_price:.8f}) пробила SL ({calculated_stop_loss:.8f}) до активації → шукаємо наступну свічку")
+                        logger.info(f"[{pair}] ❌ Ціна ({current_price:.8f}) пробила SL ({calculated_stop_loss:.8f}) до активації → ВИДАЛЕННЯ")
                         if trigger_order_id:
                             await signal_handler.cancel_order(pair, trigger_order_id)
-                        trigger_order_id = None
-                        signal_candle = None
-                        calculated_stop_loss = None
-                        # Повертаємось до пошуку наступної сигнальної свічки
-                        _monitor_states[pair] = BotState.WAIT_PINBAR
-                        await asyncio.sleep(1)
-                        continue
+                        _monitor_states[pair] = BotState.TRIGGER_EXPIRED
+                        break
 
                 position = await signal_handler._take_profit_helper.get_position(pair)
                 if position and float(position.get("size", 0) or 0) > 0:
