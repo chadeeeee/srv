@@ -46,6 +46,11 @@ SETTING_COLUMNS = (
     "pause_until",
     "limit_order_lifetime",
     "trigger_timeout",
+    "pinbar_min_size",
+    "pinbar_max_size",
+    "pinbar_avg_candles",
+    "pinbar_min_avg_percent",
+    "pinbar_max_avg_percent",
 )
 ALLOWED_FIELDS = set(SETTING_COLUMNS) - {"id"}
 
@@ -83,6 +88,11 @@ _settings_store = {
     "dd_stop_active": False,
     "limit_order_lifetime": CONFIG.get("LIMIT_ORDER_LIFETIME", 5),
     "trigger_timeout": 100,
+    "pinbar_min_size": 0.05,
+    "pinbar_max_size": 2.0,
+    "pinbar_avg_candles": 10,
+    "pinbar_min_avg_percent": 50,
+    "pinbar_max_avg_percent": 200,
 }
 _db_ready = False
 

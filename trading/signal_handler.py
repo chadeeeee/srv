@@ -770,12 +770,37 @@ class SignalHandler:
 
         if reason == "take_profit":
             logger.info(f"Позиция по {pair} ({direction}) закрыта по тейк-профиту")
+            from utils.settings_manager import reset_losses_in_row
+            reset_losses_in_row()
+            
             if closing_price and take_profit:
                 distance = abs(closing_price - take_profit)
                 logger.info(
                     f"   Цена закрытия {closing_price:.6f} близка к TP {take_profit:.6f} (расстояние: {distance:.6f})"
                 )
         elif reason == "stop_loss":
+            from utils.settings_manager import increment_losses_in_row, get_max_losses_in_row, set_trading_paused, get_pause_after_losses
+            
+            # Інкрементуємо лічильник збитків
+            losses = increment_losses_in_row()
+            max_losses = get_max_losses_in_row()
+            
+            logger.warning(f"Позиція по {pair} ({direction}) закрита по стоп-лоссу. Збитків підряд: {losses}/{max_losses}")
+            
+            if losses >= max_losses:
+                pause_minutes = get_pause_after_losses()
+                logger.warning(f"⛔ Досягнуто ліміт збитків підряд ({losses}). Пауза торгівлі на {pause_minutes} хв.")
+                set_trading_paused(pause_minutes)
+                
+                try:
+                    await notify_user(
+                        f"⛔ <b>Торгівлю призупинено!</b>\n"
+                        f"Досягнуто ліміт {losses} збиткових угод підряд.\n"
+                        f"Пауза: {pause_minutes} хв."
+                    )
+                except:
+                    pass
+            
             if closing_price and stop_loss:
                 distance = abs(closing_price - stop_loss)
                 from utils.logger import position_closed_by_stop

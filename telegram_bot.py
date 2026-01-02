@@ -44,6 +44,11 @@ class SettingsStates(StatesGroup):
     waiting_for_max_equity_drawdown = State()
 
     waiting_for_limit_order_lifetime = State()
+    waiting_for_pinbar_min_size = State()
+    waiting_for_pinbar_max_size = State()
+    waiting_for_pinbar_avg_candles = State()
+    waiting_for_pinbar_min_avg_percent = State()
+    waiting_for_pinbar_max_avg_percent = State()
 
 
 def main_menu_keyboard():
@@ -100,17 +105,33 @@ def pinbar_menu_keyboard(settings):
     tail = settings.get("pinbar_tail_percent")
     body = settings.get("pinbar_body_percent")
     opposite = settings.get("pinbar_opposite_percent")
+    min_size = settings.get("pinbar_min_size", 0.05)
+    max_size = settings.get("pinbar_max_size", 2.0)
+    avg_cnt = settings.get("pinbar_avg_candles", 10)
+    min_avg_pct = settings.get("pinbar_min_avg_percent", 50)
+    max_avg_pct = settings.get("pinbar_max_avg_percent", 200)
+
     text = (
         f"<b>Настройки Пинбара:</b>\n\n"
         f"Мин. % основной тени: <code>{_format_value(tail, 'tail')}</code>\n"
         f"Макс. % тела: <code>{_format_value(body, 'body')}</code>\n"
-        f"Макс. % противоположной тени: <code>{_format_value(opposite, 'opposite')}</code>"
+        f"Макс. % противоположной тени: <code>{_format_value(opposite, 'opposite')}</code>\n"
+        f"Мин. размер (%): <code>{min_size}%</code>\n"
+        f"Макс. размер (%): <code>{max_size}%</code>\n"
+        f"Ср. свеча (к-сть): <code>{avg_cnt}</code>\n"
+        f"Мин % от ср. размера: <code>{min_avg_pct}%</code>\n"
+        f"Макс % от ср. размера: <code>{max_avg_pct}%</code>"
     )
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [InlineKeyboardButton(text="Мин % основной тени", callback_data="pinbar_tail")],
             [InlineKeyboardButton(text="Макс % тела", callback_data="pinbar_body")],
             [InlineKeyboardButton(text="Макс % противоположной тени", callback_data="pinbar_opposite")],
+            [InlineKeyboardButton(text="Мин размер (%)", callback_data="pinbar_min_size")],
+            [InlineKeyboardButton(text="Макс размер (%)", callback_data="pinbar_max_size")],
+            [InlineKeyboardButton(text="Ср. свеча (к-сть)", callback_data="pinbar_avg_candles")],
+            [InlineKeyboardButton(text="Мин % от ср. размера", callback_data="pinbar_min_avg")],
+            [InlineKeyboardButton(text="Макс % от ср. размера", callback_data="pinbar_max_avg")],
             [InlineKeyboardButton(text="Назад", callback_data="back_main")],
         ]
     )
@@ -323,6 +344,11 @@ def init_bot():
         dp.message.register(process_pinbar_tail_input, SettingsStates.waiting_for_pinbar_tail)
         dp.message.register(process_pinbar_body_input, SettingsStates.waiting_for_pinbar_body)
         dp.message.register(process_pinbar_opposite_input, SettingsStates.waiting_for_pinbar_opposite)
+        dp.message.register(process_pinbar_min_size_input, SettingsStates.waiting_for_pinbar_min_size)
+        dp.message.register(process_pinbar_max_size_input, SettingsStates.waiting_for_pinbar_max_size)
+        dp.message.register(process_pinbar_avg_candles_input, SettingsStates.waiting_for_pinbar_avg_candles)
+        dp.message.register(process_pinbar_min_avg_percent_input, SettingsStates.waiting_for_pinbar_min_avg_percent)
+        dp.message.register(process_pinbar_max_avg_percent_input, SettingsStates.waiting_for_pinbar_max_avg_percent)
         dp.message.register(process_pinbar_timeout_input, SettingsStates.waiting_for_pinbar_timeout)
         dp.message.register(process_rsi_high_input, SettingsStates.waiting_for_rsi_high)
         dp.message.register(process_rsi_low_input, SettingsStates.waiting_for_rsi_low)
@@ -789,6 +815,36 @@ async def process_pinbar_setting(callback: CallbackQuery, state: FSMContext):
             "Введите максимальный % противоположной тени (например, 15):", reply_markup=keyboard
         )
         await state.set_state(SettingsStates.waiting_for_pinbar_opposite)
+    elif callback.data == "pinbar_min_size":
+        keyboard = input_keyboard("back_pinbar")
+        await callback.message.edit_text(
+            "Введите минимальный размер свечи в % (например, 0.05):", reply_markup=keyboard
+        )
+        await state.set_state(SettingsStates.waiting_for_pinbar_min_size)
+    elif callback.data == "pinbar_max_size":
+        keyboard = input_keyboard("back_pinbar")
+        await callback.message.edit_text(
+            "Введите максимальный размер свечи в % (например, 2.0):", reply_markup=keyboard
+        )
+        await state.set_state(SettingsStates.waiting_for_pinbar_max_size)
+    elif callback.data == "pinbar_avg_candles":
+        keyboard = input_keyboard("back_pinbar")
+        await callback.message.edit_text(
+            "Введите количество свечей для расчета средней (например, 10):", reply_markup=keyboard
+        )
+        await state.set_state(SettingsStates.waiting_for_pinbar_avg_candles)
+    elif callback.data == "pinbar_min_avg":
+        keyboard = input_keyboard("back_pinbar")
+        await callback.message.edit_text(
+            "Введите минимальный процент от средней свечи (например, 50):", reply_markup=keyboard
+        )
+        await state.set_state(SettingsStates.waiting_for_pinbar_min_avg_percent)
+    elif callback.data == "pinbar_max_avg":
+        keyboard = input_keyboard("back_pinbar")
+        await callback.message.edit_text(
+            "Введите максимальный процент от средней свечи (например, 200):", reply_markup=keyboard
+        )
+        await state.set_state(SettingsStates.waiting_for_pinbar_max_avg_percent)
     elif callback.data == "pinbar_timeout":
         keyboard = input_keyboard("back_security")
         await callback.message.edit_text(
@@ -829,6 +885,71 @@ async def process_pinbar_opposite_input(message: Message, state: FSMContext):
         value = int(message.text)
         update_setting("pinbar_opposite_percent", value)
         await message.answer(f" Максимальный % противоположной тени установлен: {value}")
+        settings = get_settings()
+        text, keyboard = pinbar_menu_keyboard(settings)
+        await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
+        await state.clear()
+    except ValueError:
+        await message.answer(" Неверное значение. Введите число.")
+
+
+async def process_pinbar_min_size_input(message: Message, state: FSMContext):
+    try:
+        value = float(message.text)
+        update_setting("pinbar_min_size", value)
+        await message.answer(f" Минимальный размер свечи установлен: {value}%")
+        settings = get_settings()
+        text, keyboard = pinbar_menu_keyboard(settings)
+        await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
+        await state.clear()
+    except ValueError:
+        await message.answer(" Неверное значение. Введите число (например 0.05).")
+
+
+async def process_pinbar_max_size_input(message: Message, state: FSMContext):
+    try:
+        value = float(message.text)
+        update_setting("pinbar_max_size", value)
+        await message.answer(f" Максимальный размер свечи установлен: {value}%")
+        settings = get_settings()
+        text, keyboard = pinbar_menu_keyboard(settings)
+        await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
+        await state.clear()
+    except ValueError:
+        await message.answer(" Неверное значение. Введите число (например 2.0).")
+
+
+async def process_pinbar_avg_candles_input(message: Message, state: FSMContext):
+    try:
+        value = int(message.text)
+        update_setting("pinbar_avg_candles", value)
+        await message.answer(f" Количество свечей для средней установлено: {value}")
+        settings = get_settings()
+        text, keyboard = pinbar_menu_keyboard(settings)
+        await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
+        await state.clear()
+    except ValueError:
+        await message.answer(" Неверное значение. Введите целое число.")
+
+
+async def process_pinbar_min_avg_percent_input(message: Message, state: FSMContext):
+    try:
+        value = float(message.text)
+        update_setting("pinbar_min_avg_percent", value)
+        await message.answer(f" Минимальный % от средней установлен: {value}%")
+        settings = get_settings()
+        text, keyboard = pinbar_menu_keyboard(settings)
+        await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
+        await state.clear()
+    except ValueError:
+        await message.answer(" Неверное значение. Введите число.")
+
+
+async def process_pinbar_max_avg_percent_input(message: Message, state: FSMContext):
+    try:
+        value = float(message.text)
+        update_setting("pinbar_max_avg_percent", value)
+        await message.answer(f" Максимальный % от средней установлен: {value}%")
         settings = get_settings()
         text, keyboard = pinbar_menu_keyboard(settings)
         await message.answer(text, reply_markup=keyboard, parse_mode="HTML")
@@ -1224,6 +1345,11 @@ async def process_disable_setting(callback: CallbackQuery, state: FSMContext):
         "SettingsStates:waiting_for_pinbar_tail": ("pinbar_tail_percent", "back_pinbar"),
         "SettingsStates:waiting_for_pinbar_body": ("pinbar_body_percent", "back_pinbar"),
         "SettingsStates:waiting_for_pinbar_opposite": ("pinbar_opposite_percent", "back_pinbar"),
+        "SettingsStates:waiting_for_pinbar_min_size": ("pinbar_min_size", "back_pinbar"),
+        "SettingsStates:waiting_for_pinbar_max_size": ("pinbar_max_size", "back_pinbar"),
+        "SettingsStates:waiting_for_pinbar_avg_candles": ("pinbar_avg_candles", "back_pinbar"),
+        "SettingsStates:waiting_for_pinbar_min_avg_percent": ("pinbar_min_avg_percent", "back_pinbar"),
+        "SettingsStates:waiting_for_pinbar_max_avg_percent": ("pinbar_max_avg_percent", "back_pinbar"),
         "SettingsStates:waiting_for_pinbar_timeout": ("pinbar_timeout", "back_security"),
         "SettingsStates:waiting_for_rsi_high": ("rsi_high", "back_rsi"),
         "SettingsStates:waiting_for_rsi_low": ("rsi_low", "back_rsi"),

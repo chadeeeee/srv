@@ -116,7 +116,7 @@ def _interval_to_seconds(interval):
     return mapping.get(interval_api, 60)
 
 
-def _is_pinbar(candle, direction, tail_percent_min=0, body_percent_max=100, opposite_percent_max=100):
+def _is_pinbar(candle, direction, tail_percent_min=0, body_percent_max=100, opposite_percent_max=100, size_min=0, size_max=100, avg_size=None, min_avg_pct=0, max_avg_pct=1000):
     try:
         o = float(candle[1])
         h = float(candle[2])
@@ -126,6 +126,21 @@ def _is_pinbar(candle, direction, tail_percent_min=0, body_percent_max=100, oppo
         total_range = h - l
         if total_range == 0:
             return False
+            
+        # Перевірка розміру (у % від ціни відкриття)
+        size_percent = (total_range / o) * 100
+        if size_percent < size_min:
+            return False
+        if size_percent > size_max:
+            return False
+            
+        # Перевірка відносно середньої свічки
+        if avg_size is not None and avg_size > 0:
+            avg_ratio = (total_range / avg_size) * 100
+            if avg_ratio < min_avg_pct:
+                return False
+            if avg_ratio > max_avg_pct:
+                return False
 
         body = abs(c - o)
         lower_wick = min(o, c) - l
@@ -197,6 +212,9 @@ async def monitor_and_trade(pair, target, direction, settings):
     
     raw_opp = db_settings.get("pinbar_opposite_percent")
     opposite_percent_max = float(raw_opp) if raw_opp is not None else 15.0
+    
+    pinbar_min_size = float(db_settings.get("pinbar_min_size", 0.05))
+    pinbar_max_size = float(db_settings.get("pinbar_max_size", 2.0))
     
     raw_ps = db_settings.get("position_size_percent")
     pos_size = float(raw_ps) if raw_ps is not None else CONFIG.get("POSITION_SIZE_PERCENT", 1.5)
@@ -291,7 +309,12 @@ async def monitor_and_trade(pair, target, direction, settings):
 
     try:
         while _active_monitors.get(pair, False):
-            from utils.settings_manager import get_settings, is_bot_active
+            from utils.settings_manager import get_settings, is_bot_active, is_trading_paused
+
+            if is_trading_paused():
+                logger.info(f"[{pair}] ⏸️ Торгівля на паузі (ліміт збитків). Чекаємо...")
+                await asyncio.sleep(60)
+                continue
 
             if not is_bot_active():
                 logger.info(f"[{pair}] Бот зупинено")
@@ -300,10 +323,27 @@ async def monitor_and_trade(pair, target, direction, settings):
             current_settings = get_settings()
             pinbar_timeout = int(current_settings.get("pinbar_timeout", 100))
             trigger_timeout_minutes = int(current_settings.get("trigger_timeout", 5))
+            
             tail_percent_min = float(current_settings.get("pinbar_tail_percent", 0))
             body_percent_max = float(current_settings.get("pinbar_body_percent", 100))
             opposite_percent_max = float(current_settings.get("pinbar_opposite_percent", 100))
-            stop_offset = float(current_settings.get("stop_loss_offset") or 0.001)
+            
+            # Helper to safely get setting
+            def get_setting(key, default, type_func=float):
+                val = current_settings.get(key)
+                if val is None: return default
+                return type_func(val)
+
+            # Нові налаштування розміру пінбару (за замовчуванням 0.05% - 2.0%)
+            pinbar_min_size = get_setting("pinbar_min_size", 0.05)
+            pinbar_max_size = get_setting("pinbar_max_size", 2.0)
+            
+            # Налаштування середньої свічки
+            pinbar_avg_candles = get_setting("pinbar_avg_candles", 10, int)
+            pinbar_min_avg_pct = get_setting("pinbar_min_avg_percent", 50)
+            pinbar_max_avg_pct = get_setting("pinbar_max_avg_percent", 200)
+            
+            stop_offset = get_setting("stop_loss_offset", 0.001)
 
             current_price = await signal_handler.get_real_time_price(pair)
             if current_price is None:
@@ -390,7 +430,18 @@ async def monitor_and_trade(pair, target, direction, settings):
                 for i in range(len(candles_since_touch) - 1, 0, -1):
                     candle = candles_since_touch[i]
 
-                    if not _is_pinbar(candle, direction, tail_percent_min, body_percent_max, opposite_percent_max):
+                    # Розрахунок середньої свічки для цьої точки
+                    abs_index = (
+                        touch_candle_index + i if touch_candle_index else len(candles) - len(candles_since_touch) + i
+                    )
+                    avg_size = 0.0
+                    if abs_index > 0:
+                        avg_start = max(0, abs_index - pinbar_avg_candles)
+                        avg_chunk = candles[avg_start:abs_index]
+                        if avg_chunk:
+                            avg_size = sum(float(c[2]) - float(c[3]) for c in avg_chunk) / len(avg_chunk)
+
+                    if not _is_pinbar(candle, direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct):
                         continue
 
                     # RSI Check for Premium2:
@@ -400,9 +451,6 @@ async def monitor_and_trade(pair, target, direction, settings):
                         if direction == "short" and current_rsi_val < rsi_high:
                             continue
 
-                    abs_index = (
-                        touch_candle_index + i if touch_candle_index else len(candles) - len(candles_since_touch) + i
-                    )
                     if not _is_new_extremum(candles, abs_index, direction):
                         continue
 
@@ -474,8 +522,17 @@ async def monitor_and_trade(pair, target, direction, settings):
                 for i in range(len(search_candles)):
                     c = search_candles[i]
                     
+                    # Розрахунок середньої свічки для цьої точки
+                    current_idx = start_index + i
+                    avg_size = 0.0
+                    if current_idx > 0:
+                        avg_start = max(0, current_idx - pinbar_avg_candles)
+                        avg_chunk = candles[avg_start:current_idx]
+                        if avg_chunk:
+                            avg_size = sum(float(ac[2]) - float(ac[3]) for ac in avg_chunk) / len(avg_chunk)
+                    
                     # 1. Is Pinbar?
-                    if not _is_pinbar(c, trade_direction, tail_percent_min, body_percent_max, opposite_percent_max):
+                    if not _is_pinbar(c, trade_direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct):
                         continue
 
                     # 2. Is New Extremum (Relative to RSI trigger moment)?
