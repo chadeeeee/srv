@@ -291,6 +291,10 @@ class TakeProfit:
         if result and result.get("retCode") == 0:
             logger.info(f"Position closed for {pair} due to RSI condition")
             return True
+        # Handle race condition: another tracker already closed this position
+        if result and result.get("retCode") == 110017:
+            logger.info(f"Position for {pair} already closed (retCode 110017 - zero position)")
+            return True  # Return True because the position IS closed, just by another tracker
         logger.error(f"Failed to close position for {pair}: {result}")
         return False
 
@@ -473,6 +477,11 @@ class TakeProfit:
         rsi_interval_override: Optional[str] = None,
         poll_seconds: int = 60,
     ):
+        # Prevent duplicate trackers for the same pair
+        if self.active_positions.get(pair):
+            logger.warning(f"RSI tracker already active for {pair} - skipping duplicate")
+            return
+        
         self.active_positions[pair] = True
         notified_reason = None
 
