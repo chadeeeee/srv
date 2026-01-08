@@ -301,6 +301,8 @@ async def monitor_and_trade(pair, target, direction, settings):
     candles_since_touch = []
 
     last_pinbar_log_time = time.time()
+    last_touch_log_time = time.time()
+    last_rsi_log_time = time.time()
 
     try:
         await signal_handler.cancel_all_orders(pair)
@@ -378,6 +380,11 @@ async def monitor_and_trade(pair, target, direction, settings):
 
             # === STATE: WAIT_LEVEL_TOUCH (Premium2) ===
             if state == BotState.WAIT_LEVEL_TOUCH and not level_touched:
+                now = time.time()
+                if now - last_touch_log_time > 300:  # Раз на 5 хвилин
+                    logger.info(f"[{pair}] ⏳ Чекаю торкання рівня {t}... (Ціна: {current_price:.4f})")
+                    last_touch_log_time = now
+
                 if direction == "long":
                     crossed = prev_price is not None and prev_price > t and current_price <= t
                 else:
@@ -467,6 +474,12 @@ async def monitor_and_trade(pair, target, direction, settings):
             # === STATE: WAIT_RSI (Gravity2) ===
             if state == BotState.WAIT_RSI:
                 current_rsi_val, _ = await get_rsi(pair, interval="1", period=rsi_period)
+
+                now = time.time()
+                if now - last_rsi_log_time > 300:  # Раз на 5 хвилин
+                    cur_rsi_str = f"{current_rsi_val:.2f}" if current_rsi_val is not None else "N/A"
+                    logger.info(f"[{pair}] ⏳ Чекаю RSI... (Поточний: {cur_rsi_str})")
+                    last_rsi_log_time = now
 
                 elapsed = (time.time() - touch_time) / 60 if touch_time else 0
                 if elapsed > pinbar_timeout:
