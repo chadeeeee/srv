@@ -305,7 +305,7 @@ async def monitor_and_trade(pair, target, direction, settings):
     last_rsi_log_time = time.time()
 
     try:
-        await signal_handler.cancel_all_orders(pair)
+        await signal_handler.cancel_all_orders(pair, reason="Ініціалізація нового моніторингу")
     except Exception:
         pass
 

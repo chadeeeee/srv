@@ -1384,11 +1384,12 @@ class SignalHandler:
         return False
 
 
-    async def cancel_all_orders(self, pair):
+    async def cancel_all_orders(self, pair, reason=None):
         params = {"category": "linear", "symbol": pair, "settleCoin": "USDT"}
         result = await self._signed_request("POST", "/v5/order/cancel-all", params)
         if result and result.get("retCode") == 0:
-            logger.info(f"All orders cancelled for {pair}")
+            reason_msg = f" (Причина: {reason})" if reason else ""
+            logger.info(f"All orders cancelled for {pair}{reason_msg}")
             return True
         logger.warning(f"Failed to cancel all orders for {pair}: {result}")
         return False
@@ -1480,16 +1481,17 @@ class SignalHandler:
         trigger_price_float = float(trigger_price)
         trigger_price_quantized = self._quantize_price(trigger_price_float, price_step, ROUND_DOWN)
 
+        # Визначаємо trigger_direction на основі порівняння trigger ціни з поточною
+        # 1 = Rising (спрацює коли ціна ЗРОСТЕ до trigger)
+        # 2 = Falling (спрацює коли ціна ВПАДЕ до trigger)
         if trigger_price_quantized < current_price:
-
-            trigger_direction = 2
+            trigger_direction = 2  # Falling - ціна має впасти до trigger
             logger.info(f"📉 Trigger НИЖЧЕ поточної: спрацює при ПАДІННІ до {trigger_price_quantized:.8f}")
         else:
-
-            trigger_direction = 1
+            trigger_direction = 1  # Rising - ціна має зрости до trigger  
             logger.info(f"📈 Trigger ВИЩЕ поточної: спрацює при ЗРОСТАННІ до {trigger_price_quantized:.8f}")
 
-        logger.info(f"   � {direction.upper()}: поточна {current_price:.8f} → trigger {trigger_price_quantized:.8f}")
+        logger.info(f"   🎯 {direction.upper()}: поточна {current_price:.8f} → trigger {trigger_price_quantized:.8f}")
 
         stop_loss_float = float(stop_loss) if stop_loss is not None else None
         take_profit_float = float(take_profit) if take_profit is not None else None
@@ -1526,6 +1528,26 @@ class SignalHandler:
 
         order_value = quantity_asset * trigger_price_quantized
 
+        # Перевіряємо поточну ціну ще раз перед відправкою ордера
+        # щоб уникнути помилки 110093 коли ціна змінилась
+        fresh_price = await self.get_real_time_price(pair)
+        if fresh_price:
+            # Перевіряємо чи trigger_direction все ще валідний
+            if trigger_direction == 2:  # Falling
+                if trigger_price_quantized >= fresh_price:
+                    logger.warning(
+                        f"⚠ [{pair}] Ціна змінилась! Trigger={trigger_price_quantized:.8f} >= Поточна={fresh_price:.8f}. "
+                        f"Для Falling trigger має бути < current. Пропускаємо."
+                    )
+                    return None
+            else:  # Rising (trigger_direction == 1)
+                if trigger_price_quantized <= fresh_price:
+                    logger.warning(
+                        f"⚠ [{pair}] Ціна змінилась! Trigger={trigger_price_quantized:.8f} <= Поточна={fresh_price:.8f}. "
+                        f"Для Rising trigger має бути > current. Пропускаємо."
+                    )
+                    return None
+
         params = {
             "category": "linear",
             "symbol": pair,
@@ -1541,7 +1563,7 @@ class SignalHandler:
         }
 
         logger.info(f"🎯 TRIGGER ORDER: {pair} {direction.upper()}")
-        logger.info(f"   Поточна ціна: {current_price:.8f}")
+        logger.info(f"   Поточна ціна: {fresh_price or current_price:.8f}")
         logger.info(f"   Trigger ціна: {trigger_price_quantized:.8f}")
         logger.info(
             f"   Trigger direction: {trigger_direction} ({'зростання' if trigger_direction == 1 else 'падіння'})"
