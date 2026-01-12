@@ -241,12 +241,7 @@ class TakeProfit:
         Розраховує RSI на ЗАКРИТІЙ свічці (передостанній).
         Це забезпечує "закріплення" - чекаємо підтвердження, а не миттєве торкання.
         """
-        FIXED_RSI_INTERVAL = "1"
-
-        if interval != "1":
-            logger.warning(f"⚠️ RSI calculation: Forced 1m timeframe (requested: {interval})")
-
-        candles = await self.get_klines(pair, FIXED_RSI_INTERVAL, self.rsi_period * 2 + 2)
+        candles = await self.get_klines(pair, interval, self.rsi_period * 2 + 2)
         if not candles or len(candles) < self.rsi_period + 2:
             logger.warning(f"Insufficient data for RSI calculation for {pair}")
             return None

@@ -252,6 +252,16 @@ async def monitor_and_trade(pair, target, direction, settings):
     is_gravity2 = strategy.name == "Quantum Gravity2"
     is_premium2 = strategy.name == "Quantum Premium2"
     trade_direction = strategy.get_entry_direction(direction)
+    
+    # Отримуємо параметри пошуку для конкретної стратегії
+    try:
+        strategy_params = strategy.get_pinbar_search_zone(float(target), direction)
+    except NotImplementedError:
+        strategy_params = {}
+    
+    wait_for_extremum = strategy_params.get("wait_for_extremum", True)  # Default True for safety
+    check_rsi = strategy_params.get("check_rsi_or_divergence", False)
+    rsi_condition = strategy_params.get("rsi_condition", "oversold") # overbought/oversold
 
     # Тепер встановлюємо початковий стан на основі стратегії
     if is_gravity2:
@@ -444,15 +454,18 @@ async def monitor_and_trade(pair, target, direction, settings):
                     if not _is_pinbar(candle, direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct):
                         continue
 
-                    # RSI Check for Premium2:
-                    if is_premium2 and current_rsi_val is not None:
-                        if direction == "long" and current_rsi_val > rsi_low:
+                    # RSI Check (Dynamic based on strategy):
+                    if check_rsi and current_rsi_val is not None:
+                        # Якщо налаштовано check_rsi, але RSI не підходить - пропускаємо
+                        if rsi_condition == "oversold" and current_rsi_val > rsi_low: # Має бути <= Low
                             continue
-                        if direction == "short" and current_rsi_val < rsi_high:
+                        if rsi_condition == "overbought" and current_rsi_val < rsi_high: # Має бути >= High
                             continue
 
-                    if not _is_new_extremum(candles, abs_index, direction):
-                        continue
+                    # Extremum Check (Dynamic):
+                    if wait_for_extremum:
+                        if not _is_new_extremum(candles, abs_index, direction):
+                            continue
 
                     signal_candle = candle
                     rsi_msg = f", RSI={current_rsi_val:.2f}" if current_rsi_val is not None else ""
