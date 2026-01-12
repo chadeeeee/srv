@@ -117,6 +117,7 @@ def _interval_to_seconds(interval):
 
 
 def _is_pinbar(candle, direction, tail_percent_min=0, body_percent_max=100, opposite_percent_max=100, size_min=0, size_max=100, avg_size=None, min_avg_pct=0, max_avg_pct=1000):
+    reasons = []
     try:
         o = float(candle[1])
         h = float(candle[2])
@@ -125,22 +126,22 @@ def _is_pinbar(candle, direction, tail_percent_min=0, body_percent_max=100, oppo
 
         total_range = h - l
         if total_range == 0:
-            return False
+            return False, "Zero range"
             
         # Перевірка розміру (у % від ціни відкриття)
         size_percent = (total_range / o) * 100
         if size_percent < size_min:
-            return False
+            reasons.append(f"Size {size_percent:.2f}% < Min {size_min}%")
         if size_percent > size_max:
-            return False
+            reasons.append(f"Size {size_percent:.2f}% > Max {size_max}%")
             
         # Перевірка відносно середньої свічки
         if avg_size is not None and avg_size > 0:
             avg_ratio = (total_range / avg_size) * 100
             if avg_ratio < min_avg_pct:
-                return False
+                reasons.append(f"AvgRatio {avg_ratio:.0f}% < Min {min_avg_pct}%")
             if avg_ratio > max_avg_pct:
-                return False
+                reasons.append(f"AvgRatio {avg_ratio:.0f}% > Max {max_avg_pct}%")
 
         body = abs(c - o)
         lower_wick = min(o, c) - l
@@ -158,15 +159,20 @@ def _is_pinbar(candle, direction, tail_percent_min=0, body_percent_max=100, oppo
             opposite_tail_percent = lower_wick_percent
 
         if main_tail_percent < tail_percent_min:
-            return False
+            reasons.append(f"Tail {main_tail_percent:.1f}% < Min {tail_percent_min}%")
         if body_percent > body_percent_max:
-            return False
+            reasons.append(f"Body {body_percent:.1f}% > Max {body_percent_max}%")
         if opposite_tail_percent > opposite_percent_max:
-            return False
+            reasons.append(f"Opp.Wait {opposite_tail_percent:.1f}% > Max {opposite_percent_max}%")
 
-        return True
-    except:
-        return False
+        if not reasons:
+            return True, "OK"
+        else:
+            return False, "; ".join(reasons)
+    except Exception as e:
+        return False, f"Error: {e}" 
+
+
 
 
 def _is_new_extremum(candles, index, direction):
@@ -415,6 +421,22 @@ async def monitor_and_trade(pair, target, direction, settings):
 
                     logger.info(f"[{pair}] ✅ РІВЕНЬ ТОРКНУТО: {t:.8f}")
 
+                    # --- NOTIFICATION ADDED HERE ---
+                    try:
+                        val_time = time.strftime('%H:%M:%S', time.localtime(touch_time))
+                        await signal_handler.notify_user(
+                            f"🔔 {pair} - РІВЕНЬ ТОРКНУТО\n"
+                            f"━━━━━━━━━━━━━━━━━━\n"
+                            f"Ціна: {current_price:.8f}\n"
+                            f"Рівень: {t:.8f}\n"
+                            f"Час: {val_time}\n"
+                            f"Стратегія: {strategy.name}\n"
+                            f"Чекаємо підтвердження (пінбар)..."
+                        )
+                    except Exception as e:
+                        logger.error(f"Помилка відправки повідомлення про дотик рівня: {e}")
+                    # -------------------------------
+
                     if is_gravity2:
                         _monitor_states[pair] = BotState.WAIT_RSI
                     else:
@@ -458,7 +480,11 @@ async def monitor_and_trade(pair, target, direction, settings):
                         if avg_chunk:
                             avg_size = sum(float(c[2]) - float(c[3]) for c in avg_chunk) / len(avg_chunk)
 
-                    if not _is_pinbar(candle, direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct):
+                    is_pb, pb_reason = _is_pinbar(candle, direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct)
+                    
+                    if not is_pb:
+                        if i == len(candles_since_touch) - 1: # Log only for the latest candle
+                             logger.debug(f"[{pair}] Candle rejected: {pb_reason}")
                         continue
 
                     # RSI Check (Dynamic based on strategy):
@@ -558,7 +584,9 @@ async def monitor_and_trade(pair, target, direction, settings):
                             avg_size = sum(float(ac[2]) - float(ac[3]) for ac in avg_chunk) / len(avg_chunk)
                     
                     # 1. Is Pinbar?
-                    if not _is_pinbar(c, trade_direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct):
+                    is_pb, pb_reason = _is_pinbar(c, trade_direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct)
+                    
+                    if not is_pb:
                         continue
 
                     # 2. Is New Extremum (Relative to RSI trigger moment)?
