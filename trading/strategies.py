@@ -66,7 +66,7 @@ class QuantumPremium2Strategy(BaseStrategy):
 
             return {
                 "search_after_touch": True,
-                "wait_for_extremum": False,
+                "wait_for_extremum": True,
                 "extremum_type": "new_low",
                 "analyze_n_candles": True,
                 "trade_direction": "long",
@@ -82,7 +82,7 @@ class QuantumPremium2Strategy(BaseStrategy):
 
             return {
                 "search_after_touch": True,
-                "wait_for_extremum": False,
+                "wait_for_extremum": True,
                 "extremum_type": "new_high",
                 "analyze_n_candles": True,
                 "trade_direction": "short",

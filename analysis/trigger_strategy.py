@@ -271,6 +271,9 @@ async def monitor_and_trade(pair, target, direction, settings):
 
     # Тепер встановлюємо початковий стан на основі стратегії
     if is_gravity2:
+        # Для Gravity2 напрямок визначається динамічно поточною ціною, але
+        # нам потрібно знати ціну ПЕРЕД стартом логіки.
+        # В циклі ми це оновимо/перевіримо, але початковий стан важливий.
         _monitor_states[pair] = BotState.WAIT_RSI
         logger.info(f"[{pair}] Gravity2: Старт з пошуку RSI (Wait RSI), контроль дотику рівня активний.")
     else:
@@ -285,6 +288,7 @@ async def monitor_and_trade(pair, target, direction, settings):
         "level_touched": False,
         "touch_time": None,
         "start_time": time.time(),
+        "gravity_determined": False # Прапорець, що напрямок Gravity визначено
     }
 
     logger.info(
@@ -381,18 +385,38 @@ async def monitor_and_trade(pair, target, direction, settings):
             avg_range = sum(ranges) / len(ranges) if ranges else 0.001
             tol = min(max(avg_range * 0.1, t * 0.0005), t * 0.003)
 
-            # === GRAVITY2 SAFETY CHECK: CANCEL ON LEVEL TOUCH ===
-            if is_gravity2 and state in [BotState.WAIT_RSI, BotState.WAIT_PINBAR_GRAVITY]:
-                # Gravity2: Якщо ціна торкається рівня ДО входу -> СКАСУВАННЯ
-                touch_detected = False
-                if direction == "long" and current_price <= t + tol:
-                    touch_detected = True
-                elif direction == "short" and current_price >= t - tol:
-                    touch_detected = True
-                
-                if touch_detected:
-                    logger.info(f"[{pair}] ❌ GRAVITY2: Ціна торкнулася рівня {t} до входу → СКАСУВАННЯ")
-                    break
+            # === GRAVITY2 DIRECTION & SAFETY CHECK ===
+            if is_gravity2:
+                # 1. Визначаємо напрямок Gravity при ПЕРШОМУ проході (або якщо ціна змінилась критично?)
+                # За умовою: якщо ціна < рівня -> LONG. Якщо ціна > рівня -> SHORT.
+                if not _monitor_data[pair].get("gravity_determined"):
+                    if current_price < t:
+                        trade_direction = "long"
+                        # RSI має бути Low (Oversold) для Long (відбій від дна до рівня?)
+                        # User: "ціна нижче рівня ... коли свічка закриється в екстремальній зоні (перепроданість)"
+                        rsi_condition = "oversold" 
+                    else:
+                        trade_direction = "short"
+                        # RSI має бути High (Overbought) для Short
+                        rsi_condition = "overbought"
+                    
+                    _monitor_data[pair]["trade_direction"] = trade_direction
+                    _monitor_data[pair]["gravity_determined"] = True
+                    logger.info(f"[{pair}] 🌍 Gravity2 Direction: {trade_direction.upper()} (Price {current_price} vs Level {t})")
+
+                # 2. Перевірка на дотик рівня (СКАСУВАННЯ)
+                if state in [BotState.WAIT_RSI, BotState.WAIT_PINBAR_GRAVITY]:
+                    touch_detected = False
+                    # Якщо ми Long (знизу вверх), то дотик - це High >= Level
+                    if trade_direction == "long" and current_price >= t - tol:
+                        touch_detected = True
+                    # Якщо ми Short (зверху вниз), то дотик - це Low <= Level
+                    elif trade_direction == "short" and current_price <= t + tol:
+                        touch_detected = True
+                    
+                    if touch_detected:
+                        logger.info(f"[{pair}] ❌ GRAVITY2: Ціна торкнулася рівня {t} до входу → СКАСУВАННЯ")
+                        break
 
             # === STATE: WAIT_LEVEL_TOUCH (Premium2) ===
             if state == BotState.WAIT_LEVEL_TOUCH and not level_touched:
@@ -497,7 +521,27 @@ async def monitor_and_trade(pair, target, direction, settings):
 
                     # Extremum Check (Dynamic):
                     if wait_for_extremum:
-                        if not _is_new_extremum(candles, abs_index, direction):
+                        # Premium2 Spec: "оновлення екстремуму з моменту приходу сигналу" (тобто з touch_time)
+                        # Перевіряємо, чи є current candle екстремумом серед ВСІХ свічок з моменту дотику
+                        is_abs_extremum = True
+                        current_val = float(candle[3]) if direction == "long" else float(candle[2])
+                        
+                        # Перевіряємо всі свічки від touch_candle_index до поточного i (не включно, бо це поточна)
+                        # candles_since_touch містить свічки від моменту дотику
+                        # Поточна свічка - це candles_since_touch[i]
+                        for prev_c in candles_since_touch[:i]:
+                            prev_val = float(prev_c[3]) if direction == "long" else float(prev_c[2])
+                            if direction == "long":
+                                if prev_val <= current_val: # Був лоу нижче або такий самий
+                                    is_abs_extremum = False
+                                    break
+                            else:
+                                if prev_val >= current_val: # Був хай вище або такий самий
+                                    is_abs_extremum = False
+                                    break
+                        
+                        if not is_abs_extremum:
+                            # logger.debug(f"[{pair}] Pinbar rejected: Not new extremum since touch")
                             continue
 
                     signal_candle = candle
@@ -527,12 +571,13 @@ async def monitor_and_trade(pair, target, direction, settings):
 
                 rsi_ok = False
                 # Gravity:
+                # Використовуємо trade_direction, який визначено динамічно
                 if trade_direction == "long" and current_rsi_val <= rsi_low:
                     rsi_ok = True
-                    logger.info(f"[{pair}] ✅ RSI ПЕРЕПРОДАНІСТЬ: {current_rsi_val:.2f} <= {rsi_low}")
+                    logger.info(f"[{pair}] ✅ RSI ПЕРЕПРОДАНІСТЬ: {current_rsi_val:.2f} <= {rsi_low} (Mode: LONG)")
                 elif trade_direction == "short" and current_rsi_val >= rsi_high:
                     rsi_ok = True
-                    logger.info(f"[{pair}] ✅ RSI ПЕРЕКУПЛЕНІСТЬ: {current_rsi_val:.2f} >= {rsi_high}")
+                    logger.info(f"[{pair}] ✅ RSI ПЕРЕКУПЛЕНІСТЬ: {current_rsi_val:.2f} >= {rsi_high} (Mode: SHORT)")
 
                 if rsi_ok:
                     _monitor_states[pair] = BotState.WAIT_PINBAR_GRAVITY
