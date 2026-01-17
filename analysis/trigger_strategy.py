@@ -197,8 +197,15 @@ def _is_new_extremum(candles, index, direction):
 
 async def monitor_and_trade(pair, target, direction, settings):
     from trading.signal_handler import SignalHandler
-
+    
+    # Перевірка на дублювання: якщо монітор вже існує, зупиняємо старий і запускаємо новий
+    if _active_monitors.get(pair, False):
+        logger.warning(f"[{pair}] ⚠️ Вже є активний монітор! Зупиняю старий і запускаю новий з новим рівнем {target}")
+        stop_monitoring(pair)
+        await asyncio.sleep(1)  # Даємо час на завершення старого
+    
     _active_monitors[pair] = True
+    logger.info(f"[{pair}] 🟢 МОНІТОР ЗАПУЩЕНО: рівень {target}, напрямок {direction}")
 
     timeframe_raw = str(settings.get("timeframe") or "1m")
     timeframe_api = _parse_timeframe_to_api(timeframe_raw)
@@ -387,35 +394,49 @@ async def monitor_and_trade(pair, target, direction, settings):
 
             # === GRAVITY2 DIRECTION & SAFETY CHECK ===
             if is_gravity2:
-                # 1. Визначаємо напрямок Gravity при ПЕРШОМУ проході (або якщо ціна змінилась критично?)
-                # За умовою: якщо ціна < рівня -> LONG. Якщо ціна > рівня -> SHORT.
+                # trade_direction вже визначено через strategy.get_entry_direction(direction)
+                # Для Gravity2: Поддержка → SHORT, Сопротивление → LONG
+                # НЕ перевизначаємо на основі ціни!
+                
                 if not _monitor_data[pair].get("gravity_determined"):
-                    if current_price < t:
-                        trade_direction = "long"
-                        # RSI має бути Low (Oversold) для Long (відбій від дна до рівня?)
-                        # User: "ціна нижче рівня ... коли свічка закриється в екстремальній зоні (перепроданість)"
-                        rsi_condition = "oversold" 
+                    # Визначаємо RSI condition на основі напрямку торгівлі
+                    if trade_direction == "long":
+                        rsi_condition = "oversold"  # Для LONG чекаємо перепроданість
                     else:
-                        trade_direction = "short"
-                        # RSI має бути High (Overbought) для Short
-                        rsi_condition = "overbought"
+                        rsi_condition = "overbought"  # Для SHORT чекаємо перекупленість
+                    
+                    # Перевірка валідності: ціна має бути з правильного боку від рівня
+                    is_valid = True
+                    if trade_direction == "long" and current_price >= t:
+                        # Для LONG ціна має бути НИЖЧЕ рівня
+                        logger.warning(f"[{pair}] ❌ GRAVITY2: Ціна {current_price:.8f} вже >= рівня {t}! Сигнал неактуальний")
+                        is_valid = False
+                    elif trade_direction == "short" and current_price <= t:
+                        # Для SHORT ціна має бути ВИЩЕ рівня
+                        logger.warning(f"[{pair}] ❌ GRAVITY2: Ціна {current_price:.8f} вже <= рівня {t}! Сигнал неактуальний")
+                        is_valid = False
+                    
+                    if not is_valid:
+                        break
                     
                     _monitor_data[pair]["trade_direction"] = trade_direction
+                    _monitor_data[pair]["rsi_condition"] = rsi_condition
                     _monitor_data[pair]["gravity_determined"] = True
-                    logger.info(f"[{pair}] 🌍 Gravity2 Direction: {trade_direction.upper()} (Price {current_price} vs Level {t})")
+                    logger.info(f"[{pair}] 🌍 Gravity2: {trade_direction.upper()}, RSI={rsi_condition} (Price {current_price:.8f} vs Level {t})")
 
                 # 2. Перевірка на дотик рівня (СКАСУВАННЯ)
+                # Скасовуємо тільки якщо ціна ПЕРЕТНУЛА рівень, а не просто наблизилась
                 if state in [BotState.WAIT_RSI, BotState.WAIT_PINBAR_GRAVITY]:
                     touch_detected = False
-                    # Якщо ми Long (знизу вверх), то дотик - це High >= Level
-                    if trade_direction == "long" and current_price >= t - tol:
+                    # Для LONG ціна має залишатись НИЖЧЕ рівня
+                    if trade_direction == "long" and current_price >= t:
                         touch_detected = True
-                    # Якщо ми Short (зверху вниз), то дотик - це Low <= Level
-                    elif trade_direction == "short" and current_price <= t + tol:
+                    # Для SHORT ціна має залишатись ВИЩЕ рівня
+                    elif trade_direction == "short" and current_price <= t:
                         touch_detected = True
                     
                     if touch_detected:
-                        logger.info(f"[{pair}] ❌ GRAVITY2: Ціна торкнулася рівня {t} до входу → СКАСУВАННЯ")
+                        logger.info(f"[{pair}] ❌ GRAVITY2: Ціна {current_price:.8f} перетнула рівень {t} → СКАСУВАННЯ")
                         break
 
             # === STATE: WAIT_LEVEL_TOUCH (Premium2) ===
@@ -504,11 +525,13 @@ async def monitor_and_trade(pair, target, direction, settings):
                         if avg_chunk:
                             avg_size = sum(float(c[2]) - float(c[3]) for c in avg_chunk) / len(avg_chunk)
 
-                    is_pb, pb_reason = _is_pinbar(candle, direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct)
+                    is_pb, pb_reason = _is_pinbar(candle, trade_direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct)
                     
                     if not is_pb:
                         if i == len(candles_since_touch) - 1: # Log only for the latest candle
-                             logger.debug(f"[{pair}] Candle rejected: {pb_reason}")
+                             # Логуємо причину відмови раз на хвилину або якщо причина не "Size"
+                             if "Size" not in pb_reason or time.time() % 60 < 5:
+                                 logger.debug(f"[{pair}] Candle rejected ({trade_direction}): {pb_reason}")
                         continue
 
                     # RSI Check (Dynamic based on strategy):
@@ -524,14 +547,14 @@ async def monitor_and_trade(pair, target, direction, settings):
                         # Premium2 Spec: "оновлення екстремуму з моменту приходу сигналу" (тобто з touch_time)
                         # Перевіряємо, чи є current candle екстремумом серед ВСІХ свічок з моменту дотику
                         is_abs_extremum = True
-                        current_val = float(candle[3]) if direction == "long" else float(candle[2])
+                        current_val = float(candle[3]) if trade_direction == "long" else float(candle[2])
                         
                         # Перевіряємо всі свічки від touch_candle_index до поточного i (не включно, бо це поточна)
                         # candles_since_touch містить свічки від моменту дотику
                         # Поточна свічка - це candles_since_touch[i]
                         for prev_c in candles_since_touch[:i]:
-                            prev_val = float(prev_c[3]) if direction == "long" else float(prev_c[2])
-                            if direction == "long":
+                            prev_val = float(prev_c[3]) if trade_direction == "long" else float(prev_c[2])
+                            if trade_direction == "long":
                                 if prev_val <= current_val: # Був лоу нижче або такий самий
                                     is_abs_extremum = False
                                     break
@@ -541,7 +564,7 @@ async def monitor_and_trade(pair, target, direction, settings):
                                     break
                         
                         if not is_abs_extremum:
-                            # logger.debug(f"[{pair}] Pinbar rejected: Not new extremum since touch")
+                            logger.debug(f"[{pair}] Pinbar found but NOT extremum since touch")
                             continue
 
                     signal_candle = candle

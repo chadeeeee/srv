@@ -579,7 +579,7 @@ def detect_pinbar(candles, direction, lookback=5, tail_percent_min=0, body_perce
                     "candle_index": i,
                     "stop_offset_percent": stop_offset * 100,
                 }
-
+            else:  # direction == "short"
                 stop_price = h * (1 + stop_offset)
 
                 logger.info(f"📍 SHORT пінбар знайдено:")
