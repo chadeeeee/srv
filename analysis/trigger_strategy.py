@@ -492,18 +492,23 @@ async def monitor_and_trade(pair, target, direction, settings):
                 continue
 
             # === STATE: WAIT_PINBAR (Premium2) ===
+            # Логіка Premium2: шукаємо свічку ПРОБОЮ рівня
+            # Для LONG: свічка закривається ВИЩЕ рівня, її Low = екстремум
+            # Для SHORT: свічка закривається НИЖЧЕ рівня, її High = екстремум
             if state == BotState.WAIT_PINBAR:
-                candles_since_touch = candles[touch_candle_index:] if touch_candle_index else candles[-pinbar_timeout:]
+                # Виключаємо останню свічку (поточну незакриту) з аналізу
+                closed_candles = candles[:-1] if len(candles) > 1 else candles
+                candles_since_touch = closed_candles[touch_candle_index:] if touch_candle_index and touch_candle_index < len(closed_candles) else closed_candles[-pinbar_timeout:]
 
                 # Перевірка таймауту за часом (хвилини), а не за кількістю свічок
                 elapsed_minutes = (time.time() - touch_time) / 60 if touch_time else 0
                 if elapsed_minutes > pinbar_timeout:
-                    logger.info(f"[{pair}] ⏱ Таймаут пошуку пінбара ({pinbar_timeout} хв)")
+                    logger.info(f"[{pair}] ⏱ Таймаут пошуку свічки пробою ({pinbar_timeout} хв)")
                     break
 
                 now = time.time()
                 if now - last_pinbar_log_time > 1200:  # Раз на 20 хвилин (1200 секунд)
-                    logger.info(f"[{pair}] ⏳ Ще шукаю пінбар...")
+                    logger.info(f"[{pair}] ⏳ Шукаю свічку пробою рівня...")
                     last_pinbar_log_time = now
 
                 # Отримуємо RSI для перевірки (для Premium2)
@@ -513,63 +518,71 @@ async def monitor_and_trade(pair, target, direction, settings):
 
                 for i in range(len(candles_since_touch) - 1, 0, -1):
                     candle = candles_since_touch[i]
+                    c_open = float(candle[1])
+                    c_high = float(candle[2])
+                    c_low = float(candle[3])
+                    c_close = float(candle[4])
 
-                    # Розрахунок середньої свічки для цьої точки
-                    abs_index = (
-                        touch_candle_index + i if touch_candle_index else len(candles) - len(candles_since_touch) + i
-                    )
-                    avg_size = 0.0
-                    if abs_index > 0:
-                        avg_start = max(0, abs_index - pinbar_avg_candles)
-                        avg_chunk = candles[avg_start:abs_index]
-                        if avg_chunk:
-                            avg_size = sum(float(c[2]) - float(c[3]) for c in avg_chunk) / len(avg_chunk)
-
-                    is_pb, pb_reason = _is_pinbar(candle, trade_direction, tail_percent_min, body_percent_max, opposite_percent_max, pinbar_min_size, pinbar_max_size, avg_size=avg_size, min_avg_pct=pinbar_min_avg_pct, max_avg_pct=pinbar_max_avg_pct)
+                    # === ПЕРЕВІРКА ПРОБОЮ РІВНЯ ===
+                    # Для LONG (сопротивление): свічка має закритись ВИЩЕ рівня
+                    # Для SHORT (підтримка): свічка має закритись НИЖЧЕ рівня
+                    level = float(target)
+                    is_breakout = False
                     
-                    if not is_pb:
-                        if i == len(candles_since_touch) - 1: # Log only for the latest candle
-                             # Логуємо причину відмови раз на хвилину або якщо причина не "Size"
-                             if "Size" not in pb_reason or time.time() % 60 < 5:
-                                 logger.debug(f"[{pair}] Candle rejected ({trade_direction}): {pb_reason}")
+                    if trade_direction == "long":
+                        # Пробій сопротивления: закриття ВИЩЕ рівня
+                        if c_close > level:
+                            is_breakout = True
+                            logger.debug(f"[{pair}] Свічка пробою: Close {c_close:.8f} > Level {level:.8f}")
+                    else:
+                        # Пробій підтримки: закриття НИЖЧЕ рівня
+                        if c_close < level:
+                            is_breakout = True
+                            logger.debug(f"[{pair}] Свічка пробою: Close {c_close:.8f} < Level {level:.8f}")
+                    
+                    if not is_breakout:
+                        if i == len(candles_since_touch) - 1:
+                            logger.debug(f"[{pair}] Свічка НЕ пробила рівень: Close={c_close:.8f}, Level={level:.8f}, Dir={trade_direction}")
                         continue
 
-                    # RSI Check (Dynamic based on strategy):
-                    if check_rsi and current_rsi_val is not None:
-                        # Якщо налаштовано check_rsi, але RSI не підходить - пропускаємо
-                        if rsi_condition == "oversold" and current_rsi_val > rsi_low: # Має бути <= Low
-                            continue
-                        if rsi_condition == "overbought" and current_rsi_val < rsi_high: # Має бути >= High
-                            continue
-
-                    # Extremum Check (Dynamic):
-                    if wait_for_extremum:
-                        # Premium2 Spec: "оновлення екстремуму з моменту приходу сигналу" (тобто з touch_time)
-                        # Перевіряємо, чи є current candle екстремумом серед ВСІХ свічок з моменту дотику
-                        is_abs_extremum = True
-                        current_val = float(candle[3]) if trade_direction == "long" else float(candle[2])
-                        
-                        # Перевіряємо всі свічки від touch_candle_index до поточного i (не включно, бо це поточна)
-                        # candles_since_touch містить свічки від моменту дотику
-                        # Поточна свічка - це candles_since_touch[i]
+                    # === ПЕРЕВІРКА ЕКСТРЕМУМУ ===
+                    # Для LONG: Low свічки = новий мінімум з моменту сигналу
+                    # Для SHORT: High свічки = новий максимум з моменту сигналу
+                    is_extremum = True
+                    
+                    if trade_direction == "long":
+                        # Low має бути найнижчим серед всіх свічок з моменту сигналу
                         for prev_c in candles_since_touch[:i]:
-                            prev_val = float(prev_c[3]) if trade_direction == "long" else float(prev_c[2])
-                            if trade_direction == "long":
-                                if prev_val <= current_val: # Був лоу нижче або такий самий
-                                    is_abs_extremum = False
-                                    break
-                            else:
-                                if prev_val >= current_val: # Був хай вище або такий самий
-                                    is_abs_extremum = False
-                                    break
-                        
-                        if not is_abs_extremum:
-                            logger.debug(f"[{pair}] Pinbar found but NOT extremum since touch")
+                            prev_low = float(prev_c[3])
+                            if prev_low <= c_low:
+                                is_extremum = False
+                                break
+                    else:
+                        # High має бути найвищим серед всіх свічок з моменту сигналу
+                        for prev_c in candles_since_touch[:i]:
+                            prev_high = float(prev_c[2])
+                            if prev_high >= c_high:
+                                is_extremum = False
+                                break
+                    
+                    if not is_extremum:
+                        logger.debug(f"[{pair}] Свічка пробою є, але НЕ екстремум: H={c_high:.8f} L={c_low:.8f}")
+                        continue
+
+                    # === ПЕРЕВІРКА RSI (опціонально) ===
+                    if check_rsi and current_rsi_val is not None:
+                        if rsi_condition == "oversold" and current_rsi_val > rsi_low:
+                            logger.debug(f"[{pair}] RSI {current_rsi_val:.2f} > {rsi_low} (потрібно oversold)")
+                            continue
+                        if rsi_condition == "overbought" and current_rsi_val < rsi_high:
+                            logger.debug(f"[{pair}] RSI {current_rsi_val:.2f} < {rsi_high} (потрібно overbought)")
                             continue
 
+                    # ✅ Знайшли сигнальну свічку!
                     signal_candle = candle
                     rsi_msg = f", RSI={current_rsi_val:.2f}" if current_rsi_val is not None else ""
-                    logger.info(f"[{pair}] ✅ ПІНБАР ЗНАЙДЕНО: H={float(candle[2]):.8f} L={float(candle[3]):.8f}{rsi_msg}")
+                    logger.info(f"[{pair}] ✅ СВІЧКА ПРОБОЮ ЗНАЙДЕНА: H={c_high:.8f} L={c_low:.8f}, Close={c_close:.8f}{rsi_msg}")
+                    logger.info(f"[{pair}]    Рівень: {level:.8f}, Напрямок: {trade_direction.upper()}")
                     _monitor_states[pair] = BotState.SIGNAL_CONFIRMED
                     break
 
@@ -607,9 +620,12 @@ async def monitor_and_trade(pair, target, direction, settings):
                     
                     # Зберігаємо ЧАС свічки, на якій спрацював RSI
                     rsi_trigger_candle_time = int(candles[-1][0])
-                    # rsi_trigger_candle_index = len(candles) - 1 # БІЛЬШЕ НЕ ВИКОРИСТОВУЄМО ІНДЕКС
                     
                     logger.info(f"[{pair}] ✅ RSI OK (Time={rsi_trigger_candle_time}). Чекаємо пінбар GRAVITY...")
+                    
+                    # Чекаємо наступну ітерацію циклу щоб сформувалась нова свічка
+                    await asyncio.sleep(tf_secs // 2)
+                    continue
                 else:
                     await asyncio.sleep(5)
                     continue
@@ -632,14 +648,22 @@ async def monitor_and_trade(pair, target, direction, settings):
                     # Якщо свічка випала за межі 200 свічок - беремо початок
                     start_index = 0
                 
-                # Шукаємо пінбар серед свічок, починаючи з моменту RSI
-                search_candles = candles[start_index:]
+                # Шукаємо пінбар серед ЗАКРИТИХ свічок (виключаємо останню - поточну незакриту)
+                # candles[-1] може бути ще не закритою, тому беремо candles[start_index:-1]
+                search_candles = candles[start_index:-1] if len(candles) > start_index + 1 else []
                 
-                # Потрібно мінімум 1 свічка для аналізу. Якщо це та сама свічка, що й RSI, і вона закрита - ок.
-                # Але candles[-1] зазвичай закрита (в get_klines ми беремо closed).
+                # Якщо немає закритих свічок для аналізу - чекаємо
                 
                 found_pinbar = False
-                for i in range(len(search_candles)):
+                
+                # Потрібно мінімум 2 свічки для порівняння екстремуму
+                # Якщо є тільки одна свічка - чекаємо наступну
+                if len(search_candles) < 2:
+                    await asyncio.sleep(tf_secs // 4)
+                    continue
+                
+                # Починаємо з i=1 щоб була хоча б одна свічка для порівняння екстремуму
+                for i in range(1, len(search_candles)):
                     c = search_candles[i]
                     
                     # Розрахунок середньої свічки для цьої точки
