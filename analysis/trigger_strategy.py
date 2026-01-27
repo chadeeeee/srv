@@ -781,26 +781,57 @@ async def monitor_and_trade(pair, target, direction, settings):
                     _monitor_states[pair] = BotState.TRIGGER_EXPIRED
                     break
 
-                # Перевірка на пробій майбутнього SL
-                if calculated_stop_loss:
-                    sl_hit = False
-                    if trade_direction == "long" and current_price < calculated_stop_loss:
-                        sl_hit = True
-                    elif trade_direction == "short" and current_price > calculated_stop_loss:
-                        sl_hit = True
-                    
-                    if sl_hit:
-                        logger.info(f"[{pair}] ❌ Ціна ({current_price:.8f}) пробила SL ({calculated_stop_loss:.8f}) до активації → ВИДАЛЕННЯ")
-                        if trigger_order_id:
-                            await signal_handler.cancel_order(pair, trigger_order_id)
-                        _monitor_states[pair] = BotState.TRIGGER_EXPIRED
-                        break
-
+                # Перевірка на позицію - чи триггер вже спрацював
                 position = await signal_handler._take_profit_helper.get_position(pair)
                 if position and float(position.get("size", 0) or 0) > 0:
                     logger.info(f"[{pair}] ✅ TRIGGER ВИКОНАНО → Позиція відкрита")
                     _monitor_states[pair] = BotState.TRIGGER_FILLED
                     break
+
+                # === ПЕРЕВІРКА НА ОНОВЛЕННЯ ЕКСТРЕМУМА (Premium2) ===
+                # Якщо з'явилась нова свічка з новим екстремумом - це НОВИЙ СИГНАЛ
+                # Скасовуємо старий триггер і виставляємо новий
+                if is_premium2 and calculated_stop_loss:
+                    # Отримуємо закриті свічки
+                    closed_candles = candles[:-1] if len(candles) > 1 else candles
+                    
+                    # Шукаємо свічку яка оновила екстремум
+                    new_signal_candle = None
+                    for c in reversed(closed_candles[-10:]):  # Останні 10 закритих свічок
+                        c_high = float(c[2])
+                        c_low = float(c[3])
+                        c_close = float(c[4])
+                        
+                        # Для LONG: шукаємо свічку з Low нижче поточного SL (оновлення мінімуму)
+                        # Для SHORT: шукаємо свічку з High вище поточного SL (оновлення максимуму)
+                        if trade_direction == "long":
+                            if c_low < calculated_stop_loss:
+                                # Перевіряємо що свічка закрилась ВИЩЕ рівня (пробій)
+                                level = float(target)
+                                if c_close > level:
+                                    new_signal_candle = c
+                                    logger.info(f"[{pair}] 🔄 ОНОВЛЕННЯ ЕКСТРЕМУМА: новий Low {c_low:.8f} < старий SL {calculated_stop_loss:.8f}")
+                                    break
+                        else:
+                            if c_high > calculated_stop_loss:
+                                # Перевіряємо що свічка закрилась НИЖЧЕ рівня (пробій)
+                                level = float(target)
+                                if c_close < level:
+                                    new_signal_candle = c
+                                    logger.info(f"[{pair}] 🔄 ОНОВЛЕННЯ ЕКСТРЕМУМА: новий High {c_high:.8f} > старий SL {calculated_stop_loss:.8f}")
+                                    break
+                    
+                    if new_signal_candle:
+                        # Скасовуємо старий триггер
+                        if trigger_order_id:
+                            await signal_handler.cancel_order(pair, trigger_order_id)
+                            logger.info(f"[{pair}] ❌ Старий триггер скасовано")
+                        
+                        # Нова сигнальна свічка
+                        signal_candle = new_signal_candle
+                        _monitor_states[pair] = BotState.SIGNAL_CONFIRMED
+                        logger.info(f"[{pair}] ✅ НОВА СИГНАЛЬНА СВІЧКА: H={float(signal_candle[2]):.8f} L={float(signal_candle[3]):.8f}")
+                        continue  # Повертаємось в цикл для виставлення нового триггера
 
                 await asyncio.sleep(5)
                 continue
