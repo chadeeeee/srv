@@ -788,6 +788,25 @@ async def monitor_and_trade(pair, target, direction, settings):
                     _monitor_states[pair] = BotState.TRIGGER_FILLED
                     break
 
+                # === GRAVITY2 VALIDATION: Check if SL level is broken ===
+                if is_gravity2 and calculated_stop_loss:
+                    is_invalid = False
+                    if trade_direction == "long":
+                        if current_price < calculated_stop_loss:
+                             is_invalid = True
+                             logger.info(f"[{pair}] ❌ GRAVITY2: Ціна {current_price:.8f} пробила SL {calculated_stop_loss:.8f} → СКАСУВАННЯ")
+                    else:
+                        if current_price > calculated_stop_loss:
+                             is_invalid = True
+                             logger.info(f"[{pair}] ❌ GRAVITY2: Ціна {current_price:.8f} пробила SL {calculated_stop_loss:.8f} → СКАСУВАННЯ")
+
+                    if is_invalid:
+                         if trigger_order_id:
+                            await signal_handler.cancel_order(pair, trigger_order_id)
+                         _monitor_states[pair] = BotState.WAIT_PINBAR_GRAVITY
+                         logger.info(f"[{pair}] 🔄 Повернення до пошуку пінбара GRAVITY...")
+                         continue
+
                 # === ПЕРЕВІРКА НА ОНОВЛЕННЯ ЕКСТРЕМУМА (Premium2) ===
                 # Якщо з'явилась нова свічка з новим екстремумом - це НОВИЙ СИГНАЛ
                 # Скасовуємо старий триггер і виставляємо новий
