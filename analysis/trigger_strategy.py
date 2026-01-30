@@ -746,6 +746,7 @@ async def monitor_and_trade(pair, target, direction, settings):
                     "strategy": strategy.name,
                     "signal_candle_high": c_high,
                     "signal_candle_low": c_low,
+                    "retry_count": settings.get("retry_count", 0),
                 }
 
                 result = await signal_handler.place_trigger_order(
@@ -783,24 +784,42 @@ async def monitor_and_trade(pair, target, direction, settings):
 
                 # Перевірка на позицію - чи триггер вже спрацював
                 position = await signal_handler._take_profit_helper.get_position(pair)
-                if position and float(position.get("size", 0) or 0) > 0:
-                    logger.info(f"[{pair}] ✅ TRIGGER ВИКОНАНО → Позиція відкрита")
-                    _monitor_states[pair] = BotState.TRIGGER_FILLED
-                    break
-
-                # === GRAVITY2 VALIDATION: Check if SL level is broken ===
+                # === GRAVITY2 VALIDATION (Скасування при порушенні умов) ===
+                # Поки чекаємо активації trigger order, перевіряємо чи ціна не пішла проти логіки
+                # Для Gravity2:
+                # - Якщо LONG (підтримка -> short): стоп за HIGH. Якщо ціна > HIGH -> скасувати.
+                # - Якщо SHORT (опір -> long): стоп за LOW. Якщо ціна < LOW -> скасувати.
                 if is_gravity2 and calculated_stop_loss:
                     is_invalid = False
+                    reason = ""
+                    
+                    # Перевіряємо по поточній ціні
                     if trade_direction == "long":
                         if current_price < calculated_stop_loss:
                              is_invalid = True
-                             logger.info(f"[{pair}] ❌ GRAVITY2: Ціна {current_price:.8f} пробила SL {calculated_stop_loss:.8f} → СКАСУВАННЯ")
+                             reason = f"Ціна {current_price:.8f} < SL {calculated_stop_loss:.8f}"
                     else:
                         if current_price > calculated_stop_loss:
                              is_invalid = True
-                             logger.info(f"[{pair}] ❌ GRAVITY2: Ціна {current_price:.8f} пробила SL {calculated_stop_loss:.8f} → СКАСУВАННЯ")
+                             reason = f"Ціна {current_price:.8f} > SL {calculated_stop_loss:.8f}"
+                    
+                    # Перевіряємо по свічках (щоб не пропустити швидкі рухи)
+                    if not is_invalid and candles and len(candles) > 0:
+                        current_candle = candles[-1] # Остання (поточна) свічка
+                        c_h = float(current_candle[2])
+                        c_l = float(current_candle[3])
+                        
+                        if trade_direction == "long":
+                            if c_l < calculated_stop_loss:
+                                is_invalid = True
+                                reason = f"Candle Low {c_l:.8f} < SL {calculated_stop_loss:.8f}"
+                        else:
+                            if c_h > calculated_stop_loss:
+                                is_invalid = True
+                                reason = f"Candle High {c_h:.8f} > SL {calculated_stop_loss:.8f}"
 
                     if is_invalid:
+                         logger.info(f"[{pair}] ❌ GRAVITY2 INVALIDATION: {reason} → СКАСУВАННЯ")
                          if trigger_order_id:
                             await signal_handler.cancel_order(pair, trigger_order_id)
                          _monitor_states[pair] = BotState.WAIT_PINBAR_GRAVITY

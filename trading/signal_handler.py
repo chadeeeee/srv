@@ -827,7 +827,7 @@ class SignalHandler:
             signal_level = meta.get("signal_level") or entry_price
             if signal_level:
                 try:
-                    asyncio.create_task(self._start_monitor_pinbar_task(pair, signal_level, direction))
+                    asyncio.create_task(self._start_monitor_pinbar_task(pair, signal_level, direction, retry_count=retry_count + 1))
                 except Exception as exc:
                     logger.error(f"[{pair}] Помилка перезапуску: {exc}")
         else:
@@ -2463,7 +2463,7 @@ class SignalHandler:
             self._external_trade_monitor_running = False
             logger.debug("External trade monitor loop завершен")
 
-    async def _start_monitor_pinbar_task(self, pair, level, direction, strategy=None):
+    async def _start_monitor_pinbar_task(self, pair, level, direction, strategy=None, retry_count=0):
         try:
             from analysis.trigger_strategy import monitor_and_trade
             from utils.settings_manager import get_settings
@@ -2476,6 +2476,7 @@ class SignalHandler:
             settings = get_settings() or {}
             settings["strategy"] = strategy
             settings["channel_id"] = strategy.channel_id
+            settings["retry_count"] = retry_count
 
             await monitor_and_trade(pair, level, direction, settings)
         except Exception as e:
