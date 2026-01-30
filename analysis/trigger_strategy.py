@@ -530,15 +530,15 @@ async def monitor_and_trade(pair, target, direction, settings):
                     is_breakout = False
                     
                     if trade_direction == "long":
-                        # Пробій сопротивления: закриття ВИЩЕ рівня
-                        if c_close > level:
+                        # Пробій сопротивления: закриття ВИЩЕ рівня + Low торкався/пробив рівень
+                        if c_close > level and c_low <= level:
                             is_breakout = True
-                            logger.debug(f"[{pair}] Свічка пробою: Close {c_close:.8f} > Level {level:.8f}")
+                            logger.debug(f"[{pair}] Свічка пробою (Valid): Close {c_close:.8f} > Level {level:.8f}")
                     else:
-                        # Пробій підтримки: закриття НИЖЧЕ рівня
-                        if c_close < level:
+                        # Пробій підтримки: закриття НИЖЧЕ рівня + High торкався/пробив рівень
+                        if c_close < level and c_high >= level:
                             is_breakout = True
-                            logger.debug(f"[{pair}] Свічка пробою: Close {c_close:.8f} < Level {level:.8f}")
+                            logger.debug(f"[{pair}] Свічка пробою (Valid): Close {c_close:.8f} < Level {level:.8f}")
                     
                     if not is_breakout:
                         if i == len(candles_since_touch) - 1:
@@ -577,6 +577,35 @@ async def monitor_and_trade(pair, target, direction, settings):
                         if rsi_condition == "overbought" and current_rsi_val < rsi_high:
                             logger.debug(f"[{pair}] RSI {current_rsi_val:.2f} < {rsi_high} (потрібно overbought)")
                             continue
+
+                    # === ПЕРЕВІРКА ФОРМИ ПІНБАРУ (Shape) ===
+                    # Розрахунок середньої свічки для перевірки розміру
+                    # i - індекс в candles_since_touch
+                    # Реальний індекс в candles = touch_candle_index + i
+                    real_idx = touch_candle_index + i
+                    avg_size = 0.0
+                    if real_idx > 0:
+                        avg_start = max(0, real_idx - pinbar_avg_candles)
+                        avg_chunk = candles[avg_start:real_idx]
+                        if avg_chunk:
+                            avg_size = sum(float(ac[2]) - float(ac[3]) for ac in avg_chunk) / len(avg_chunk)
+
+                    is_pb, pb_reason = _is_pinbar(
+                        candle, 
+                        trade_direction, 
+                        tail_percent_min, 
+                        body_percent_max, 
+                        opposite_percent_max, 
+                        pinbar_min_size, 
+                        pinbar_max_size, 
+                        avg_size=avg_size, 
+                        min_avg_pct=pinbar_min_avg_pct, 
+                        max_avg_pct=pinbar_max_avg_pct
+                    )
+                    
+                    if not is_pb:
+                        logger.debug(f"[{pair}] Екстремум є, але НЕ пінбар: {pb_reason}")
+                        continue
 
                     # ✅ Знайшли сигнальну свічку!
                     signal_candle = candle
