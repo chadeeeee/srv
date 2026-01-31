@@ -516,7 +516,7 @@ async def monitor_and_trade(pair, target, direction, settings):
                 if is_premium2:
                     current_rsi_val, _ = await get_rsi(pair, "1", rsi_period)
 
-                for i in range(len(candles_since_touch) - 1, 0, -1):
+                for i in range(len(candles_since_touch) - 1, -1, -1):
                     candle = candles_since_touch[i]
                     c_open = float(candle[1])
                     c_high = float(candle[2])
@@ -567,6 +567,27 @@ async def monitor_and_trade(pair, target, direction, settings):
                     
                     if not is_extremum:
                         logger.debug(f"[{pair}] Свічка пробою є, але НЕ екстремум: H={c_high:.8f} L={c_low:.8f}")
+                        continue
+
+                    # === ПЕРЕВІРКА ВАЛІДНОСТІ (Forward Validation) ===
+                    # Перевіряємо, чи не було цей екстремум перебито пізнішими свічками (після i)
+                    is_still_valid = True
+                    future_candles = candles_since_touch[i+1:]
+                    if future_candles:
+                        if trade_direction == "long":
+                            # Перевіряємо чи є нижчий Low у майбутньому
+                            future_lows = [float(fc[3]) for fc in future_candles]
+                            if min(future_lows) <= c_low: 
+                                is_still_valid = False
+                                logger.debug(f"[{pair}] Екстремум {c_low:.8f} перебитий майбутньою свічкою (min {min(future_lows):.8f})")
+                        else:
+                            # Перевіряємо чи є вищий High у майбутньому
+                            future_highs = [float(fc[2]) for fc in future_candles]
+                            if max(future_highs) >= c_high:
+                                is_still_valid = False
+                                logger.debug(f"[{pair}] Екстремум {c_high:.8f} перебитий майбутньою свічкою (max {max(future_highs):.8f})")
+                    
+                    if not is_still_valid:
                         continue
 
                     # === ПЕРЕВІРКА RSI (опціонально) ===

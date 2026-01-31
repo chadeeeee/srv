@@ -1621,7 +1621,8 @@ class SignalHandler:
                         msg += f"Stop Loss: {stop_loss_float:.8f}\n"
                     if take_profit_float:
                         msg += f"Take Profit: {take_profit_float:.8f}\n"
-                    msg += f"Тип: Conditional (Gravity2)"
+                    strategy_name = meta.get("strategy", "Conditional")
+                    msg += f"Тип: Conditional ({strategy_name})"
 
                     await notify_user(msg)
                 except Exception as e:
