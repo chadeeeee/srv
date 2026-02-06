@@ -1,0 +1,151 @@
+2026-02-06 10:10:55 | ERROR    | __main__:main:372 - TELEGRAM_API_ID и TELEGRAM_API_HASH не настроены в config.py
+2026-02-06 10:11:07 | INFO     | utils.settings_manager:init_db:188 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2026-02-06 10:16:55 | INFO     | utils.settings_manager:init_db:188 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2026-02-06 10:17:54 | INFO     | __main__:main:387 - [STARTUP] Створюю SignalHandler...
+2026-02-06 10:17:55 | INFO     | utils.settings_manager:init_db:188 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2026-02-06 10:18:38 | INFO     | __main__:main:387 - [STARTUP] Створюю SignalHandler...
+2026-02-06 10:18:38 | INFO     | utils.settings_manager:init_db:188 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2026-02-06 10:19:59 | INFO     | __main__:main:387 - [STARTUP] Створюю SignalHandler...
+2026-02-06 10:19:59 | INFO     | trading.signal_handler:__init__:49 - [INIT] SignalHandler.__init__ START
+2026-02-06 10:19:59 | INFO     | trading.signal_handler:__init__:52 - [INIT] Отримую base_url...
+2026-02-06 10:19:59 | INFO     | trading.signal_handler:__init__:54 - [INIT] base_url = https://api-demo.bybit.com
+2026-02-06 10:19:59 | INFO     | trading.signal_handler:__init__:71 - [INIT] Створюю TakeProfit...
+2026-02-06 10:19:59 | INFO     | utils.settings_manager:init_db:188 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2026-02-06 10:22:27 | INFO     | __main__:main:387 - [STARTUP] Створюю SignalHandler...
+2026-02-06 10:22:27 | INFO     | trading.signal_handler:__init__:49 - [INIT] SignalHandler.__init__ START
+2026-02-06 10:22:27 | INFO     | trading.signal_handler:__init__:52 - [INIT] Отримую base_url...
+2026-02-06 10:22:27 | INFO     | trading.signal_handler:__init__:54 - [INIT] base_url = https://api-demo.bybit.com
+2026-02-06 10:22:27 | INFO     | trading.signal_handler:__init__:71 - [INIT] Створюю TakeProfit...
+2026-02-06 10:22:27 | DEBUG    | utils.settings_manager:get_settings:319 - [get_settings] Acquiring lock...
+2026-02-06 10:22:27 | DEBUG    | utils.settings_manager:get_settings:321 - [get_settings] Lock acquired
+2026-02-06 10:22:27 | INFO     | utils.settings_manager:get_settings:323 - [get_settings] Calling init_db...
+2026-02-06 10:22:27 | INFO     | utils.settings_manager:init_db:186 - [init_db] Отримую з'єднання...
+2026-02-06 10:22:28 | INFO     | utils.settings_manager:init_db:189 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2026-02-06 10:22:28 | INFO     | utils.settings_manager:init_db:190 - [init_db] Створюю таблицю settings...
+2026-02-06 10:22:28 | INFO     | utils.settings_manager:init_db:193 - [init_db] Додаю колонки...
+2026-02-06 10:27:18 | INFO     | trading.signal_handler:__init__:49 - [INIT] SignalHandler.__init__ START
+2026-02-06 10:27:18 | INFO     | trading.signal_handler:__init__:52 - [INIT] Отримую base_url...
+2026-02-06 10:27:18 | INFO     | trading.signal_handler:__init__:54 - [INIT] base_url = https://api-demo.bybit.com
+2026-02-06 10:27:18 | INFO     | trading.signal_handler:__init__:71 - [INIT] Створюю TakeProfit...
+2026-02-06 10:27:19 | INFO     | trading.signal_handler:__init__:73 - [INIT] TakeProfit створено
+2026-02-06 10:27:19 | INFO     | trading.signal_handler:__init__:74 - [INIT] Створюю RiskManager...
+2026-02-06 10:27:20 | INFO     | trading.signal_handler:__init__:76 - [INIT] RiskManager створено
+2026-02-06 10:27:20 | INFO     | trading.signal_handler:__init__:90 - [INIT] SignalHandler.__init__ DONE
+2026-02-06 10:27:21 | INFO     | trading.signal_handler:verify_limit_order_capability:2052 - [STARTUP] verify_limit_order_capability: початок для BTCUSDT
+2026-02-06 10:27:21 | INFO     | __main__:monitor_bybit_positions:106 - Запуск мониторинга позиций Bybit для ручных сделок
+2026-02-06 10:27:21 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/position/list
+2026-02-06 10:27:21 | INFO     | trading.signal_handler:_signed_request:901 - [API] Отримую server time offset...
+2026-02-06 10:27:22 | ERROR    | trading.signal_handler:_init_db:158 - Не удалось подключиться к базе данных: remaining connection slots are reserved for roles with the SUPERUSER attribute
+2026-02-06 10:27:22 | INFO     | trading.signal_handler:verify_limit_order_capability:2054 - [STARTUP] verify_limit_order_capability: _init_db завершено
+2026-02-06 10:27:22 | INFO     | trading.signal_handler:verify_limit_order_capability:2055 - [STARTUP] verify_limit_order_capability: отримую specs...
+2026-02-06 10:27:22 | INFO     | trading.signal_handler:verify_limit_order_capability:2057 - [STARTUP] verify_limit_order_capability: specs=True
+2026-02-06 10:27:22 | INFO     | trading.signal_handler:verify_limit_order_capability:2061 - [STARTUP] verify_limit_order_capability: запит до tickers API...
+2026-02-06 10:27:22 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/market/tickers
+2026-02-06 10:27:23 | DEBUG    | trading.signal_handler:_get_session:281 - SignalHandler session created
+2026-02-06 10:27:23 | INFO     | trading.signal_handler:_signed_request:903 - [API] Server time offset: -8571
+2026-02-06 10:27:23 | INFO     | trading.signal_handler:verify_limit_order_capability:2063 - [STARTUP] verify_limit_order_capability: відповідь отримано
+2026-02-06 10:27:24 | DEBUG    | trading.risk_manager:sync_time:37 - Time offset updated: -8568
+2026-02-06 10:27:24 | INFO     | __main__:monitor_bybit_positions:360 - monitor_bybit_positions cancelled
+2026-02-06 10:27:24 | ERROR    | __main__:<module>:846 - Критична помилка: The authorization key (session file) was used under two different IP addresses simultaneously, and can no longer be used. Use the same session exclusively, or use different sessions (caused by InvokeWithLayerRequest(InitConnectionRequest(GetConfigRequest)))
+2026-02-06 10:27:24 | ERROR    | __main__:<module>:849 - Traceback (most recent call last):
+  File "D:\Code\bybit-strategy\telegram\reader.py", line 842, in <module>
+    asyncio.run(main())
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\Code\bybit-strategy\telegram\reader.py", line 403, in main
+    await client.start()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\site-packages\telethon\client\auth.py", line 135, in _start
+    await self.connect()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\site-packages\telethon\client\telegrambaseclient.py", line 603, in connect
+    await self._sender.send(functions.InvokeWithLayerRequest(LAYER, req))
+telethon.errors.rpcerrorlist.AuthKeyDuplicatedError: The authorization key (session file) was used under two different IP addresses simultaneously, and can no longer be used. Use the same session exclusively, or use different sessions (caused by InvokeWithLayerRequest(InitConnectionRequest(GetConfigRequest)))
+
+2026-02-06 10:46:22 | INFO     | trading.signal_handler:__init__:49 - [INIT] SignalHandler.__init__ START
+2026-02-06 10:46:22 | INFO     | trading.signal_handler:__init__:52 - [INIT] Отримую base_url...
+2026-02-06 10:46:22 | INFO     | trading.signal_handler:__init__:54 - [INIT] base_url = https://api-demo.bybit.com
+2026-02-06 10:46:22 | INFO     | trading.signal_handler:__init__:71 - [INIT] Створюю TakeProfit...
+2026-02-06 10:46:22 | INFO     | utils.settings_manager:init_db:189 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2026-02-06 10:46:24 | INFO     | trading.signal_handler:__init__:73 - [INIT] TakeProfit створено
+2026-02-06 10:46:24 | INFO     | trading.signal_handler:__init__:74 - [INIT] Створюю RiskManager...
+2026-02-06 10:46:25 | INFO     | trading.signal_handler:__init__:76 - [INIT] RiskManager створено
+2026-02-06 10:46:25 | INFO     | trading.signal_handler:__init__:90 - [INIT] SignalHandler.__init__ DONE
+2026-02-06 10:46:25 | INFO     | trading.signal_handler:verify_limit_order_capability:2052 - [STARTUP] verify_limit_order_capability: початок для BTCUSDT
+2026-02-06 10:46:25 | INFO     | __main__:monitor_bybit_positions:106 - Запуск мониторинга позиций Bybit для ручных сделок
+2026-02-06 10:46:25 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/position/list
+2026-02-06 10:46:26 | DEBUG    | trading.signal_handler:_get_session:281 - SignalHandler session created
+2026-02-06 10:46:26 | INFO     | trading.signal_handler:_init_db:156 - Подключение к базе данных (Aiven Cloud/SSL) установлено
+2026-02-06 10:46:26 | INFO     | trading.signal_handler:verify_limit_order_capability:2054 - [STARTUP] verify_limit_order_capability: _init_db завершено
+2026-02-06 10:46:26 | INFO     | trading.signal_handler:verify_limit_order_capability:2055 - [STARTUP] verify_limit_order_capability: отримую specs...
+2026-02-06 10:46:26 | INFO     | trading.signal_handler:verify_limit_order_capability:2057 - [STARTUP] verify_limit_order_capability: specs=True
+2026-02-06 10:46:26 | INFO     | trading.signal_handler:verify_limit_order_capability:2061 - [STARTUP] verify_limit_order_capability: запит до tickers API...
+2026-02-06 10:46:26 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/market/tickers
+2026-02-06 10:46:27 | INFO     | trading.signal_handler:verify_limit_order_capability:2063 - [STARTUP] verify_limit_order_capability: відповідь отримано
+2026-02-06 10:46:27 | DEBUG    | trading.risk_manager:sync_time:37 - Time offset updated: -8561
+2026-02-06 10:46:28 | INFO     | __main__:monitor_bybit_positions:360 - monitor_bybit_positions cancelled
+2026-02-06 10:46:28 | ERROR    | __main__:<module>:846 - Критична помилка: The authorization key (session file) was used under two different IP addresses simultaneously, and can no longer be used. Use the same session exclusively, or use different sessions (caused by InvokeWithLayerRequest(InitConnectionRequest(GetConfigRequest)))
+2026-02-06 10:46:28 | ERROR    | __main__:<module>:849 - Traceback (most recent call last):
+  File "D:\Code\bybit-strategy\telegram\reader.py", line 842, in <module>
+    asyncio.run(main())
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 653, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\Code\bybit-strategy\telegram\reader.py", line 403, in main
+    await client.start()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\site-packages\telethon\client\auth.py", line 135, in _start
+    await self.connect()
+  File "C:\Users\Admin\AppData\Local\Programs\Python\Python311\Lib\site-packages\telethon\client\telegrambaseclient.py", line 603, in connect
+    await self._sender.send(functions.InvokeWithLayerRequest(LAYER, req))
+telethon.errors.rpcerrorlist.AuthKeyDuplicatedError: The authorization key (session file) was used under two different IP addresses simultaneously, and can no longer be used. Use the same session exclusively, or use different sessions (caused by InvokeWithLayerRequest(InitConnectionRequest(GetConfigRequest)))
+
+2026-02-06 10:46:51 | INFO     | trading.signal_handler:__init__:49 - [INIT] SignalHandler.__init__ START
+2026-02-06 10:46:51 | INFO     | trading.signal_handler:__init__:52 - [INIT] Отримую base_url...
+2026-02-06 10:46:51 | INFO     | trading.signal_handler:__init__:54 - [INIT] base_url = https://api-demo.bybit.com
+2026-02-06 10:46:51 | INFO     | trading.signal_handler:__init__:71 - [INIT] Створюю TakeProfit...
+2026-02-06 10:46:52 | INFO     | utils.settings_manager:init_db:189 - SettingsManager: Підключення до бази даних (Aiven Cloud/SSL) встановлено
+2026-02-06 10:46:54 | INFO     | trading.signal_handler:__init__:73 - [INIT] TakeProfit створено
+2026-02-06 10:46:54 | INFO     | trading.signal_handler:__init__:74 - [INIT] Створюю RiskManager...
+2026-02-06 10:46:54 | INFO     | trading.signal_handler:__init__:76 - [INIT] RiskManager створено
+2026-02-06 10:46:54 | INFO     | trading.signal_handler:__init__:90 - [INIT] SignalHandler.__init__ DONE
+2026-02-06 10:46:54 | INFO     | trading.signal_handler:verify_limit_order_capability:2052 - [STARTUP] verify_limit_order_capability: початок для BTCUSDT
+2026-02-06 10:46:54 | INFO     | __main__:monitor_bybit_positions:106 - Запуск мониторинга позиций Bybit для ручных сделок
+2026-02-06 10:46:54 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/position/list
+2026-02-06 10:46:55 | DEBUG    | trading.signal_handler:_get_session:281 - SignalHandler session created
+2026-02-06 10:46:55 | INFO     | trading.signal_handler:_init_db:156 - Подключение к базе данных (Aiven Cloud/SSL) установлено
+2026-02-06 10:46:55 | INFO     | trading.signal_handler:verify_limit_order_capability:2054 - [STARTUP] verify_limit_order_capability: _init_db завершено
+2026-02-06 10:46:55 | INFO     | trading.signal_handler:verify_limit_order_capability:2055 - [STARTUP] verify_limit_order_capability: отримую specs...
+2026-02-06 10:46:56 | INFO     | trading.signal_handler:verify_limit_order_capability:2057 - [STARTUP] verify_limit_order_capability: specs=True
+2026-02-06 10:46:56 | INFO     | trading.signal_handler:verify_limit_order_capability:2061 - [STARTUP] verify_limit_order_capability: запит до tickers API...
+2026-02-06 10:46:56 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/market/tickers
+2026-02-06 10:46:56 | INFO     | trading.signal_handler:verify_limit_order_capability:2063 - [STARTUP] verify_limit_order_capability: відповідь отримано
+2026-02-06 10:46:56 | DEBUG    | trading.risk_manager:sync_time:37 - Time offset updated: -8560
+2026-02-06 10:48:34 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/position/list
+2026-02-06 10:48:40 | INFO     | __main__:main:407 -  Підключено до каналів: [-1003193138774, -1002990245762]
+2026-02-06 10:48:40 | INFO     | trading.signal_handler:start_external_trade_monitor:2086 - External trade monitor started
+2026-02-06 10:48:40 | INFO     | __main__:main:729 - Бот для настроек запущен
+2026-02-06 10:48:40 | INFO     | __main__:main:736 - Запуск клієнта Telegram...
+2026-02-06 10:48:40 | DEBUG    | trading.signal_handler:_get_pybit_session:2125 - PyBit session created successfully (recv_window=20000)
+2026-02-06 10:48:44 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/position/list
+2026-02-06 10:48:50 | ERROR    | trading.signal_handler:_check_positions_via_pybit:2150 - PyBit error: Bad request. retries exceeded maximum. (ErrCode: 400) (ErrTime: 08:48:50).
+Request → GET https://api-demo.bybit.com/v5/position/list: category=linear&settleCoin=USDT.
+2026-02-06 10:48:50 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/position/list
+2026-02-06 10:48:54 | DEBUG    | trading.signal_handler:_signed_request:891 - [API] _signed_request: GET /v5/position/list
+2026-02-06 10:48:59 | INFO     | __main__:signal_handler:835 - Зупинка...
+2026-02-06 10:48:59 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2490 - External trade monitor loop отменен
+2026-02-06 10:48:59 | DEBUG    | trading.signal_handler:_external_trade_monitor_loop:2493 - External trade monitor loop завершен
+2026-02-06 10:48:59 | INFO     | __main__:monitor_bybit_positions:360 - monitor_bybit_positions cancelled
+2026-02-06 10:48:59 | INFO     | __main__:main:753 - Начинается graceful shutdown...
+2026-02-06 10:48:59 | DEBUG    | trading.signal_handler:close:300 - TakeProfit helper closed
+2026-02-06 10:49:00 | INFO     | __main__:signal_handler:835 - Зупинка...
